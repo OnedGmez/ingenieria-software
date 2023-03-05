@@ -1,5 +1,4 @@
-# Ingenieria de Software
-## Integrantes
+# prueba
 
 ## Project setup
 ```

@@ -14,7 +14,6 @@ body{
   color: #2c3e50;
   height: 100%;
 }
-
 a{
   color: #999!important;
   text-decoration: none!important;
@@ -23,7 +22,6 @@ a{
   font-size: calc(.5em + 0.5vw);
   font-weight: 100;
 }
-
 a:hover{
   color: #3581B8!important;
   cursor: pointer;

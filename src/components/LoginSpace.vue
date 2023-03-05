@@ -11,15 +11,17 @@
         <div class="form d-flex">
           <div class="input-group">
             <span class="input-group-text" id="basic-addon1"></span>
-            <input type="text" class="form-control" placeholder="Usuario/Correo electrónico" v-model="user" aria-label="Username" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" placeholder="Usuario/Correo electrónico" v-model="user"
+              aria-label="Username" aria-describedby="basic-addon1">
           </div>
           <div class="input-group">
             <span class="input-group-text" id="basic-addon1"></span>
-            <input type="password" class="form-control" placeholder="Contraseña" v-model="password" aria-label="Username" aria-describedby="basic-addon1">
+            <input type="password" class="form-control" placeholder="Contraseña" v-model="password" aria-label="Username"
+              aria-describedby="basic-addon1">
           </div>
           <router-link to="/about">Olvidé mi contraseña</router-link>
         </div>
-        <div @click="PruebaFunct" class="button">
+        <div @click="pruebaFunct" class="button">
           Iniciar Sesión
         </div>
       </div>
@@ -27,34 +29,27 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'LoginComponent',
-  data (){
-    return{
-      user:'',
-      password: ''
-    }
-  },
-  methods: {
-    /*Función de prueba*/
-    PruebaFunct(){
-      let info = {
-        "usuario": this.user,
-        "contrasenia": this.password
+<script setup>
+import { ref } from "vue";
+
+//Variables que contendran la información de los inputs
+const user = ref('');
+const password = ref('');
+
+  const pruebaFunct = ()  => {
+    let info = {
+        "usuario": user.value,
+        "contrasenia": password.value
       }
       
-      if(this.user != '' && this.password != ''){
+      if(user != '' && password != ''){
         console.log(info)
       }
-    }
-  }
-}
+  };
 </script>
 
 
 <style scoped>
-
 /*Estilos de CSS modificados*/
 .container-fluid,
 .row {
@@ -73,7 +68,7 @@ export default {
   border: none;
   border-bottom: #3581B8 solid 2px;
   filter: none;
-  font-size: calc(.8em + 0.1vw)!important
+  font-size: calc(.8em + 0.1vw) !important
 }
 
 .form-control:focus {
@@ -119,7 +114,7 @@ export default {
   width: 100%;
 }
 
-.button{
+.button {
   background-color: #3581b8;
   width: 70%;
   border-radius: 0 0 calc(1em + 0.1vw) calc(1em + 0.1vw);
@@ -128,27 +123,29 @@ export default {
   font-size: calc(1em + 0.18vw)
 }
 
-.button:hover{
+.button:hover {
   cursor: pointer;
   background-color: #3f596b;
 }
 
 /*Media Querys*/
 @media (max-width: 991.5px) {
-  #banner-vertical{
+  #banner-vertical {
     position: absolute;
     z-index: -10;
     filter: opacity(15%) blur(40px);
   }
 
-  #banner-vertical, #space-form{
+  #banner-vertical,
+  #space-form {
     transition: all 420ms ease-in-out;
   }
 }
 
-@media (min-width: 991.5px){
-  #banner-vertical, #space-form{
+@media (min-width: 991.5px) {
+
+  #banner-vertical,
+  #space-form {
     transition: all 420ms ease-in-out, height 0ms, filter 360ms ease-in-out 200ms;
   }
-}
-</style>
+}</style>

@@ -14,3 +14,4 @@ import axios from 'axios'
 const app = createApp(App).use(store).use(router).use(bootstrap)
 app.config.globalProperties.axios=axios
 app.mount('#app')
+
