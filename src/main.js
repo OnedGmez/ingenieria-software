@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -11,7 +12,9 @@ import axios from 'axios'
 //Configuramos los frameworks a utilizar
 //Configuramos el axios
 //montamos el código en el contenedor #app
-const app = createApp(App).use(store).use(router).use(bootstrap)
+const pinia = createPinia()
+const app = createApp(App).use(router).use(bootstrap)
 app.config.globalProperties.axios=axios
+app.use(pinia)
 app.mount('#app')
 
