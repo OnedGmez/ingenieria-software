@@ -31,6 +31,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { supabase } from './lib/supabaseClient'
 
 //Variables que contendran la información de los inputs
 const user = ref('');
@@ -42,7 +43,7 @@ const password = ref('');
         "contrasenia": password.value
       }
       
-      if(user != '' && password != ''){
+      if(info.usuario != '' && info.contrasenia != ''){
         console.log(info)
       }
   };
