@@ -1,62 +1,58 @@
+<!-- 
+  dev: Oned Gómez       
+  description: Contiene el espacio del formulario de inicio de Sesión
+  última modificación: 12/03/2023
+-->
+
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <div id="banner-vertical" class="col-lg-6 d-flex justify-content-center align-items-center">
-        <img class="img-fluid" src="@/assets/img/prueba.jpg" alt="Banner">
+  <div id="space-form" class="d-flex justify-content-center align-content-center flex-wrap col-lg-6">
+    <div class="avatar d-flex align-content-center justify-content-center">
+      <i class="fa-solid fa-user"></i>
+    </div>
+    <div class="form d-flex">
+      <div class="input-group">
+        <span class="input-group-text" id="basic-addon1"></span>
+        <input type="text" class="form-control" placeholder="Usuario/Correo electrónico" v-model="user"
+          aria-label="Username" aria-describedby="basic-addon1">
       </div>
-      <div id="space-form" class="d-flex justify-content-center align-content-center flex-wrap col-lg-6">
-        <div class="avatar d-flex align-content-center justify-content-center">
-          <i class="fa-solid fa-user"></i>
-        </div>
-        <div class="form d-flex">
-          <div class="input-group">
-            <span class="input-group-text" id="basic-addon1"></span>
-            <input type="text" class="form-control" placeholder="Usuario/Correo electrónico" v-model="user"
-              aria-label="Username" aria-describedby="basic-addon1">
-          </div>
-          <div class="input-group">
-            <span class="input-group-text" id="basic-addon1"></span>
-            <input type="password" class="form-control" placeholder="Contraseña" v-model="password" aria-label="Username"
-              aria-describedby="basic-addon1">
-          </div>
-          <router-link to="/about">Olvidé mi contraseña</router-link>
-        </div>
-        <div @click="pruebaFunct" class="button">
-          Iniciar Sesión
-        </div>
+      <div class="input-group">
+        <span class="input-group-text" id="basic-addon1"></span>
+        <input type="password" class="form-control" placeholder="Contraseña" v-model="password" aria-label="Username"
+          aria-describedby="basic-addon1">
       </div>
+      <router-link to="/about">Olvidé mi contraseña</router-link>
+    </div>
+    <div @click="pruebaFunct" class="button">
+      Iniciar Sesión
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { supabase } from './lib/supabaseClient'
+/*Importamos desde router para poder navegar entre las rutas*/
+import router from "@/router";
+
 
 //Variables que contendran la información de los inputs
 const user = ref('');
 const password = ref('');
 
-  const pruebaFunct = ()  => {
-    let info = {
-        "usuario": user.value,
-        "contrasenia": password.value
-      }
-      
-      if(info.usuario != '' && info.contrasenia != ''){
-        console.log(info)
-      }
-  };
+const pruebaFunct = () => {
+  let info = {
+    "usuario": user.value,
+    "contrasenia": password.value
+  }
+
+  if (info.usuario != '' && info.contrasenia != '') {
+    router.push('/about');
+  }
+};
 </script>
 
 
 <style scoped>
 /*Estilos de CSS modificados*/
-.container-fluid,
-.row {
-  height: 100%;
-}
-
 .input-group-text {
   background-color: #3581B8;
   padding: 0.375rem 0.95rem;
@@ -105,16 +101,6 @@ const password = ref('');
   top: calc(1em - 0.99vw);
 }
 
-#banner-vertical,
-#banner-vertical img {
-  height: 100vh;
-  padding: 0;
-}
-
-#banner-vertical img {
-  width: 100%;
-}
-
 .button {
   background-color: #3581b8;
   width: 70%;
@@ -131,22 +117,14 @@ const password = ref('');
 
 /*Media Querys*/
 @media (max-width: 991.5px) {
-  #banner-vertical {
-    position: absolute;
-    z-index: -10;
-    filter: opacity(15%) blur(40px);
-  }
-
-  #banner-vertical,
   #space-form {
     transition: all 420ms ease-in-out;
   }
 }
 
 @media (min-width: 991.5px) {
-
-  #banner-vertical,
   #space-form {
     transition: all 420ms ease-in-out, height 0ms, filter 360ms ease-in-out 200ms;
   }
-}</style>
+}
+</style>
