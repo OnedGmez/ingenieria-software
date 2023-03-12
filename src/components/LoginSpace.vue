@@ -45,7 +45,7 @@ const pruebaFunct = () => {
   }
 
   if (info.usuario != '' && info.contrasenia != '') {
-    router.push('/about');
+    router.push('/inventario');
   }
 };
 </script>
