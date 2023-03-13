@@ -6,7 +6,7 @@
 
 <template>
   <div class="logo d-flex justify-content-center">
-    <img class="" src="@/assets/logo.png" alt="Logo">
+    <img src="@/assets/logo.png" alt="Logo">
   </div>
   <div class="container-fluid">
     <div class="row">
