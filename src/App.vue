@@ -22,8 +22,5 @@ a{
   font-size: calc(.5em + 0.5vw);
   font-weight: 100;
 }
-a:hover{
-  color: #3581B8!important;
-  cursor: pointer;
-}
+
 </style>
