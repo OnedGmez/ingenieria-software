@@ -7,7 +7,7 @@
 <template>
   <div id="space-form" class="d-flex justify-content-center align-content-center flex-wrap col-lg-6">
     <div class="avatar d-flex align-content-center justify-content-center">
-      <i class="fa-solid fa-user"></i>
+      <font-awesome-icon icon="user" />
     </div>
     <div class="form d-flex">
       <div class="input-group">
@@ -20,7 +20,7 @@
         <input type="password" class="form-control" placeholder="Contraseña" v-model="password" aria-label="Username"
           aria-describedby="basic-addon1">
       </div>
-      <router-link to="/about">Olvidé mi contraseña</router-link>
+      <a href="#">Olvidé mi contraseña</a>
     </div>
     <div @click="pruebaFunct" class="button">
       Iniciar Sesión
@@ -29,9 +29,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 /*Importamos desde router para poder navegar entre las rutas*/
 import router from "@/router";
+import { useUsuarioStore } from '@/store/usuario.js'
 
 
 //Variables que contendran la información de los inputs
@@ -45,6 +46,9 @@ const pruebaFunct = () => {
   }
 
   if (info.usuario != '' && info.contrasenia != '') {
+    //Accedemos a la store de usuario y le enviamos la información (nombre, rol, foto,)
+    const usuario = useUsuarioStore()
+    usuario.setRol("Admin")
     router.push('/inventario');
   }
 };
@@ -58,6 +62,11 @@ const pruebaFunct = () => {
   padding: 0.375rem 0.95rem;
   border: none;
   border-radius: 0;
+}
+
+a:hover{
+  color: #3581B8!important;
+  cursor: pointer;
 }
 
 .form-control {
