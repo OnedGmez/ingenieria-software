@@ -1,0 +1,40 @@
+{
+    "elementos":[
+        {
+            "nombreElemento":"Inventario",
+            "icono":"boxes-stacked",
+            "key": "elm0",
+            "permitidoPara": ["Admin"]
+        },
+        {
+            "nombreElemento":"Representantes Proveedores",
+            "icono": "business-time",
+            "key": "elm1",
+            "permitidoPara": ["Admin"]
+        },
+        {
+            "nombreElemento":"Proveedores",
+            "icono": "building",
+            "key": "elm2",
+            "permitidoPara": ["Admin"]
+        },
+        {
+            "nombreElemento":"Empleados",
+            "icono": "user-tie",
+            "key": "elm3",
+            "permitidoPara": ["Admin"]
+        },
+        {
+            "nombreElemento":"Ordenes",
+            "icono": "truck-moving",
+            "key": "elm4",
+            "permitidoPara": ["Admin"]
+        },
+        {
+            "nombreElemento":"Reportes",
+            "icono": "receipt",
+            "key": "elm5",
+            "permitidoPara": ["Admin"]
+        }
+    ]
+}
