@@ -1,6 +1,6 @@
 <!-- 
   dev: Oned Gómez       
-  description: Junta la vista (pantalla) con el componente que conetiene el formulario de inicio de sesión
+  description: Junta la vista (pantalla) con el componente que contiene el formulario de inicio de sesión
   última modificación: 12/03/2023
 -->
 
