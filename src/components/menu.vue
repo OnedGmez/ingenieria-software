@@ -3,44 +3,15 @@
         <div class="logo">
             <img class="img-fluid" src="../assets/logo.png" alt="Valenciana">
         </div>
-        <ul>
-            <li v-bind:id='0' :class="{ active: IDitem === '0' }" @click="cambiarID('0')">
+        <div id="menu-opciones">
+            <div v-for="opcion, index in opciones" class="opcion-menu" :key="opcion.key"
+                :class="{ active: IDitem === index }" @click="cambiarID(index)">
                 <a class="d-flex" href="#">
-                    <span class="d-block icono-menu"><font-awesome-icon icon="boxes-stacked" /></span>
-                    <span class=" d-block opcion-menu">Inventario</span>
+                    <span class="d-block icono-opcion"><font-awesome-icon :icon="opcion.icono" /></span>
+                    <span class=" d-block nombre-opcion"> {{ opcion.nombreElemento }} </span>
                 </a>
-            </li>
-            <li :class="{ active: IDitem === '1' }" @click="cambiarID('1')">
-                <a class="d-flex" href="#">
-                    <span class="d-block icono-menu"><font-awesome-icon icon="business-time" /></span>
-                    <span class=" d-block opcion-menu">Representante Proveedores</span>
-                </a>
-            </li>
-            <li :class="{ active: IDitem === '2' }" @click="cambiarID('2')">
-                <a class="d-flex" href="#">
-                    <span class="d-block icono-menu"><font-awesome-icon icon="building" /></span>
-                    <span class=" d-block opcion-menu">Proveedores</span>
-                </a>
-            </li>
-            <li :class="{ active: IDitem === '3' }" @click="cambiarID('3')">
-                <a class="d-flex" href="#">
-                    <span class="d-block icono-menu"><font-awesome-icon icon="user-tie" /></span>
-                    <span class=" d-block opcion-menu">Empleados</span>
-                </a>
-            </li>
-            <li :class="{ active: IDitem === '4' }" @click="cambiarID('4')">
-                <a class="d-flex" href="#">
-                    <span class="d-block icono-menu"><font-awesome-icon icon="truck-moving" /></span>
-                    <span class=" d-block opcion-menu">Ordenes</span>
-                </a>
-            </li>
-            <li :class="{ active: IDitem === '5' }" v-if="rol === 'Admin'" @click="cambiarID('5')">
-                <a class="d-flex" href="#">
-                    <span class="d-block icono-menu"><font-awesome-icon icon="receipt" /></span>
-                    <span class=" d-block opcion-menu">Reportes</span>
-                </a>
-            </li>
-        </ul>
+            </div>
+        </div>
         <div class="user_info">
             <div class="foto">
                 <img class="img-fluid" src="../assets/logo.png" alt="Foto ">
@@ -51,7 +22,7 @@
             </div>
         </div>
         <div class="logout">
-            <span class="exit"></span>
+            <span class="exit"><font-awesome-icon icon="door-open" /></span>
         </div>
     </div>
 </template>
@@ -67,12 +38,13 @@
     transition: all 350ms ease-out;
 }
 
-.navegacion .logo{
+.navegacion .logo {
     width: 100%;
     height: 10%;
 }
 
-.user_info .info {
+.user_info .info,
+.logout {
     visibility: hidden;
 }
 
@@ -80,7 +52,8 @@
     width: 225px;
 }
 
-.navegacion:hover .user_info .info {
+.navegacion:hover .user_info .info,
+.navegacion:hover .logout {
     visibility: visible;
 }
 
@@ -88,13 +61,13 @@
     display: flex;
 }
 
-.navegacion ul {
+.navegacion #menu-opciones {
     position: relative;
     padding: 3% 0 0 3%;
     margin: 40px 0;
 }
 
-.navegacion ul li {
+.navegacion #menu-opciones .opcion-menu {
     position: relative;
     list-style: none;
     width: 100%;
@@ -102,7 +75,7 @@
     border-top-left-radius: 12px;
 }
 
-.navegacion ul li a {
+.navegacion #menu-opciones .opcion-menu a {
     position: relative;
     width: 100%;
     color: #000 !important;
@@ -110,7 +83,8 @@
     padding: 2px 10px;
 }
 
-.navegacion ul li a .icono-menu {
+.navegacion #menu-opciones .opcion-menu a .icono-opcion,
+.logout {
     position: relative;
     min-width: 40px;
     height: auto;
@@ -118,22 +92,22 @@
     font-size: 25px
 }
 
-.navegacion ul li a .opcion-menu {
+.navegacion #menu-opciones .opcion-menu a .nombre-opcion {
     position: relative;
     padding-left: 15px;
     height: auto;
     font-size: calc(.9em + 0.3vw);
 }
 
-.navegacion ul .active {
+.navegacion #menu-opciones .active {
     background-color: #3581B8;
 }
 
-.navegacion ul .active span {
+.navegacion #menu-opciones .active span {
     color: #fff !important;
 }
 
-.navegacion ul .active a::before {
+.navegacion #menu-opciones .active a::before {
     content: '';
     position: absolute;
     top: -30px;
@@ -145,7 +119,7 @@
     box-shadow: 15px 15px #3581B8;
 }
 
-.navegacion ul .active a::after {
+.navegacion #menu-opciones .active a::after {
     content: '';
     position: absolute;
     bottom: -30px;
@@ -168,6 +142,17 @@
     bottom: 0;
 }
 
+.logout {
+    position: absolute;
+    bottom: 1%;
+    right: 0;
+}
+
+.logout:hover{
+    cursor: pointer;
+    color:#3581B8
+}
+
 .user_info .foto {
     height: 50px;
     border-radius: 50%;
@@ -188,12 +173,21 @@
 import { ref, reactive } from "vue";
 //importamos el store para poder obtener las variables con la información
 import { useUsuarioStore } from '@/store/usuario.js'
-const usuario = useUsuarioStore()
+import { generalStore } from '@/store/index.js'
+const props = defineProps(['rol', 'nombreUsuario'])
+const gralStore = generalStore();
+const usuario = useUsuarioStore();
+
+const opciones = gralStore.menu;
 const rol = usuario.rol
 console.log(rol)
 
-const IDitem = ref('0')
+const IDitem = ref(0)
 
+/**
+ * dev: Oned Gómez
+ * @param {*} ID recibe el ID de la opción a la que se le ha dado click
+ */
 const cambiarID = (ID) => {
     IDitem.value = ID
 }
