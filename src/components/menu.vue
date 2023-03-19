@@ -12,17 +12,17 @@
                 </a>
             </div>
         </div>
-        <div class="user_info">
+        <div class="pie-menu">
             <div class="foto">
                 <img class="img-fluid" src="../assets/img/prueba.jpg" alt="Foto ">
             </div>
             <div class="info">
                 <span class="nombre">Nombre Usuario</span>
-                <span class="rol">Rol</span>
+                <span class="rol">{{ rol }}</span>
             </div>
-        </div>
-        <div class="logout">
-            <span class="exit"><font-awesome-icon icon="door-open" /></span>
+            <div class="logout">
+                <span class="exit"><font-awesome-icon icon="door-open" /></span>
+            </div>
         </div>
     </div>
 </template>
@@ -34,37 +34,38 @@
     box-shadow: 8px 0 0 #3581B8;
     height: 100%;
     border-left: 5px solid #fff;
+    z-index: 1;
+    background-color: #fff;
     overflow-x: hidden;
+    text-align: center;
     transition: all 350ms ease-out;
 }
 
 .navegacion .logo {
     width: 100%;
     height: 10%;
-}
-
-.user_info .info,
-.logout {
-    visibility: hidden;
+    margin: 8px 0 0 0;
 }
 
 .navegacion:hover {
-    width: 225px;
+    width: 230px;
 }
 
-.navegacion:hover .user_info .info,
-.navegacion:hover .logout {
-    visibility: visible;
-}
-
-.navegacion:hover .user_info {
-    display: flex;
-}
 
 .navegacion #menu-opciones {
     position: relative;
     padding: 3% 0 0 3%;
     margin: 40px 0;
+}
+
+.navegacion .pie-menu {
+    position: absolute;
+    display: -webkit-box;
+    bottom: 10px;
+}
+
+.navegacion .pie-menu .logout {
+    position: relative;
 }
 
 .navegacion #menu-opciones .opcion-menu {
@@ -135,42 +136,45 @@
     height: 100%;
 }
 
-.user_info {
-    padding: 0;
-    position: absolute;
-    display: -webkit-box;
-    bottom: 0;
-}
 
-.logout {
-    position: absolute;
-    bottom: 1%;
-    right: 0;
-}
-
-.logout:hover{
+.logout:hover {
     cursor: pointer;
-    color:#3581B8
+    color: #3581B8
 }
 
-.user_info .foto {
+.pie-menu .foto {
+    position: relative;
     height: 50px;
     border-radius: 50%;
     width: 50px;
+    margin: 0 5px 0px 3px;
 }
 
-.user_info .foto .img-fluid {
+.pie-menu .info{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-left: 3px;
+    text-align: justify;
+    justify-content: center
+}
+
+.pie-menu .info .rol{
+    font-size: smaller;
+}
+
+.pie-menu .logout{
+    position: relative;
+    margin: auto auto;
+}
+
+.pie-menu .foto .img-fluid {
     width: 100%;
     border-radius: 50%;
 }
 
-.user_info .info {
-    display: flex;
-    flex-direction: column;
-    padding: 0 0 0 5px;
-}
 
-.user_info .info .nombre {
+.pie-menu .info .nombre {
     font-weight: bold;
 }
 </style>
@@ -186,7 +190,6 @@ const usuario = useUsuarioStore();
 
 const opciones = gralStore.menu;
 const rol = usuario.rol
-console.log(rol)
 
 const IDitem = ref(0)
 
