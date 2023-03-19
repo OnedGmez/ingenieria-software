@@ -116,7 +116,8 @@ a:hover{
   border-radius: 0 0 calc(1em + 0.1vw) calc(1em + 0.1vw);
   color: #fff;
   font-weight: 600;
-  font-size: calc(1em + 0.18vw)
+  font-size: calc(1em + 0.18vw);
+  text-align: center;
 }
 
 .button:hover {
