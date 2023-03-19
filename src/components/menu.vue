@@ -14,7 +14,7 @@
         </div>
         <div class="user_info">
             <div class="foto">
-                <img class="img-fluid" src="../assets/logo.png" alt="Foto ">
+                <img class="img-fluid" src="../assets/img/prueba.jpg" alt="Foto ">
             </div>
             <div class="info">
                 <span class="nombre">Nombre Usuario</span>
@@ -155,6 +155,12 @@
 
 .user_info .foto {
     height: 50px;
+    border-radius: 50%;
+    width: 50px;
+}
+
+.user_info .foto .img-fluid {
+    width: 100%;
     border-radius: 50%;
 }
 
