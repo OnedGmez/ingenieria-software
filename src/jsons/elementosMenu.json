@@ -2,36 +2,42 @@
     "elementos":[
         {
             "nombreElemento":"Inventario",
+            "path":"/inventario",
             "icono":"boxes-stacked",
             "key": "elm0",
             "permitidoPara": ["Admin"]
         },
         {
             "nombreElemento":"Representantes Proveedores",
+            "path":"/representantes",
             "icono": "business-time",
             "key": "elm1",
             "permitidoPara": ["Admin"]
         },
         {
             "nombreElemento":"Proveedores",
+            "path":"/proveedores",
             "icono": "building",
             "key": "elm2",
             "permitidoPara": ["Admin"]
         },
         {
             "nombreElemento":"Empleados",
+            "path":"/empleados",
             "icono": "user-tie",
             "key": "elm3",
             "permitidoPara": ["Admin"]
         },
         {
             "nombreElemento":"Ordenes",
+            "path":"/ordenes",
             "icono": "truck-moving",
             "key": "elm4",
             "permitidoPara": ["Admin"]
         },
         {
             "nombreElemento":"Reportes",
+            "path":"/reportes",
             "icono": "receipt",
             "key": "elm5",
             "permitidoPara": ["Admin"]
