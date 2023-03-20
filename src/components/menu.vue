@@ -5,7 +5,7 @@
         </div>
         <div id="menu-opciones">
             <div v-for="opcion, index in opciones" class="opcion-menu" :key="opcion.key"
-                :class="{ active: IDitem === index }" @click="cambiarID(index)">
+                :class="{ active: IDitem === index }" @click="cambiarID(index, opcion.path)">
                 <a class="d-flex" href="#">
                     <span class="d-block icono-opcion"><font-awesome-icon :icon="opcion.icono" /></span>
                     <span class=" d-block nombre-opcion"> {{ opcion.nombreElemento }} </span>
@@ -197,8 +197,9 @@ const IDitem = ref(0)
  * dev: Oned Gómez
  * @param {*} ID recibe el ID de la opción a la que se le ha dado click
  */
-const cambiarID = (ID) => {
+const cambiarID = (ID, path) => {
     IDitem.value = ID
+    console.log(path)
 }
 
 </script>
