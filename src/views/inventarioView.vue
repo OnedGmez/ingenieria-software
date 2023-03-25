@@ -27,7 +27,7 @@
 <script>
 import MenuSpace from '@/components/menu.vue'
 import cabeceraComp from '@/components/cabecera.vue'
-import tarjetaInventario from '@/components/tarjeta.vue'
+import tarjetaInventario from '@/components/tarjetaInventario.vue'
 
 export default {
   name: 'Menu',
