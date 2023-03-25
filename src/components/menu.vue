@@ -30,6 +30,9 @@
 </template>
 
 <style scoped>
+/*
+* Al contenedor con clase menu, le daremos una posición sticky, para mantener en la misma posición al menú
+*/
 #vista-inventario .menu {
     position: sticky;
     top: 0;
