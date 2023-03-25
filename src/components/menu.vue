@@ -1,35 +1,43 @@
 <template>
-    <div class="navegacion">
-        <div class="logo">
-            <img class="img-fluid" src="../assets/logo.png" alt="Valenciana">
-        </div>
-        <div id="menu-opciones">
-            <div v-for="opcion, index in opciones" class="opcion-menu" :key="opcion.key"
-                :class="{ active: IDitem === index }" @click="cambiarID(index, opcion.path)">
-                <a class="d-flex" href="#">
-                    <span class="d-block icono-opcion"><font-awesome-icon :icon="opcion.icono" /></span>
-                    <span class=" d-block nombre-opcion"> {{ opcion.nombreElemento }} </span>
-                </a>
+    <div class="menu">
+        <div class="navegacion">
+            <div class="logo">
+                <img class="img-fluid" src="../assets/logo.png" alt="Valenciana">
             </div>
-        </div>
-        <div class="pie-menu">
-            <div class="foto">
-                <img class="img-fluid" src="../assets/img/prueba.jpg" alt="Foto ">
+            <div id="menu-opciones">
+                <div v-for="opcion, index in opciones" class="opcion-menu" :key="opcion.key"
+                    :class="{ active: IDitem === index }" @click="cambiarID(index, opcion.path)">
+                    <a class="d-flex" href="#">
+                        <span class="d-block icono-opcion"><font-awesome-icon :icon="opcion.icono" /></span>
+                        <span class=" d-block nombre-opcion"> {{ opcion.nombreElemento }} </span>
+                    </a>
+                </div>
             </div>
-            <div class="info">
-                <span class="nombre">Nombre Usuario</span>
-                <span class="rol">{{ rol }}</span>
-            </div>
-            <div class="logout">
-                <span class="exit"><font-awesome-icon icon="door-open" /></span>
+            <div class="pie-menu">
+                <div class="foto">
+                    <img class="img-fluid" src="../assets/img/prueba.jpg" alt="Foto ">
+                </div>
+                <div class="info">
+                    <span class="nombre">Nombre Usuario</span>
+                    <span class="rol">{{ rol }}</span>
+                </div>
+                <div class="logout">
+                    <span class="exit"><font-awesome-icon icon="door-open" /></span>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
+#vista-inventario .menu {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
 .navegacion {
-    position: fixed;
+    position: relative;
     width: 65px;
     box-shadow: 8px 0 0 #3581B8;
     height: 100%;
@@ -150,7 +158,7 @@
     margin: 0 5px 0px 3px;
 }
 
-.pie-menu .info{
+.pie-menu .info {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -159,11 +167,11 @@
     justify-content: center
 }
 
-.pie-menu .info .rol{
+.pie-menu .info .rol {
     font-size: smaller;
 }
 
-.pie-menu .logout{
+.pie-menu .logout {
     position: relative;
     margin: auto auto;
 }
