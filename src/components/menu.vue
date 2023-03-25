@@ -29,7 +29,7 @@
 
 <style scoped>
 .navegacion {
-    position: relative;
+    position: fixed;
     width: 65px;
     box-shadow: 8px 0 0 #3581B8;
     height: 100%;
