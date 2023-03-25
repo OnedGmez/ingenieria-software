@@ -1,8 +1,6 @@
 <template>
   <div id="vista-inventario">
-    <div class="menu">
-      <MenuSpace />
-    </div>
+    <MenuSpace />
     <div class="cuerpo-vista">
       <!--Llamamos el componente de la cabecera y llenamos sus propiedades-->
       <cabeceraComp 
@@ -53,16 +51,5 @@ export default {
 #vista-inventario {
   width: 100%;
   display: inline-flex;
-}
-
-/*
-  * al div con clase row, se le asigna un padding heredado, para que tenga el mismo padding que su padre y se centre dentro de su padre
-*/
-#vista-inventario .cuerpo-vista .container .row{
-  padding: inherit;
-}
-
-#vista-inventario .menu {
-  position: relative;
 }
 </style>
