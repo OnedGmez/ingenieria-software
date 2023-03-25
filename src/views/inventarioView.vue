@@ -3,16 +3,21 @@
     <div class="menu">
       <MenuSpace />
     </div>
-    <div class="cabecera">
-      <div class="titulo">
-        <span>INVENTARIO</span>
-      </div>
-      <div class="info-sucursal">
-        <div class="sucursal">
-          <span>Nombre Sucursal - Código Sucursal</span>
-        </div>
-        <div class="ubi-sucursal">
-          <span>Departamento - Colonia</span>
+    <div class="cuerpo-vista">
+      <!--Llamamos el componente de la cabecera y llenamos sus propiedades-->
+      <cabeceraComp 
+      nombreModulo="INVENTARIO" 
+      nombreSucursal="Bodega Central" 
+      codigoSucursal="BDC001"
+      departamento="Francisco Morazán"
+      colonia="Carrizal"/>
+
+      <div class="container">
+        <div class="row">
+          <tarjetaInventario class="col-3"/>
+          <tarjetaInventario class="col-3"/>
+          <tarjetaInventario class="col-3"/>
+          <tarjetaInventario class="col-3"/>
         </div>
       </div>
     </div>
@@ -21,51 +26,40 @@
   
 <script>
 import MenuSpace from '@/components/menu.vue'
+import cabeceraComp from '@/components/cabecera.vue'
+import tarjetaInventario from '@/components/tarjeta.vue'
+
 export default {
   name: 'Menu',
   components: {
-    MenuSpace
+    MenuSpace,
+    cabeceraComp,
+    tarjetaInventario
   }
 }
 </script>
 
 <style scoped>
-#vista-inventario {
-  height: 100%;
-  width: 100%;
-  display: inline-flex;
-  padding-right: 5px;
-}
-
-#vista-inventario .menu {
-  position: relative;
-}
-
-#vista-inventario .cabecera {
+#vista-inventario .cuerpo-vista {
   width: 100%;
   height: fit-content;
   position: relative;
   display: flex;
-  margin: 10px 0 10px 8px;
+  flex-direction: column;
+  margin: 10px 8px 00px 8px;
   text-align: center;
 }
 
-#vista-inventario .cabecera .titulo {
-  margin: auto;
-  font-weight: 900;
-  font-size: larger;
-  color: #3581B8;
+#vista-inventario {
+  width: 100%;
+  display: inline-flex;
 }
 
-#vista-inventario .cabecera .info-sucursal .sucursal {
-  /*Sujetas a cambio*/
-  font-weight: lighter;
-  font-size: smaller;
+#vista-inventario .cuerpo-vista .container .row{
+  padding: inherit;
 }
 
-#vista-inventario .cabecera .info-sucursal .ubi-sucursal {
-  /*Sujetas a cambio*/
-  font-weight: lighter;
-  font-size:x-small;
+#vista-inventario .menu {
+  position: relative;
 }
 </style>
