@@ -1,5 +1,5 @@
 <template>
-    <div class="col-lg-2">
+    <div class="col-xs-6 col-lg-2">
         <div class="card">
             <div class="encabezado-img">
                 <img src="../assets/img/aceta.jpg" class="card-img-top img-fluid" alt="...">
@@ -58,7 +58,8 @@
 }
 
 .card .card-body .card-title {
-    font-size: calc(0.75em + 0.1vw);
+    font-size: calc(0.85em + 0.1vw);
+    font-weight: 700;
     color: #3581B8;
     margin: 0;
     text-align: center;
