@@ -22,4 +22,12 @@ a{
   font-weight: 100;
 }
 
+/**Estilos custom a css de bootstrap */
+.row{
+  padding: inherit;
+}
+
+.img-fluid {
+    height: 100%!important;
+}
 </style>
