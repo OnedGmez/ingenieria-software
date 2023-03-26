@@ -11,46 +11,41 @@
     </div>
     <div class="form d-flex">
       <div class="input-group">
-        <span class="input-group-text" id="basic-addon1"></span>
-        <input type="text" class="form-control" placeholder="Usuario/Correo electrónico" v-model="user"
-          aria-label="Username" aria-describedby="basic-addon1">
+        <span class="input-group-text" id="usuario-input"></span>
+        <input type="text" class="form-control" required placeholder="Usuario/Correo electrónico" v-model="user"
+          aria-label="Usuario" aria-describedby="usuario-input">
       </div>
       <div class="input-group">
-        <span class="input-group-text" id="basic-addon1"></span>
-        <input type="password" class="form-control" placeholder="Contraseña" v-model="password" aria-label="Username"
-          aria-describedby="basic-addon1">
+        <span class="input-group-text" id="contra-input"></span>
+        <input type="password" class="form-control" required placeholder="Contraseña" v-model="password" aria-label="Contrasenia"
+          aria-describedby="contra-input">
       </div>
       <a href="#">Olvidé mi contraseña</a>
     </div>
-    <div @click="pruebaFunct" class="button">
+    <div @click="emisionInicioSesion" class="button">
       Iniciar Sesión
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, defineEmits } from "vue";
 /*Importamos desde router para poder navegar entre las rutas*/
-import router from "@/router";
-import { useUsuarioStore } from '@/store/usuario.js'
 
+//Creamos la variable y la definimos como emisión con el nombre de su evento
+const emit = defineEmits(['iniciarSesion']);
 
 //Variables que contendran la información de los inputs
 const user = ref('');
 const password = ref('');
 
-const pruebaFunct = () => {
+const emisionInicioSesion = () => {
   let info = {
     "usuario": user.value,
     "contrasenia": password.value
   }
 
-  if (info.usuario != '' && info.contrasenia != '') {
-    //Accedemos a la store de usuario y le enviamos la información (nombre, rol, foto,)
-    const usuario = useUsuarioStore()
-    usuario.setRol("Admin")
-    router.push('/inventario');
-  }
+  emit('iniciarSesion', info.usuario, info.contrasenia)
 };
 </script>
 
