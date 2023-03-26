@@ -143,10 +143,6 @@
     box-shadow: 15px -15px #3581B8;
 }
 
-.img-fluid {
-    height: 100%;
-}
-
 
 .logout:hover {
     cursor: pointer;
