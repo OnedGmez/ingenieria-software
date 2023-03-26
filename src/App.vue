@@ -3,6 +3,16 @@
 </template>
 
 <style>
+
+@font-face {
+  font-family: "fredoka-family";
+  src: url("assets/fonts/Fredoka-VariableFont_wdth\,wght.ttf");
+}
+
+.fredoka{
+  font-family: "fredoka-family";
+}
+
 body{
   height: 100vh;
 }
