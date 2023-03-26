@@ -1,6 +1,6 @@
 <template>
 <div class="cabecera">
-      <div class="titulo">
+      <div class="titulo fredoka">
         <span>{{ nombreModulo }}</span>
       </div>
       <div class="info-sucursal">
@@ -28,7 +28,7 @@
 .cabecera .titulo {
   margin: auto;
   font-weight: 900;
-  font-size: larger;
+  font-size: x-large;
   color: #3581B8;
 }
 
