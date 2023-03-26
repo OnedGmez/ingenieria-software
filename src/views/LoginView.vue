@@ -13,12 +13,16 @@
       <div id="banner-vertical" class="col-lg-6 d-flex justify-content-center align-items-center">
         <img class="img-fluid" src="@/assets/img/prueba.jpg" alt="Banner">
       </div>
-      <LoginSpace />
+      <!--Iniciar-sesion es el nombre del evento que está emitiendo el componente-->
+      <LoginSpace @iniciar-sesion="(usuario, contrasenia) => validarSesion(usuario, contrasenia)" />
     </div>
   </div>
 </template>
 
 <script>
+
+import router from "@/router";
+import { useUsuarioStore } from '@/store/usuario.js'
 // @ is an alias to /src
 import LoginSpace from '@/components/LoginSpace.vue'
 
@@ -26,6 +30,21 @@ export default {
   name: 'LoginView',
   components: {
     LoginSpace
+  },
+  setup() {
+    //Utilizamos las sintaxis de composition API
+    const validarSesion = (usuario, contrasenia) => {
+      if (usuario != '' && contrasenia != '') {
+        //Accedemos a la store de usuario y le enviamos la información (nombre, rol, foto,)
+        const usuario = useUsuarioStore()
+        usuario.setRol("Admin")
+        router.push('/inventario');
+      }
+    };
+
+    return {
+      validarSesion
+    }
   }
 }
 </script>
@@ -42,7 +61,13 @@ export default {
 .container-fluid,
 .row {
   height: 100%;
+  width: 100%!important;
 }
+
+.container-fluid{
+  padding: 0!important;
+}
+
 
 #banner-vertical,
 #banner-vertical img {
