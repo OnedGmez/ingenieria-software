@@ -31,14 +31,14 @@
         {
             "nombreElemento":"Ordenes",
             "path":"/ordenes",
-            "icono": "truck-moving",
+            "icono": "clipboard-list",
             "key": "elm4",
             "permitidoPara": ["Admin"]
         },
         {
             "nombreElemento":"Reportes",
             "path":"/reportes",
-            "icono": "receipt",
+            "icono": "file-signature",
             "key": "elm5",
             "permitidoPara": ["Admin"]
         }
