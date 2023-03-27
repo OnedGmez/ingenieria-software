@@ -37,6 +37,7 @@
     position: sticky;
     top: 0;
     height: 100vh;
+    font-family: 'fredoka-family';
 }
 
 .navegacion {
@@ -59,7 +60,7 @@
 }
 
 .navegacion:hover {
-    width: 230px;
+    width: 205px;
 }
 
 
@@ -77,6 +78,10 @@
 
 .navegacion .pie-menu .logout {
     position: relative;
+}
+
+a{
+    font-weight: 600 !important;
 }
 
 .navegacion #menu-opciones .opcion-menu {
@@ -101,14 +106,14 @@
     min-width: 40px;
     height: auto;
     text-align: center;
-    font-size: 25px
+    font-size: x-large
 }
 
 .navegacion #menu-opciones .opcion-menu a .nombre-opcion {
     position: relative;
     padding-left: 15px;
     height: auto;
-    font-size: calc(.9em + 0.3vw);
+    font-size: small;
 }
 
 .navegacion #menu-opciones .active {
@@ -151,10 +156,10 @@
 
 .pie-menu .foto {
     position: relative;
-    height: 50px;
+    height: 45px;
     border-radius: 50%;
-    width: 50px;
-    margin: 0 5px 0px 3px;
+    width: 45px;
+    margin: 0 7px 0px 7px;
 }
 
 .pie-menu .info {
@@ -167,7 +172,7 @@
 }
 
 .pie-menu .info .rol {
-    font-size: smaller;
+    font-size: small;
 }
 
 .pie-menu .logout {
@@ -182,7 +187,8 @@
 
 
 .pie-menu .info .nombre {
-    font-weight: bold;
+    font-weight: 500;
+    font-size: smaller;
 }
 </style>
 
