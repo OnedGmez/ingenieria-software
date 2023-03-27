@@ -24,66 +24,32 @@
 
       <div class="container-fluid">
         <div class="row">
-          <tarjetaInventario 
+          <tarjetaInventario
           nombre="Aceminofen"
           categoria="Pastillas"
           descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
           />
-          <tarjetaInventario 
+          <tarjetaInventario
           nombre="Aceminofen"
           categoria="Pastillas"
           descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
           />
-          <tarjetaInventario 
+          <tarjetaInventario
           nombre="Aceminofen"
           categoria="Pastillas"
           descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
           />
-          <tarjetaInventario 
+          <tarjetaInventario
           nombre="Aceminofen"
           categoria="Pastillas"
           descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
           />
-          <tarjetaInventario 
+          <tarjetaInventario
           nombre="Aceminofen"
           categoria="Pastillas"
           descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
           />
-          <tarjetaInventario 
-          nombre="Aceminofen"
-          categoria="Pastillas"
-          descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
-          />
-          <tarjetaInventario 
-          nombre="Aceminofen"
-          categoria="Pastillas"
-          descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
-          />
-          <tarjetaInventario 
-          nombre="Aceminofen"
-          categoria="Pastillas"
-          descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
-          />
-          <tarjetaInventario 
-          nombre="Aceminofen"
-          categoria="Pastillas"
-          descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
-          />
-          <tarjetaInventario 
-          nombre="Aceminofen"
-          categoria="Pastillas"
-          descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
-          />
-          <tarjetaInventario 
-          nombre="Aceminofen"
-          categoria="Pastillas"
-          descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
-          />
-          <tarjetaInventario 
-          nombre="Aceminofen"
-          categoria="Pastillas"
-          descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
-          /><tarjetaInventario 
+          <tarjetaInventario
           nombre="Aceminofen"
           categoria="Pastillas"
           descripcionProducto="Prueba de descripción del producto, para tenerlo estático"
@@ -95,6 +61,8 @@
 </template>
   
 <script>
+
+
 import MenuSpace from '@/components/menu.vue'
 import cabeceraComp from '@/components/cabecera.vue'
 import tarjetaInventario from '@/components/tarjeta.vue'
@@ -111,11 +79,7 @@ export default {
     selectBox
   },
   setup(){
-    //Utilizamos las sintaxis de composition API
 
-    return{
-
-    }
   }
 }
 </script>
@@ -156,7 +120,8 @@ export default {
   display: inline-flex;
 }
 
-#vista-inventario .cuerpo-vista .container-fluid .row > *{
-  padding: 0!important;
+.row {
+  padding-left: 5px;
+  padding-right: 5px;
 }
 </style>
