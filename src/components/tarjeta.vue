@@ -1,5 +1,5 @@
 <template>
-    <div class="col-xs-6 col-lg-2">
+    <div @click="mostrarModal" class="contenedor col-6 col-md-4 col-lg-2">
         <div class="card">
             <div class="encabezado-img">
                 <img src="../assets/img/aceta.jpg" class="card-img-top img-fluid" alt="...">
@@ -30,9 +30,14 @@
             </div>
         </div>
     </div>
+    <modalProductos v-if="mostrandoModal" @ocultar-modal="() => mostrarModal()"/> <!--Condicionamos con una bool la visibilidad del modal y escuchamos el evento emitido-->
 </template>
 
 <style scoped>
+
+.contenedor{
+    padding: 0 3px;
+}
 .card {
     margin: 4px;
     border-radius: 15px;
@@ -40,6 +45,7 @@
 
 .card:hover {
     filter: drop-shadow(2px 4px 6px #3f596bbf);
+    cursor: pointer;
 }
 
 .card .encabezado-img {
@@ -58,11 +64,12 @@
 }
 
 .card .card-body .card-title {
-    font-size: calc(0.85em + 0.1vw);
-    font-weight: 700;
+    font-size: calc(0.95em + 0.38vw);
+    font-weight: 600;
     color: #3581B8;
     margin: 0;
     text-align: center;
+    font-family: 'fredoka-family';
 }
 
 .card .card-body .items-card {
@@ -73,13 +80,15 @@
     justify-content: center;
 }
 
-.card .card-body .items-card .g-dos, .g-tres {
+.card .card-body .items-card .g-dos,
+.g-tres {
     justify-content: space-around;
 }
 
 .card .card-body .items-card .g-tres {
     justify-content: space-between;
 }
+
 .card .card-body .items-card .g-cuatro {
     flex-direction: column;
     justify-content: center;
@@ -89,21 +98,43 @@
 .card .card-body .items-card .card-text {
     font-size: x-small;
     text-align: center;
+    font-family: sans-serif;
 }
 </style>
 
-<script setup>
-const propsTarjeta = defineProps([
-    'nombre',
-    'categoria',
-    'descripcionProducto',
-    'urlFoto',
-    'empresaRepresentada',
-    'telefono',
-    'correo',
-    'fechaRegistro',
-    'puestoTrabajo',
-    'sucursal',
-    'sueldo'
-])
+<script>
+import { ref } from "vue";
+import modalProductos from '@/components/modal.vue'
+
+export default {
+    name: 'tarjeta',
+    components: {
+        modalProductos
+    },
+    props: [
+        'nombre',
+        'categoria',
+        'descripcionProducto',
+        'urlFoto',
+        'empresaRepresentada',
+        'telefono',
+        'correo',
+        'fechaRegistro',
+        'puestoTrabajo',
+        'sucursal',
+        'sueldo'
+    ],
+    setup() {
+        const mostrandoModal = ref(false)
+
+        const mostrarModal = () => {
+            mostrandoModal.value = !mostrandoModal.value
+        }
+
+        return {
+            mostrandoModal,
+            mostrarModal
+        }
+    }
+}
 </script>
