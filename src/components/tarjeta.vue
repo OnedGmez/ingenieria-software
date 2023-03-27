@@ -41,6 +41,7 @@
 .card {
     margin: 4px;
     border-radius: 15px;
+    filter: drop-shadow(0px 0px 3px #3f596bbf);
 }
 
 .card:hover {
@@ -64,7 +65,7 @@
 }
 
 .card .card-body .card-title {
-    font-size: calc(0.95em + 0.38vw);
+    font-size: large;
     font-weight: 600;
     color: #3581B8;
     margin: 0;
