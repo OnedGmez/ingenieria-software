@@ -1,4 +1,5 @@
 <template>
+    <!--El evento clic abre el modal-->
     <div @click="mostrarModal" class="contenedor col-6 col-md-4 col-lg-2">
         <div :id=data.code class="card">
             <div class="encabezado-img">
@@ -12,8 +13,8 @@
             </div>
         </div>
     </div>
-    <!--Condicionamos con una bool la visibilidad del modal y escuchamos el evento emitido, así como le pasamos un objeto con la información que debe mostrar-->
-    <modal v-if="mostrandoModal" @ocultar-modal="() => mostrarModal()" :data=data modulo="Inventario" />
+    <!--Condicionamos con una bool la visibilidad del modal y escuchamos el evento emitido para cerrar el modal, así como le pasamos un objeto con la información que debe mostrar-->
+    <modal v-if="mostrandoModal" @ocultar-modal="() => mostrarModal()" :data=data :modulo=modulo />
 </template>
 
 <style scoped>
