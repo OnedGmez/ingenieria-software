@@ -1,43 +1,26 @@
 <template>
     <div @click="mostrarModal" class="contenedor col-6 col-md-4 col-lg-2">
-        <div class="card">
+        <div :id=data.code class="card">
             <div class="encabezado-img">
                 <img src="../assets/img/aceta.jpg" class="card-img-top img-fluid" alt="...">
             </div>
             <div class="card-body">
                 <div class="card-title">
-                    <span>{{ nombre }}</span>
+                    <span>{{ data['name'] }}</span>
                 </div>
-                <div class="items-card">
-                    <div class="g-uno d-flex">
-                        <span class="item-card">{{ categoria }}</span>
-                        <span class="item-card">{{ empresaRepresentada }}</span>
-                    </div>
-                    <div class="g-dos d-flex">
-                        <span class="item-card">{{ puestoTrabajo }}</span>
-                        <span class="item-card">{{ sucursal }}</span>
-                    </div>
-                    <div class="g-tres d-flex">
-                        <span class="item-card">{{ telefono }}</span>
-                        <span class="item-card">{{ correo }}</span>
-                    </div>
-                    <div class="g-cuatro d-flex">
-                        <span class="item-card">{{ fechaRegistro }}</span>
-                        <span class="item-card">{{ sueldo }}</span>
-                    </div>
-                    <p class="card-text">{{ descripcionProducto }}</p>
-                </div>
+                <miniItemsProducto v-if="modulo === 'Inventario'" :dataProducto="data" />
             </div>
         </div>
     </div>
-    <modalProductos v-if="mostrandoModal" @ocultar-modal="() => mostrarModal()"/> <!--Condicionamos con una bool la visibilidad del modal y escuchamos el evento emitido-->
+    <!--Condicionamos con una bool la visibilidad del modal y escuchamos el evento emitido, así como le pasamos un objeto con la información que debe mostrar-->
+    <modal v-if="mostrandoModal" @ocultar-modal="() => mostrarModal()" :data=data modulo="Inventario" />
 </template>
 
 <style scoped>
-
-.contenedor{
+.contenedor {
     padding: 0 3px;
 }
+
 .card {
     margin: 4px;
     border-radius: 15px;
@@ -72,70 +55,20 @@
     text-align: center;
     font-family: 'fredoka-family';
 }
-
-.card .card-body .items-card {
-    flex-direction: column;
-}
-
-.card .card-body .items-card .g-uno {
-    justify-content: center;
-}
-
-.card .card-body .items-card .g-dos,
-.g-tres {
-    justify-content: space-around;
-}
-
-.card .card-body .items-card .g-tres {
-    justify-content: space-between;
-}
-
-.card .card-body .items-card .g-cuatro {
-    flex-direction: column;
-    justify-content: center;
-}
-
-.card .card-body .items-card .item-card,
-.card .card-body .items-card .card-text {
-    font-size: x-small;
-    text-align: center;
-    font-family: sans-serif;
-}
 </style>
 
-<script>
+<script setup>
 import { ref } from "vue";
-import modalProductos from '@/components/modal.vue'
+import modal from '@/components/modal.vue'
+import miniItemsProducto from '@/components/minicomponents/itemsCardProductos.vue'
 
-export default {
-    name: 'tarjeta',
-    components: {
-        modalProductos
-    },
-    props: [
-        'nombre',
-        'categoria',
-        'descripcionProducto',
-        'urlFoto',
-        'empresaRepresentada',
-        'telefono',
-        'correo',
-        'fechaRegistro',
-        'puestoTrabajo',
-        'sucursal',
-        'sueldo'
-    ],
-    setup() {
-        const mostrandoModal = ref(false)
+const proposTarjeta = defineProps([
+    'data',
+    'modulo'
+])
+const mostrandoModal = ref(false)
 
-        const mostrarModal = () => {
-            mostrandoModal.value = !mostrandoModal.value
-        }
-
-        return {
-            mostrandoModal,
-            mostrarModal
-        }
-    }
+const mostrarModal = () => {
+    mostrandoModal.value = !mostrandoModal.value
 }
 </script>
