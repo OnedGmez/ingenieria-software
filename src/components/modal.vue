@@ -4,11 +4,11 @@
         <div class="modal-dialog-centered modal-sm modal-dialog">
             <div class="modal-content">
                 <div class="modal-header justify-content-center">
-                    <p class="modal-title" id="staticBackdropLabel">Modal title</p>
+                    <p class="modal-title" id="staticBackdropLabel"> {{ data['name'] }} </p>
                 </div>
                 <img src="../assets/img/aceta.jpg" class="img-fluid" alt="...">
                 <div class="modal-body">
-                    ...
+                    <dataModalProducto  v-if="modulo === 'Inventario'" :dataProducto="data" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn boton-desplegable">
@@ -16,6 +16,7 @@
                             <span class="d-block icono-boton"><font-awesome-icon icon="plus" /></span>
                             <span class=" d-block nombre-boton"> Añadir </span>
                         </div>
+                        <!--La función de añadir recibe el codigo del elemento (incluido en el objeto con la info)-->
                     </button>
                     <button type="button" class="btn btn-cerrar" @click="cerrarModal">Cancelar</button>
                     <!--Emitimos un evento mediante una función al contenedor padre para avisar que lo queremos cerrar-->
@@ -30,7 +31,6 @@
 .show {
     backdrop-filter: blur(2px) brightness(0.75);
 }
-
 
 .modal .modal-dialog .modal-content .modal-footer {
     justify-content: space-between;
@@ -100,6 +100,10 @@
     filter: drop-shadow(8px 10px 10px #000);
 }
 
+.modal .modal-dialog .modal-content .modal-body{
+    padding: 5px 7px 5px 7px;
+}
+
 .modal .modal-dialog .modal-content .modal-footer .boton-desplegable {
     color: #fff;
     background-color: #3581B8;
@@ -124,6 +128,7 @@
 
 <script setup>
 
+import dataModalProducto from '@/components/minicomponents/dataModalProductos.vue'
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal'])
 
@@ -131,5 +136,8 @@ const cerrarModal = () => {
     emisiones('ocultarModal')
 }
 
-
+const productoModal = defineProps([
+    'data',
+    'modulo'
+])
 </script>
