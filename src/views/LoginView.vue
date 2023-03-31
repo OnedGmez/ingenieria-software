@@ -19,21 +19,14 @@
   </div>
 </template>
 
-<script>
+<script setup>
 
 import router from "@/router";
 import { useUsuarioStore } from '@/store/usuario.js'
 // @ is an alias to /src
 import LoginSpace from '@/components/LoginSpace.vue'
 
-export default {
-  name: 'LoginView',
-  components: {
-    LoginSpace
-  },
-  setup() {
-    //Utilizamos las sintaxis de composition API
-    const validarSesion = (usuario, contrasenia) => {
+const validarSesion = (usuario, contrasenia) => {
       if (usuario != '' && contrasenia != '') {
         //Accedemos a la store de usuario y le enviamos la información (nombre, rol, foto,)
         const usuario = useUsuarioStore()
@@ -41,12 +34,6 @@ export default {
         router.push('/inventario');
       }
     };
-
-    return {
-      validarSesion
-    }
-  }
-}
 </script>
 
 <style scoped>
