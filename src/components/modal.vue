@@ -8,22 +8,25 @@
                 </div>
                 <img src="../assets/img/aceta.jpg" class="img-fluid" alt="...">
                 <div class="modal-body">
-                    <dataModalProducto  v-if="modulo === 'Inventario'" :dataProducto="data" />
+                    <dataModalProducto v-if="modulo === 'Inventario'" :dataProducto="data" />
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn boton-desplegable">
-                        <div class="d-flex">
-                            <span class="d-block icono-boton"><font-awesome-icon icon="plus" /></span>
-                            <span class=" d-block nombre-boton"> Añadir </span>
-                        </div>
-                        <!--La función de añadir recibe el codigo del elemento (incluido en el objeto con la info)-->
-                    </button>
+                    <div class="botones izquierda">
+                        <button @click="mostrarModal" id="boton-actualizar" type="button" class="btn boton-desplegable">
+                            <div class="d-flex">
+                                <span class="d-block icono-boton"><font-awesome-icon icon="plus" /></span>
+                                <span class=" d-block nombre-boton"> Actualizar </span>
+                            </div>
+                            <!--La función de añadir recibe el codigo del elemento (incluido en el objeto con la info)-->
+                        </button>
+                    </div>
                     <button type="button" class="btn btn-cerrar" @click="cerrarModal">Cancelar</button>
                     <!--Emitimos un evento mediante una función al contenedor padre para avisar que lo queremos cerrar-->
                 </div>
             </div>
         </div>
     </div>
+    <modalCRUD v-if="mostrandoModalCRUD" @ocultar-modal="() => mostrarModal()" :data=data :modulo=modulo accion="Actualizar" />
 </template>
 
 <style scoped>
@@ -32,15 +35,26 @@
     backdrop-filter: blur(2px) brightness(0.75);
 }
 
-.modal .modal-dialog .modal-content .modal-footer {
-    justify-content: space-between;
-}
-
 .modal .modal-dialog .modal-content .modal-footer .btn {
     padding: 0 15px 0px 15px;
     font-family: 'fredoka-family';
     font-weight: 500;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 12px;
+    color: #3581B8;
+    background-color: #fff;
+    border: 1.6px solid #3581B8;
+    font-family: 'fredoka-family';
+    font-weight: 500;
     font-size: calc(.75em + .2vw);
+}
+
+.modal .modal-dialog .modal-content .modal-footer .btn:hover {
+    color: #fff;
+    background-color: #3581B8;
+    border: 1.6px solid #3581B8;
 }
 
 .modal .modal-dialog .modal-content .modal-header {
@@ -48,42 +62,13 @@
     background-color: #3581B8;
 }
 
-.modal .modal-dialog .modal-content .modal-footer .btn-cerrar {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 12px;
-    color: #3581B8;
-    background-color: #fff;
-    border: 1.6px solid #3581B8;
-}
-
 .modal .modal-dialog .modal-content .modal-footer {
     padding: 0 4px 2px 4px;
     margin: 0;
+    justify-content: space-between;
 }
 
 /*Estilos creados */
-
-.modal .modal-dialog .modal-content .modal-footer .btn-cerrar {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 12px;
-    color: #3581B8;
-    background-color: #fff;
-    border: 1.6px solid #3581B8;
-    padding: 0 15px 0px 15px;
-    font-family: 'fredoka-family';
-    font-weight: 500;
-    font-size: calc(.75em + .2vw);
-}
-
-.modal .modal-dialog .modal-content .modal-footer .btn-cerrar:hover {
-    color: #fff;
-    background-color: #3581B8;
-    border: 1.6px solid #3581B8;
-}
 
 .modal .modal-dialog .modal-content .modal-header img {
     width: 100%;
@@ -100,40 +85,47 @@
     filter: drop-shadow(8px 10px 10px #000);
 }
 
-.modal .modal-dialog .modal-content .modal-body{
+.modal .modal-dialog .modal-content .modal-body {
     padding: 5px 7px 5px 7px;
 }
 
 .modal .modal-dialog .modal-content .modal-footer .boton-desplegable {
     color: #fff;
     background-color: #3581B8;
-    width: 20px;
+    width: 26px;
     overflow-x: hidden;
-    padding: 0 15px 0 5px !important;
-    border-radius: 15px;
+    padding: 0px 17px 0px 6px !important;
+    border-radius: 20px;
     transition: all 200ms ease-out;
 }
 
 
 
 .modal .modal-dialog .modal-content .modal-footer .boton-desplegable:hover {
-    width: 75px;
+    width: 105px;
 }
+
 
 .modal .modal-dialog .modal-content .modal-footer .boton-desplegable div .icono-boton {
     margin: auto 4px auto 0;
-    font-size: calc(0.75em + .3vw)
+    font-size: calc(0.75em + .4vw)
 }
 </style>
 
 <script setup>
-
+import { ref } from 'vue';
 import dataModalProducto from '@/components/minicomponents/dataModalProductos.vue'
+import modalCRUD from '@/components/modalCRUD.vue';
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal'])
+const mostrandoModalCRUD = ref(false)
 
 const cerrarModal = () => {
     emisiones('ocultarModal')
+}
+
+const mostrarModal = () => {
+    mostrandoModalCRUD.value = !mostrandoModalCRUD.value
 }
 
 const productoModal = defineProps([
