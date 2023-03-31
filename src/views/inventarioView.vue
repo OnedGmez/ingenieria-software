@@ -16,8 +16,7 @@
             <label for="existencia">Sin existencias</label>
           </div>
         </div>
-
-        <button type="button" class="btn boton-desplegable">
+        <button id="boton-generar-orden" type="button" class="btn boton-desplegable">
           <div class="d-flex">
             <span class="d-block icono-boton"><font-awesome-icon icon="file-circle-plus" /></span>
             <span class=" d-block nombre-boton"> Generar Orden </span>
@@ -97,9 +96,15 @@ const dataProductos = ref(
   margin: 0px 0px 0px 25px;
 }
 
+
+#vista-inventario .cuerpo-vista #controles-filtrado-inventario .filtros-secundarios>.filtro:not(:last-child) {
+  width: calc(165px + 1%);
+}
+
 #vista-inventario .cuerpo-vista #controles-filtrado-inventario .filtros-secundarios>.filtro:last-child {
   align-items: center;
 }
+
 
 #vista-inventario .cuerpo-vista #controles-filtrado-inventario .filtros-secundarios>.filtro:last-child #existencia {
   margin-right: 5px;
