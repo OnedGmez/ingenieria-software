@@ -16,7 +16,6 @@
 }
 
 .select-group .form-select{
-    width: calc(165px + 1%);
     border-radius: 25px 25px 25px 25px;
     border: none;
     border-bottom: #3581B8 solid 2px;
