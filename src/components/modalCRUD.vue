@@ -68,7 +68,7 @@
 </style>
 
 <script setup>
-import formularioProductos from '@/components/minicomponents/formularioACProducto.vue.js'
+import formularioProductos from '@/components/minicomponents/formularioACProducto.vue'
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal'])
 
