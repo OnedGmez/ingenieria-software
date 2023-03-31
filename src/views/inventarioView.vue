@@ -3,13 +3,8 @@
     <MenuSpace />
     <div class="cuerpo-vista">
       <!--Llamamos el componente de la cabecera y llenamos sus propiedades-->
-      <cabeceraComp 
-        nombreModulo="INVENTARIO" 
-        nombreSucursal="Bodega Central" 
-        codigoSucursal="BDC001"
-        departamento="Francisco Morazán" 
-        colonia="Carrizal" 
-      />
+      <cabeceraComp nombreModulo="INVENTARIO" nombreSucursal="Bodega Central" codigoSucursal="BDC001"
+        departamento="Francisco Morazán" colonia="Carrizal" />
 
       <div id="controles-filtrado-inventario" class="container-fluid">
         <barraBusqueda vista="inventario" />
@@ -32,64 +27,42 @@
 
       <div class="container-fluid">
         <div class="row">
-          <tarjetaInventario 
-            nombre="Aceminofen" 
-            categoria="Pastillas"
-            descripcionProducto="Prueba de descripción del producto, para tenerlo estático" 
-          />
-          <tarjetaInventario 
-            nombre="Aceminofen" 
-            categoria="Pastillas"
-            descripcionProducto="Prueba de descripción del producto, para tenerlo estático" 
-          />
-          <tarjetaInventario 
-            nombre="Aceminofen" 
-            categoria="Pastillas"
-            descripcionProducto="Prueba de descripción del producto, para tenerlo estático" 
-          />
-          <tarjetaInventario 
-            nombre="Aceminofen" 
-            categoria="Pastillas"
-            descripcionProducto="Prueba de descripción del producto, para tenerlo estático" 
-          />
-          <tarjetaInventario 
-            nombre="Aceminofen" 
-            categoria="Pastillas"
-            descripcionProducto="Prueba de descripción del producto, para tenerlo estático" 
-          />
-          <tarjetaInventario 
-            nombre="Aceminofen" 
-            categoria="Pastillas"
-            descripcionProducto="Prueba de descripción del producto, para tenerlo estático" 
-          />
+          <tarjetaInventario v-for="producto, index in dataProductos" :data="producto" modulo="Inventario" />
         </div>
       </div>
     </div>
   </div>
 </template>
   
-<script>
-
-
+<script setup>
 import MenuSpace from '@/components/menu.vue'
 import cabeceraComp from '@/components/cabecera.vue'
 import tarjetaInventario from '@/components/tarjeta.vue'
 import barraBusqueda from '@/components/barraBusqueda.vue'
 import selectBox from '@/components/selectBox.vue'
 
-export default {
-  name: 'inventarioView',
-  components: {
-    MenuSpace,
-    cabeceraComp,
-    tarjetaInventario,
-    barraBusqueda,
-    selectBox
-  },
-  setup() {
+import { ref } from 'vue'
 
+const dataProductos = ref(
+  [{
+    'productcode': 'P1',
+    'name': "Aceminofen",
+    'categoryname': "Pastillas",
+    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
+  },
+  {
+    'productcode': 'P2',
+    'name': "Tylenol",
+    'categoryname': "Pastillas",
+    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
+  },
+  {
+    'productcode': 'P2',
+    'name': "Amoxicilina",
+    'categoryname': "Pastillas",
+    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
   }
-}
+  ])
 </script>
 
 <style scoped>
@@ -111,12 +84,12 @@ export default {
   margin: 15px 0px;
 }
 
-#vista-inventario .cuerpo-vista #controles-filtrado-inventario .boton-desplegable .icono-boton{
+#vista-inventario .cuerpo-vista #controles-filtrado-inventario .boton-desplegable .icono-boton {
   font-size: large;
   margin: auto 4px auto 0;
 }
 
-#vista-inventario .cuerpo-vista #controles-filtrado-inventario .boton-desplegable .nombre-boton{
+#vista-inventario .cuerpo-vista #controles-filtrado-inventario .boton-desplegable .nombre-boton {
   font-size: small;
 }
 
@@ -150,12 +123,12 @@ export default {
 }
 
 #vista-inventario .cuerpo-vista #controles-filtrado-inventario .boton-desplegable:hover {
-width: 140px;
+  width: 140px;
 }
 
-#vista-inventario .cuerpo-vista #controles-filtrado-inventario .boton-desplegable div{
-width: max-content;
-align-items: center;
+#vista-inventario .cuerpo-vista #controles-filtrado-inventario .boton-desplegable div {
+  width: max-content;
+  align-items: center;
 }
 
 .row {
