@@ -1,5 +1,5 @@
 <template>
-    <div :class="[error === 'true' ? 'alert-warning' : 'alert-success']" class="d-flex alert">
+    <div :class="['alert', error === 'true' ? 'alert-warning' : '']" class="d-flex">
         <span class="d-block icono-alerta"><font-awesome-icon icon="circle-info" /></span>
         <span class=" d-block mensaje-alerta"> {{ mensaje }} </span>
     </div>
@@ -25,6 +25,13 @@ const propsAlerta = defineProps([
     border: solid #ebf8ff;
     border-bottom: solid #6195baac;
     color: #3581B8;
+}
+
+.alert-warning{
+    background-color: #ffebeb!important;
+    border: solid #ffebeb!important;
+    border-bottom: solid #ba6161ac!important;
+    color: #b83535!important;
 }
 
 .alert .icono-alerta {
