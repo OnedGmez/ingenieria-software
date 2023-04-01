@@ -13,7 +13,7 @@
       <div class="input-group">
         <span class="input-group-text" id="usuario-input"></span>
         <input type="text" class="form-control" required placeholder="Usuario/Correo electrónico" v-model="user"
-          aria-label="Usuario" aria-describedby="usuario-input">
+        pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" aria-label="Usuario" aria-describedby="usuario-input">
       </div>
       <div class="input-group">
         <span class="input-group-text" id="contra-input"></span>
@@ -52,6 +52,9 @@ const emisionInicioSesion = () => {
 
 <style scoped>
 /*Estilos de CSS modificados*/
+#space-form{
+  padding: 0 !important;
+}
 .input-group-text {
   background-color: #3581B8;
   padding: 0.375rem 0.95rem;
@@ -69,7 +72,8 @@ a:hover{
   border: none;
   border-bottom: #3581B8 solid 2px;
   filter: none;
-  font-size: calc(.8em + 0.1vw) !important
+  font-size: calc(.9em + 0.04vw) !important;
+  font-family: 'fredoka-family';
 }
 
 .form-control:focus {
@@ -80,6 +84,7 @@ a:hover{
 .input-group {
   margin: 0 0 20px 0;
 }
+
 
 /*Estilos CSS creados*/
 .form {
@@ -113,6 +118,7 @@ a:hover{
   font-weight: 600;
   font-size: calc(1em + 0.18vw);
   text-align: center;
+  font-family: 'fredoka-family';
 }
 
 .button:hover {
@@ -122,14 +128,8 @@ a:hover{
 
 /*Media Querys*/
 @media (max-width: 991.5px) {
-  #space-form {
-    transition: all 420ms ease-in-out;
-  }
-}
-
-@media (min-width: 991.5px) {
-  #space-form {
-    transition: all 420ms ease-in-out, height 0ms, filter 360ms ease-in-out 200ms;
+  .form-control{
+    font-size: calc(.9em + 0.15vw)!important;
   }
 }
 </style>

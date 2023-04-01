@@ -12,10 +12,16 @@
                 </div>
                 <div class="modal-footer">
                     <div class="botones izquierda">
-                        <button @click="mostrarModal" id="boton-actualizar" type="button" class="btn boton-desplegable">
+                        <button v-if="ordenarModo === false" @click="mostrarModal" id="boton-actualizar" type="button" class="btn boton-desplegable">
+                            <div class="d-flex">
+                                <span class="d-block icono-boton"><font-awesome-icon icon="pen-to-square" /></span>
+                                <span class=" d-block nombre-boton"> Actualizar </span>
+                            </div>
+                        </button>
+                        <button v-if="ordenarModo === true" id="boton-actualizar" type="button" class="btn boton-desplegable">
                             <div class="d-flex">
                                 <span class="d-block icono-boton"><font-awesome-icon icon="plus" /></span>
-                                <span class=" d-block nombre-boton"> Actualizar </span>
+                                <span class=" d-block nombre-boton"> Añadir </span>
                             </div>
                             <!--La función de añadir recibe el codigo del elemento (incluido en el objeto con la info)-->
                         </button>
@@ -114,11 +120,18 @@
 
 <script setup>
 import { ref } from 'vue';
+import { generalStore } from '@/store/index.js';
 import dataModalProducto from '@/components/minicomponents/dataModalProductos.vue'
 import modalCRUD from '@/components/modalCRUD.vue';
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal'])
 const mostrandoModalCRUD = ref(false)
+
+/**
+ * Traemos el valor del modo de Ordenar para activar o desactivar el botón de añadir productos a la orden
+ */
+const store = generalStore()
+const ordenarModo = store.ordenarModo
 
 const cerrarModal = () => {
     emisiones('ocultarModal')

@@ -1,8 +1,7 @@
 <template>
     <div class="select-group d-flex">
-        <label for="disabledSelect">{{ label }}</label>
         <select @change="filtrar" id="disabledSelect" class="form-select">
-            <option>Disabled select</option>
+            <option disabled selected>{{ label }}</option>
             <option>Disabled select2</option>
             <option>Disabled select3</option>
         </select>
