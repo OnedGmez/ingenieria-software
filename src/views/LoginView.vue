@@ -27,13 +27,15 @@ import { useUsuarioStore } from '@/store/usuario.js'
 import LoginSpace from '@/components/LoginSpace.vue'
 
 const validarSesion = (usuario, contrasenia) => {
-      if (usuario != '' && contrasenia != '') {
-        //Accedemos a la store de usuario y le enviamos la información (nombre, rol, foto,)
-        const usuario = useUsuarioStore()
-        usuario.setRol("Admin")
-        router.push('/inventario');
-      }
-    };
+  if (usuario === '' || contrasenia === '') {
+    window.alert("Usuario y/o contraseña incorrecta(o)")
+  }else{
+    //Accedemos a la store de usuario y le enviamos la información (nombre, rol, foto,)
+    const usuario = useUsuarioStore()
+    usuario.setRol("Admin")
+    router.push('/inventario');
+  }
+};
 </script>
 
 <style scoped>
@@ -48,11 +50,12 @@ const validarSesion = (usuario, contrasenia) => {
 .container-fluid,
 .row {
   height: 100%;
-  width: 100%!important;
+  width: 100% !important;
+  margin: 0;
 }
 
-.container-fluid{
-  padding: 0!important;
+.container-fluid {
+  padding: 0 !important;
 }
 
 
@@ -71,10 +74,11 @@ const validarSesion = (usuario, contrasenia) => {
     position: absolute;
     z-index: -10;
     filter: opacity(15%) blur(40px);
+    transition: all 420ms ease-in-out;
   }
 
-  #banner-vertical {
-    transition: all 420ms ease-in-out;
+  .logo {
+    height: calc(1.9em + 7vw);
   }
 }
 

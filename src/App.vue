@@ -4,18 +4,14 @@
 
 <style>
 
+/*
+  Fuente a utilizar con sus respectivas variaciones de weight
+*/
 @font-face {
   font-family: "fredoka-family";
   src: url("assets/fonts/Fredoka-VariableFont_wdth\,wght.ttf");
 }
 
-.fredoka{
-  font-family: "fredoka-family";
-}
-
-body{
-  height: 100vh;
-}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -24,12 +20,12 @@ body{
   height: 100%;
 }
 a{
-  color: #999!important;
+  color: #848484!important;
   text-decoration: none!important;
   text-align: start;
   width: fit-content;
-  font-size: calc(.5em + 0.5vw);
-  font-weight: 100;
+  font-size: calc(.9em + 0.01vw);
+  font-weight: 400;
 }
 
 /**Estilos custom a css de bootstrap */
