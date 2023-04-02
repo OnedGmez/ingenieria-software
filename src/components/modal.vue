@@ -12,13 +12,14 @@
                 </div>
                 <div class="modal-footer">
                     <div class="botones izquierda">
-                        <button v-if="ordenarModo === false" @click="mostrarModal" id="boton-actualizar" type="button" class="btn boton-desplegable">
+                        <button v-if="ordenarModo === false" @click="mostrarModal" id="boton-actualizar" type="button"
+                            class="btn boton-desplegable">
                             <div class="d-flex">
                                 <span class="d-block icono-boton"><font-awesome-icon icon="pen-to-square" /></span>
                                 <span class=" d-block nombre-boton"> Actualizar </span>
                             </div>
                         </button>
-                        <button v-if="ordenarModo === true" id="boton-actualizar" type="button" class="btn boton-desplegable">
+                        <button v-if="ordenarModo === true" id="boton-agregar" type="button" class="btn boton-desplegable">
                             <div class="d-flex">
                                 <span class="d-block icono-boton"><font-awesome-icon icon="plus" /></span>
                                 <span class=" d-block nombre-boton"> Añadir </span>
@@ -32,7 +33,8 @@
             </div>
         </div>
     </div>
-    <modalCRUD v-if="mostrandoModalCRUD" @ocultar-modal="() => mostrarModal()" :data=data :modulo=modulo accion="Actualizar" />
+    <modalCRUD v-if="mostrandoModalCRUD" @ocultar-modal="() => mostrarModal()" :data=data :modulo=modulo
+        accion="Actualizar" />
 </template>
 
 <style scoped>
@@ -54,7 +56,7 @@
     border: 1.6px solid #3581B8;
     font-family: 'fredoka-family';
     font-weight: 500;
-    font-size: calc(.75em + .2vw);
+    font-size: calc(.9em + 0.04vw);
 }
 
 .modal .modal-dialog .modal-content .modal-footer .btn:hover {
@@ -100,21 +102,39 @@
     background-color: #3581B8;
     width: 26px;
     overflow-x: hidden;
-    padding: 0px 17px 0px 6px !important;
+    padding: 0px 1px 0px 4.5px !important;
     border-radius: 20px;
     transition: all 200ms ease-out;
 }
 
+.modal .modal-dialog .modal-content .modal-footer #boton-agregar {
+    padding: 0px 1px 0px 5.5px !important;
+}
 
 
 .modal .modal-dialog .modal-content .modal-footer .boton-desplegable:hover {
     width: 105px;
 }
 
+.modal .modal-dialog .modal-content .modal-footer #boton-agregar:hover {
+    width: 80px;
+}
+
 
 .modal .modal-dialog .modal-content .modal-footer .boton-desplegable div .icono-boton {
     margin: auto 4px auto 0;
     font-size: calc(0.75em + .4vw)
+}
+
+@media (max-width: 678px) {
+    .modal .modal-dialog .modal-content .modal-footer .boton-desplegable {
+        width: 105px;
+    }
+
+    .modal .modal-dialog .modal-content .modal-footer #boton-agregar {
+        width: 80px;
+    }
+
 }
 </style>
 
