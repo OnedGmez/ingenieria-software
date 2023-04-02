@@ -19,12 +19,10 @@
     border: none;
     border-bottom: #3581B8 solid 2px;
     filter: none;
-    font-size: calc(.8em + 0.1vw) !important
+    font-size: calc(.9em + 0.04vw) !important;
+    font-family: 'fredoka-family';
 }
 
-.select-group{
-  font-size: small;
-}
 
 .select-group .form-select:focus{
     box-shadow: none;
