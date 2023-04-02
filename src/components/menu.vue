@@ -95,7 +95,7 @@ a{
 .navegacion #menu-opciones .opcion-menu a {
     position: relative;
     width: 100%;
-    color: #000 !important;
+    color: #2c3e50 !important;
     align-items: center;
     padding: 2px 10px;
 }
