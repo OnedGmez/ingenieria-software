@@ -100,7 +100,7 @@
 .modal .modal-dialog .modal-content .modal-footer .boton-desplegable {
     color: #fff;
     background-color: #3581B8;
-    width: 26px;
+    width: 27px;
     overflow-x: hidden;
     padding: 0px 1px 0px 4.5px !important;
     border-radius: 20px;
