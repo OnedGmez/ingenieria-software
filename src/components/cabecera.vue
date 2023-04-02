@@ -21,38 +21,36 @@
   display: flex;
   margin: 0px 0 5px 0px;
   text-align: center;
+  font-family: 'fredoka-family';
 }
 
 .cabecera .titulo {
   margin: auto;
-  font-family: 'fredoka-family';
   font-weight: 900;
   font-size: calc(1em + 1.1vw);
   color: #3581B8;
 }
 
-.cabecera .info-sucursal {
-  transition: all 250ms ease-in-out;
-}
-
 .cabecera .info-sucursal .sucursal {
-  /*Sujetas a cambio*/
   font-weight: 600;
-  font-size: smaller;
+  font-size: calc(.9em + 0.04vw);
 }
 
 .cabecera .info-sucursal .ubi-sucursal {
-  /*Sujetas a cambio*/
-  font-weight: lighter;
-  font-size: x-small;
+  font-weight: 100;
+  font-size: calc(.9em + 0.04vw);
 }
 
 /*
-  Ajustes para diferentes tamaños de pantalla
+* Media Query para dispositivos moviles
 */
 @media (max-width: 991.5px) {
   .cabecera .info-sucursal {
     display: none;
+  }
+
+  .cabecera .titulo {
+    font-size: calc(1em + 1.7vw);
   }
 }
 </style>
