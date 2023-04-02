@@ -21,7 +21,7 @@
                     <span class="nombre">Nombre Usuario</span>
                     <span class="rol">{{ rol }}</span>
                 </div>
-                <div class="logout">
+                <div @click="cerrarSesion" class="logout">
                     <span class="exit"><font-awesome-icon icon="door-open" /></span>
                 </div>
             </div>
@@ -194,6 +194,7 @@ a{
 
 <script setup>
 import { ref, reactive } from "vue";
+import router from "@/router";
 //importamos el store para poder obtener las variables con la información
 import { useUsuarioStore } from '@/store/usuario.js'
 import { generalStore } from '@/store/index.js'
@@ -213,6 +214,10 @@ const IDitem = ref(0)
 const cambiarID = (ID, path) => {
     IDitem.value = ID
     console.log(path)
+}
+
+const cerrarSesion = () =>{
+    router.replace('/')
 }
 
 </script>
