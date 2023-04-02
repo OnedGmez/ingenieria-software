@@ -17,7 +17,7 @@ const propsAlerta = defineProps([
     position: absolute;
     top: 0;
     right: 0;
-    z-index: 1;
+    z-index: 3;
     padding: 15px 40px;
     margin: 5px;
     align-items: center;
