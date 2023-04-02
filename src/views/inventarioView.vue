@@ -8,8 +8,8 @@
           departamento="Francisco Morazán" colonia="Carrizal" />
 
         <div class="controles-filtrado-inventario container-fluid">
-          <div class="barra-filtros d-flex">
-            <barraBusqueda vista="inventario" />
+          <div class="barra-filtros d-flex align-items-end">
+            <barraBusqueda />
             <button @click="mostrarModalFiltros" type="button" class="btn boton-filtros">
               <div class="contenido-boton d-flex">
                 <span class="d-block icono-boton"><font-awesome-icon icon="arrow-down-wide-short" /></span>
@@ -299,6 +299,7 @@ const mostrarModalAgregarProductos = () => {
   color: #3581B8;
   background-color: #fff;
   transition: all 100ms ease-in-out;
+  padding:0.2rem 0.75rem!important;
 }
 
 #vista-inventario .cuerpo-vista .cabecera-filtros .controles-filtrado-inventario .barra-filtros .boton-filtros:hover {
