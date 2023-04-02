@@ -18,7 +18,7 @@ const propsAlerta = defineProps([
     top: 0;
     right: 0;
     z-index: 3;
-    padding: 15px 40px;
+    padding: 15px 35px;
     margin: 5px;
     align-items: center;
     background-color: #ebf8ff;
@@ -39,11 +39,13 @@ const propsAlerta = defineProps([
     min-width: 40px;
     height: auto;
     text-align: center;
-    font-size: x-large
+    font-size: x-large;
+    margin-right: 5px ;
 }
 
 .alert .mensaje-alerta{
     font-size: 'fredoka-family';
-    font-weight: 500;
+    font-weight: 600;
+    font-size: calc(.9em + 0.04vw) !important;
 }
 </style>

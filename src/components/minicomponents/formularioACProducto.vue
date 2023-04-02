@@ -80,6 +80,14 @@
         </div>
         <div v-if="accion === 'Crear'" class="formulario">
             <div class="textbox">
+                <label class="etiqueta" for="codigo-input">Código del producto:</label>
+                <div class="input-group">
+                    <span class="input-group-text"></span>
+                    <input id="codigo-input" type="text" class="form-control" aria-label="Nombre"
+                        aria-describedby="Nombre-input">
+                </div>
+            </div>
+            <div class="textbox">
                 <label class="etiqueta" for="nombre-input">Nombre del producto:</label>
                 <div class="input-group">
                     <span class="input-group-text"></span>
@@ -153,6 +161,12 @@
 </template>
 
 <style scoped>
+
+.etiqueta{
+    font-weight: 500;
+    font-family: 'fredoka-family';
+    font-size: calc(.9em + 0.04vw) !important;
+}
 .formularios .formulario .input-group .input-group-text {
     background-color: #3581B8;
     padding: 0.375rem 0.95rem;
@@ -182,7 +196,8 @@
     border: none;
     border-bottom: #3581B8 solid 2px;
     filter: none;
-    font-size: calc(.8em + 0.1vw) !important
+    font-family: 'fredoka-family';
+    font-size: calc(.9em + 0.04vw) !important;
 }
 
 .form-control:focus {
