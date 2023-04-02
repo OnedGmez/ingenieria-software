@@ -42,7 +42,7 @@
     border: 1.6px solid #3581B8;
     font-family: 'fredoka-family';
     font-weight: 500;
-    font-size: calc(.75em + .2vw);
+    font-size: calc(.9em + 0.04vw);
 }
 
 .modal .modal-dialog .modal-content .modal-footer .btn:hover {
