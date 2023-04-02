@@ -52,8 +52,10 @@ const emisionInicioSesion = () => {
 
 <style scoped>
 /*Estilos de CSS modificados*/
+
 #space-form{
   padding: 0 !important;
+  height: 100vh;
 }
 .input-group-text {
   background-color: #3581B8;
