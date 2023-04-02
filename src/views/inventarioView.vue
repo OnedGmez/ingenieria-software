@@ -282,7 +282,7 @@ const mostrarModalAgregarProductos = () => {
   max-width: 100%;
   height: fit-content;
   position: relative;
-  margin: 5px 8px 00px 15px;
+  margin: 5px 0px 00px 10px;
 }
 
 #vista-inventario .cuerpo-vista .cabecera-filtros {
@@ -322,6 +322,7 @@ const mostrarModalAgregarProductos = () => {
 
 .btn {
   font-family: 'fredoka-family';
+  font-size: calc(.9em + 0.04vw);
 }
 
 .btn:hover {
@@ -354,7 +355,11 @@ const mostrarModalAgregarProductos = () => {
   padding-right: 5px;
 }
 
-@media (max-width: 678px) {
+/*
+* Media Query para dispositivos moviles
+* Considerando que: el dispositivo mantiene las configuraciones por defecto de tamaño de texto y tamaños de visualización
+ */
+@media (max-width: 991.5px) {
   #vista-inventario .cuerpo-vista .controles-filtrado-inventario .boton-desplegable  {
     width: 140px!important;
   }
