@@ -6,7 +6,8 @@
                 <div class="modal-header justify-content-center">
                     <p class="modal-title" id="staticBackdropLabel"> {{ data['name'] }} </p>
                 </div>
-                <img src="../assets/img/aceta.jpg" class="img-fluid" alt="...">
+                <!--Condicionamos la fotogafía pensando en los otros módulos y que la ruta a las img será diferente-->
+                <img v-if="modulo === 'Inventario'" src="../assets/img/aceta.jpg" class="img-fluid" alt="...">
                 <div class="modal-body">
                     <dataModalProducto v-if="modulo === 'Inventario'" :dataProducto="data" />
                 </div>
@@ -86,7 +87,7 @@
 .modal .modal-dialog .modal-content .modal-header .modal-title {
     color: #fff;
     font-family: 'fredoka-family';
-    font-size: calc(1em + .85vw);
+    font-size: calc(.9em + .75vw);
     position: relative;
     font-weight: 600;
     filter: drop-shadow(8px 10px 10px #000);
@@ -123,15 +124,29 @@
     font-size: calc(0.75em + .4vw)
 }
 
-@media (max-width: 678px) {
+/*
+* Media query para dispositivos moviles
+ */
+@media (max-width: 991.5px) {
     .modal .modal-dialog .modal-content .modal-footer .boton-desplegable {
-        width: 105px;
+        width: 102px;
     }
 
     .modal .modal-dialog .modal-content .modal-footer #boton-agregar {
         width: 80px;
     }
+}
 
+/*
+* Media query para Celulares
+ */
+@media (max-width: 678px) {
+    .modal .modal-dialog .modal-content .modal-header .modal-title {
+        font-size: calc(1em + 1.1vw);
+    }
+    .modal .modal-dialog .modal-content{
+        margin: 0 35px;
+    }
 }
 </style>
 
