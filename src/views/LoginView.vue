@@ -51,7 +51,7 @@ const validarSesion = (usuario, contrasenia) => {
   left: 50%;
   right: 50%;
   height: calc(1.9em + 4vw);
-  z-index: 100;
+  z-index: 3;
 }
 
 .container-fluid,
