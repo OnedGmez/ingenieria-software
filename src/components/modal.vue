@@ -77,7 +77,6 @@
 }
 
 /*Estilos creados */
-
 .modal .modal-dialog .modal-content .modal-header img {
     width: 100%;
     border-top-left-radius: 8px;
@@ -111,7 +110,6 @@
     padding: 0px 1px 0px 5.5px !important;
 }
 
-
 .modal .modal-dialog .modal-content .modal-footer .boton-desplegable:hover {
     width: 105px;
 }
@@ -119,7 +117,6 @@
 .modal .modal-dialog .modal-content .modal-footer #boton-agregar:hover {
     width: 80px;
 }
-
 
 .modal .modal-dialog .modal-content .modal-footer .boton-desplegable div .icono-boton {
     margin: auto 4px auto 0;
