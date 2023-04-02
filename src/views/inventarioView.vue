@@ -342,7 +342,7 @@ const mostrarModalAgregarProductos = () => {
   padding: 3px 10px 3px 8.5px !important;
   border-radius: 20px;
   transition: all 200ms ease-out;
-  margin: 3px 0 15px 0;
+  margin: 3px 7px 15px 0;
 }
 
 #vista-inventario .cuerpo-vista .controles-filtrado-inventario .boton-desplegable:hover {
@@ -352,5 +352,11 @@ const mostrarModalAgregarProductos = () => {
 .row {
   padding-left: 25px;
   padding-right: 5px;
+}
+
+@media (max-width: 678px) {
+  #vista-inventario .cuerpo-vista .controles-filtrado-inventario .boton-desplegable  {
+    width: 140px!important;
+  }
 }
 </style>
