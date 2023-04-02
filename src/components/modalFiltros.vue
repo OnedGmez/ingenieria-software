@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-cerrar" >Aplicar</button>
+                    <button type="button" class="btn btn-cerrar">Aplicar</button>
                     <button type="button" class="btn btn-cerrar" @click="cerrarModal">Cancelar</button>
                     <!--Emitimos un evento mediante una función al contenedor padre para avisar que lo queremos cerrar-->
                 </div>
@@ -55,7 +55,7 @@
 .modal .modal-dialog .modal-content .modal-footer {
     padding: 0 4px 2px 4px;
     margin: 0;
-    justify-content: space-between;
+    justify-content: end;
 }
 
 /*Estilos creados */
@@ -65,31 +65,23 @@
 }
 
 .modal-body .filtros-secundarios {
-  margin: 15px 0px;
+    margin: 15px 0px;
 }
 
 /**rework */
-.modal-body .filtros-secundarios>.filtro:not(:first-child) {
-  margin: 0px 0px 0px 25px;
+
+.modal-body .filtros-secundarios .filtro {
+    margin: 20px 5px;
 }
-
-
-.modal-body .filtros-secundarios>.filtro:not(:last-child) {
-  width: calc(165px + 1%);
-}
-
-.modal-body .filtros-secundarios>.filtro:last-child {
-  align-items: center;
-}
-
 
 .modal-body .filtros-secundarios>.filtro:last-child #existencia {
-  margin-right: 5px;
+    margin-right: 5px;
 }
 
 
 label {
-  font-size: small;
+    font-size: calc(.9em + 0.04vw) !important;
+    font-family: 'fredoka-family';
 }
 </style>
 
