@@ -2,7 +2,7 @@
     <div class="data">
         <p class="data-text">{{ dataProducto['productdescription'] }}</p>
         <div class="d-flex">
-            <span class="data-modal">{{ dataProducto['categoryname'] }}</span>
+            <span class="data-modal"> Categoría: {{ dataProducto['categoryname'] }}</span>
             <span class="data-modal"> Lote: {{ dataProducto['lotnumber'] }} </span>
         </div>
         <div class="d-flex">
@@ -26,11 +26,13 @@ const propsProductoModal = defineProps([
 <style scoped>
 .data{
     font-size: medium;
-    font-family: sans-serif;
+    font-family: 'fredoka-family';
+    font-size: calc(.9em + 0.04vw) !important;
 }
 
 .data .data-text{
     text-align: center;
+    font-weight: 100;
 }
 
 .data div{
