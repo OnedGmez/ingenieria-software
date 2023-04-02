@@ -1,6 +1,6 @@
 <template>
     <!--El evento clic abre el modal-->
-    <div @click="mostrarModal" class="contenedor col-6 col-md-4 col-lg-2">
+    <div @click="mostrarModal" class="contenedor col-6 col-md-3 col-lg-2">
         <div :id=data.code class="card">
             <div class="encabezado-img">
                 <img src="../assets/img/aceta.jpg" class="card-img-top img-fluid" alt="...">
@@ -34,9 +34,11 @@
 }
 
 .card .encabezado-img {
-    width: 80%;
+    width: 95%;
     height: 30%;
-    margin: 0px auto;
+    margin: 1% auto 0 auto;
+    border-radius:inherit;
+
 }
 
 .card .encabezado-img img {
@@ -49,13 +51,33 @@
 }
 
 .card .card-body .card-title {
-    font-size: large;
+    font-size: calc(.9em + .4vw);
     font-weight: 600;
     color: #3581B8;
     margin: 0;
     text-align: center;
     font-family: 'fredoka-family';
 }
+
+/*
+* Media Query para Tablet
+*/
+@media (max-width: 991.5px) {
+    .card .card-body .card-title {
+        font-size: calc(.9em + .5vw);
+    }
+}
+
+/*
+* Media Query para celular
+*/
+@media (max-width: 678px) {
+    .card .card-body .card-title {
+        font-size: calc(1em + 1vw);
+    }
+}
+
+
 </style>
 
 <script setup>
