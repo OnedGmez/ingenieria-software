@@ -35,4 +35,8 @@ a{
 .img-fluid {
     height: 100%!important;
 }
+
+.modal-content{
+  border: .2px solid #3581B8!important;
+}
 </style>
