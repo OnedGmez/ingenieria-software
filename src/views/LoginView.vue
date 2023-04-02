@@ -17,23 +17,30 @@
       <LoginSpace @iniciar-sesion="(usuario, contrasenia) => validarSesion(usuario, contrasenia)" />
     </div>
   </div>
+  <alerta v-if="mostrandoAlerta === true" :mensaje="mensaje" error='true' />
 </template>
 
 <script setup>
 
 import router from "@/router";
+import { ref } from "vue";
 import { useUsuarioStore } from '@/store/usuario.js'
+import alerta from "@/components/minicomponents/alerta.vue";
 // @ is an alias to /src
 import LoginSpace from '@/components/LoginSpace.vue'
+const mostrandoAlerta = ref(false)
+const mensaje = ref('')
 
 const validarSesion = (usuario, contrasenia) => {
   if (usuario === '' || contrasenia === '') {
-    window.alert("Usuario y/o contraseña incorrecta(o)")
+    mensaje.value = 'Usuario y/o contraseña incorrecta(o)'
+    mostrandoAlerta.value = !mostrandoAlerta.value
+    setTimeout(() => { mostrandoAlerta.value = !mostrandoAlerta.value; }, 1900);
   }else{
     //Accedemos a la store de usuario y le enviamos la información (nombre, rol, foto,)
     const usuario = useUsuarioStore()
     usuario.setRol("Admin")
-    router.push('/inventario');
+    router.push({ path: '/inventario'});
   }
 };
 </script>

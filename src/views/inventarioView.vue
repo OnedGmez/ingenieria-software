@@ -27,7 +27,7 @@
               <span class=" d-block nombre-boton"> Terminar orden </span>
             </div>
           </button>
-          <button v-if="modoOrdenar === false" @click="mostrarModalAgregarProductos" id="boton-generar-orden"
+          <button v-if="modoOrdenar === false" @click="mostrarModalAgregarProductos" id="boton-agregar-producto"
             type="button" class="btn boton-desplegable">
             <div class="contenido-boton d-flex">
               <span class="d-block icono-boton"><font-awesome-icon icon="circle-plus" /></span>
@@ -47,10 +47,11 @@
   <modalFiltros v-if="mostrandoFiltros === true" @ocultar-modal="() => mostrarModalFiltros()" />
   <modalCRUD v-if="mostrandoAgregar === true" modulo="Inventario" accion="Crear"
     @ocultar-modal="() => mostrarModalAgregarProductos()" />
+
+  <alerta v-if="mostrandoAlerta === true" :mensaje="mensaje" error='false' />
 </template>
   
 <script setup>
-import alerta from 'sweetalert';
 import { generalStore } from '@/store/index.js'
 
 import MenuSpace from '@/components/menu.vue'
@@ -59,8 +60,10 @@ import tarjetaInventario from '@/components/tarjeta.vue'
 import barraBusqueda from '@/components/barraBusqueda.vue'
 import modalFiltros from '@/components/modalFiltros.vue'
 import modalCRUD from '@/components/modalCRUD.vue'
+import alerta from '@/components/minicomponents/alerta.vue'
 
 import { ref } from 'vue'
+import { sleep } from '@supabase/gotrue-js/dist/module/lib/helpers'
 
 /**
  * variable que contiene los metodos y variables de la store que retornamos (a modo de ser utilizadas como variables globales)
@@ -70,6 +73,8 @@ const store = generalStore()
 const mostrandoFiltros = ref(false)
 const mostrandoAgregar = ref(false)
 const modoOrdenar = ref(store.ordenarModo)
+const mostrandoAlerta = ref(false)
+const mensaje = ref('')
 
 const dataProductos = ref(
   [{
@@ -251,11 +256,16 @@ const mostrarModalFiltros = () => {
 const Ordenar = () => {
   store.setModoOrden()
   modoOrdenar.value = store.ordenarModo
-  if (modoOrdenar.value === true){
-    alerta('Orden Abierta','Agrega los productos',"success")
-  }else{
-    alerta('Orden Cerrada')
+
+  if (modoOrdenar.value === true) {
+    mensaje.value = 'Orden abierta'
+    mostrandoAlerta.value = !mostrandoAlerta.value
+  } else {
+    mensaje.value = 'Orden culminada'
+    mostrandoAlerta.value = !mostrandoAlerta.value
   }
+
+  setTimeout(() => { mostrandoAlerta.value = !mostrandoAlerta.value; }, 1900);
 }
 
 /**
