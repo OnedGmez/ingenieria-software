@@ -25,24 +25,59 @@
 import router from "@/router";
 import { ref } from "vue";
 import { useUsuarioStore } from '@/store/usuario.js'
+import { sha256 } from 'js-sha256'
+import { supabase } from "@/lib/supabaseClient";
 import alerta from "@/components/minicomponents/alerta.vue";
 // @ is an alias to /src
 import LoginSpace from '@/components/LoginSpace.vue'
 const mostrandoAlerta = ref(false)
 const mensaje = ref('')
 
-const validarSesion = (usuario, contrasenia) => {
-  if (usuario === '' || contrasenia === '') {
-    mensaje.value = 'Usuario y/o contraseña incorrecta(o)'
-    mostrandoAlerta.value = !mostrandoAlerta.value
-    setTimeout(() => { mostrandoAlerta.value = !mostrandoAlerta.value; }, 1900);
-  }else{
-    //Accedemos a la store de usuario y le enviamos la información (nombre, rol, foto,)
-    const usuario = useUsuarioStore()
-    usuario.setRol("Admin")
-    router.push({ path: '/inventario'});
+sessionStorage.removeItem('token')
+localStorage.removeItem('usuario')
+
+const validarSesion = async (usuario, contrasenia) => {
+  if (usuario != '' && contrasenia != '') {
+    try {
+      let { data, error } = await supabase
+        .rpc('login', {
+          credential: usuario,
+          password: sha256(contrasenia)
+        })
+
+      if (error) {
+        mensaje.value = error
+        usarAlerta()
+      }
+
+      if (data != '') {
+        const rol = data[0]['rol'];
+        const nombreusuario = data[0]['nombreusuario'];
+        const sucursal = data[0]['sucursalcode']
+        
+        const usuario = useUsuarioStore()
+        usuario.guardarLocalStorage(data[0])
+        router.push({ name: 'inventario', params: { rol, sucursal } });
+      } else {
+        mensaje.value = 'Usuario y/o contraseña incorrecta(o)'
+        usarAlerta()
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message)
+      }
+    }
+  } else {
+    mensaje.value = 'Debes proporcionar la información solicitada'
+    usarAlerta()
   }
 };
+
+
+const usarAlerta = () => {
+  mostrandoAlerta.value = !mostrandoAlerta.value
+  setTimeout(() => { mostrandoAlerta.value = !mostrandoAlerta.value; }, 1900);
+}
 </script>
 
 <style scoped>
