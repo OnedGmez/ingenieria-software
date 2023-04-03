@@ -5,8 +5,8 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="filtros-secundarios">
-                        <selectBox class="filtro" label="Sucursal:" />
-                        <selectBox class="filtro" label="Categoría:" />
+                        <selectBox class="filtro" label="Categorias:" :data="categorias" />
+                        <selectBox class="filtro" label="Sucursales:" :data="sucursales" />
                         <div class="filtro-existencia d-flex filtro">
                             <input type="checkbox" name="checkExistencia" id="existencia">
                             <label for="existencia">Sin existencias</label>
@@ -87,10 +87,27 @@ label {
 
 <script setup>
 import selectBox from '@/components/selectBox.vue'
+import { ref } from 'vue';
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal'])
+
+const categorias = ref('')
+const sucursales = ref('')
 
 const cerrarModal = () => {
     emisiones('ocultarModal')
 }
+
+const cargarSelect = () => {
+    categorias.value = localStorage.getItem('categorias');
+    categorias.value = categorias.value.replaceAll('"categorycode":','"code":')
+    categorias.value = categorias.value.replaceAll('"categoryname":','"name":')
+    categorias.value = JSON.parse(categorias.value)
+
+    sucursales.value = localStorage.getItem('sucursales');
+    sucursales.value = sucursales.value.replaceAll('"sucursalcode":','"code":')
+    sucursales.value = sucursales.value.replaceAll('"sucursalname":','"name":')
+    sucursales.value = JSON.parse(sucursales.value)
+}
+cargarSelect()
 </script>
