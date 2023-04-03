@@ -24,7 +24,7 @@
 
 import router from "@/router";
 import { ref } from "vue";
-import { useUsuarioStore } from '@/store/usuario.js'
+import { generalStore } from "@/store";
 import { sha256 } from 'js-sha256'
 import { supabase } from "@/lib/supabaseClient";
 import alerta from "@/components/minicomponents/alerta.vue";
@@ -32,6 +32,7 @@ import alerta from "@/components/minicomponents/alerta.vue";
 import LoginSpace from '@/components/LoginSpace.vue'
 const mostrandoAlerta = ref(false)
 const mensaje = ref('')
+const store = generalStore()
 
 sessionStorage.removeItem('token')
 localStorage.removeItem('usuario')
@@ -54,9 +55,8 @@ const validarSesion = async (usuario, contrasenia) => {
         const rol = data[0]['rol'];
         const nombreusuario = data[0]['nombreusuario'];
         const sucursal = data[0]['sucursalcode']
-        
-        const usuario = useUsuarioStore()
-        usuario.guardarLocalStorage(data[0])
+      
+        store.guardarLocalStorage(data[0], 'usuario')
         router.push({ name: 'inventario', params: { rol, sucursal } });
       } else {
         mensaje.value = 'Usuario y/o contraseña incorrecta(o)'
