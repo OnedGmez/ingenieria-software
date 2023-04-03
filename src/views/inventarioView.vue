@@ -27,7 +27,7 @@
               <span class=" d-block nombre-boton"> Terminar orden </span>
             </div>
           </button>
-          <button v-if="modoOrdenar === false" @click="mostrarModalAgregarProductos" id="boton-agregar-producto"
+          <button v-if="modoOrdenar === false && data.sucursalname === 'Bodega Central'" @click="mostrarModalAgregarProductos" id="boton-agregar-producto"
             type="button" class="btn boton-desplegable">
             <div class="contenido-boton d-flex">
               <span class="d-block icono-boton"><font-awesome-icon icon="circle-plus" /></span>
