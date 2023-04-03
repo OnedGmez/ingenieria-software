@@ -5,7 +5,7 @@
                 <img class="img-fluid" src="../assets/logo.png" alt="Valenciana">
             </div>
             <div id="menu-opciones">
-                <div v-for="opcion, index in opciones" class="opcion-menu" :key="opcion.key"
+                <div v-for="opcion, index in contenido" class="opcion-menu" :key="opcion.key"
                     :class="{ active: IDitem === index }" @click="cambiarID(index, opcion.path)">
                     <a class="d-flex" href="#">
                         <span class="d-block icono-opcion"><font-awesome-icon :icon="opcion.icono" /></span>
@@ -15,10 +15,10 @@
             </div>
             <div class="pie-menu">
                 <div class="foto">
-                    <img class="img-fluid" src="../assets/img/prueba.jpg" alt="Foto ">
+                    <img class="img-fluid" v-bind:src="require('../assets/img/' + urlphoto)" alt="Foto ">
                 </div>
                 <div class="info">
-                    <span class="nombre">Nombre Usuario</span>
+                    <span class="nombre">{{ nombreUsuario }}</span>
                     <span class="rol">{{ rol }}</span>
                 </div>
                 <div @click="cerrarSesion" class="logout">
@@ -80,7 +80,7 @@
     position: relative;
 }
 
-a{
+a {
     font-weight: 600 !important;
 }
 
@@ -172,7 +172,8 @@ a{
 }
 
 .pie-menu .info .rol {
-    font-size: small;
+    font-size: calc(.72em + 0.04vw) !important;
+    font-weight: 100;
 }
 
 .pie-menu .logout {
@@ -187,37 +188,48 @@ a{
 
 
 .pie-menu .info .nombre {
-    font-weight: 500;
-    font-size: smaller;
+    font-weight: 600;
+    font-size: calc(.9em + 0.04vw) !important;
+    margin-right: 15px;
 }
 </style>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import router from "@/router";
-//importamos el store para poder obtener las variables con la información
-import { useUsuarioStore } from '@/store/usuario.js'
 import { generalStore } from '@/store/index.js'
-const props = defineProps(['rol', 'nombreUsuario'])
-const gralStore = generalStore();
-const usuario = useUsuarioStore();
 
-const opciones = gralStore.menu;
-const rol = usuario.rol
+const gralStore = generalStore();
+
+const dataUsuario = JSON.parse(localStorage.getItem('usuario'))
+
+const nombreUsuario = ref(dataUsuario['nombreusuario']);
+const rol = ref(gralStore.desencriptarData(dataUsuario['rol'], 'rol'));
+const urlphoto = ref(dataUsuario['urlphoto']);
+let contenido;
+
+const cargarMenu = () => {
+    gralStore.filtrar(rol.value);
+    contenido = gralStore.nuevoMenu;
+}
+
+cargarMenu()
 
 const IDitem = ref(0)
 
 /**
  * dev: Oned Gómez
  * @param {*} ID recibe el ID de la opción a la que se le ha dado click
+ * @param {*} path recibe el path de la vista referenciada por la opción del menu
  */
 const cambiarID = (ID, path) => {
     IDitem.value = ID
     console.log(path)
 }
 
-const cerrarSesion = () =>{
-    router.replace('/')
+const cerrarSesion = () => {
+    router.replace('/login')
+    sessionStorage.removeItem('token')
 }
 
 </script>
