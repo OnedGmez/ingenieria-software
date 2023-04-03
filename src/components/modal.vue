@@ -112,7 +112,7 @@
 }
 
 .modal .modal-dialog .modal-content .modal-footer .boton-desplegable:hover {
-    width: 105px;
+    width: 102px;
 }
 
 .modal .modal-dialog .modal-content .modal-footer #boton-agregar:hover {
