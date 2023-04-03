@@ -1,9 +1,8 @@
 <template>
     <div class="select-group d-flex">
+        <label for="disabledSelect"> {{ label }}</label>
         <select @change="filtrar" id="disabledSelect" class="form-select">
-            <option disabled selected>{{ label }}</option>
-            <option>Disabled select2</option>
-            <option>Disabled select3</option>
+            <option v-for="elemento in data" :value="elemento['code']"> {{ elemento['name'] }} </option>
         </select>
     </div>
 </template>
@@ -12,6 +11,8 @@
 
 .select-group{
     flex-direction: column;
+    font-family: 'fredoka-family';
+    font-size: calc(.9em + 0.04vw) !important;
 }
 
 .select-group .form-select{
@@ -20,21 +21,23 @@
     border-bottom: #3581B8 solid 2px;
     filter: none;
     font-size: calc(.9em + 0.04vw) !important;
-    font-family: 'fredoka-family';
 }
 
 
 .select-group .form-select:focus{
     box-shadow: none;
 }
-
 </style>
 
 <script setup>
 import { ref, defineEmits } from "vue";
 
+const elementos = ref('')
+let catTMP;
+
 const propsTarjeta = defineProps([
-    'label',
+    'data',
+    'label'
 ])
 
 const filtrar = (event) =>{
