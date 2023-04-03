@@ -4,8 +4,8 @@
     <div class="cuerpo-vista">
       <div class="cabecera-filtros">
         <!--Llamamos el componente de la cabecera y llenamos sus propiedades-->
-        <cabeceraComp nombreModulo="INVENTARIO" nombreSucursal="Bodega Central" codigoSucursal="BDC001"
-          departamento="Francisco Morazán" colonia="Carrizal" />
+        <cabeceraComp nombreModulo="INVENTARIO" :nombreSucursal="data['sucursalname']" :codigoSucursal="data['sucursalcode']"
+          :departamento="data['department']" :colonia="data['colony']" />
 
         <div class="controles-filtrado-inventario container-fluid">
           <div class="barra-filtros d-flex align-items-end">
@@ -63,7 +63,6 @@ import modalCRUD from '@/components/modalCRUD.vue'
 import alerta from '@/components/minicomponents/alerta.vue'
 
 import { ref } from 'vue'
-import { sleep } from '@supabase/gotrue-js/dist/module/lib/helpers'
 
 /**
  * variable que contiene los metodos y variables de la store que retornamos (a modo de ser utilizadas como variables globales)
@@ -75,6 +74,14 @@ const mostrandoAgregar = ref(false)
 const modoOrdenar = ref(store.ordenarModo)
 const mostrandoAlerta = ref(false)
 const mensaje = ref('')
+
+const dataVista = ref(JSON.parse(localStorage.getItem('usuario')))
+const data = ref({
+  sucursalname: dataVista.value['sucursalname'],
+  sucursalcode: dataVista.value['sucursalcode'],
+  department: dataVista.value['department'],
+  colony: dataVista.value['colony']
+})
 
 const dataProductos = ref(
   [{
@@ -264,7 +271,10 @@ const Ordenar = () => {
     mensaje.value = 'Orden culminada'
     mostrandoAlerta.value = !mostrandoAlerta.value
   }
+}
 
+const usarAlerta = () => {
+  mostrandoAlerta.value = !mostrandoAlerta.value
   setTimeout(() => { mostrandoAlerta.value = !mostrandoAlerta.value; }, 1900);
 }
 
@@ -299,7 +309,7 @@ const mostrarModalAgregarProductos = () => {
   color: #3581B8;
   background-color: #fff;
   transition: all 100ms ease-in-out;
-  padding:0.2rem 0.75rem!important;
+  padding: 0.2rem 0.75rem !important;
 }
 
 #vista-inventario .cuerpo-vista .cabecera-filtros .controles-filtrado-inventario .barra-filtros .boton-filtros:hover {
@@ -361,8 +371,8 @@ const mostrarModalAgregarProductos = () => {
 * Considerando que: el dispositivo mantiene las configuraciones por defecto de tamaño de texto y tamaños de visualización
  */
 @media (max-width: 991.5px) {
-  #vista-inventario .cuerpo-vista .controles-filtrado-inventario .boton-desplegable  {
-    width: 140px!important;
+  #vista-inventario .cuerpo-vista .controles-filtrado-inventario .boton-desplegable {
+    width: 140px !important;
   }
 }
 </style>
