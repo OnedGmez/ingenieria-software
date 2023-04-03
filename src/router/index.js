@@ -3,12 +3,13 @@ import LoginView from '../views/LoginView.vue'
 
 const routes = [
   {
-    path: '/',
+    path: '/login',
     name: 'Login',
-    component: LoginView
+    component: LoginView,
+    alias: '/'
   },
   {
-    path: '/inventario',
+    path: '/inventario/:rol/:sucursal',
     name: 'inventario',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -22,6 +23,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+//Validamos que exista un token creado para poder ingresar a la web
+const validarToken = () => {
+  return sessionStorage.getItem('token')
+}
+
+//Realiza la validación de la ruta a la que se quiere ingresar y si existe o no un toke, si no existe un token y la ruta no es el inicio de sesión, se hace la redirreción al inicio de sesión
+router.beforeEach((to, from, next) => {
+  if ((to.path !== '/login' && to.path !== '/') && !validarToken()) next({ name: 'Login'})
+  else next()
 })
 
 export default router
