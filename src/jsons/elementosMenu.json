@@ -5,42 +5,42 @@
             "path":"/inventario",
             "icono":"boxes-stacked",
             "key": "elm0",
-            "permitidoPara": ["Admin"]
+            "permitidoPara": ["Administrador"]
         },
         {
             "nombreElemento":"Representantes Proveedores",
             "path":"/representantes",
             "icono": "business-time",
             "key": "elm1",
-            "permitidoPara": ["Admin"]
+            "permitidoPara": ["Administrador"]
         },
         {
             "nombreElemento":"Proveedores",
             "path":"/proveedores",
             "icono": "building",
             "key": "elm2",
-            "permitidoPara": ["Admin"]
+            "permitidoPara": ["Administrador","Bodega"]
         },
         {
             "nombreElemento":"Empleados",
             "path":"/empleados",
             "icono": "user-tie",
             "key": "elm3",
-            "permitidoPara": ["Admin"]
+            "permitidoPara": ["Administrador"]
         },
         {
             "nombreElemento":"Ordenes",
             "path":"/ordenes",
             "icono": "clipboard-list",
             "key": "elm4",
-            "permitidoPara": ["Admin"]
+            "permitidoPara": ["Administrador"]
         },
         {
             "nombreElemento":"Reportes",
             "path":"/reportes",
             "icono": "file-signature",
             "key": "elm5",
-            "permitidoPara": ["Admin"]
+            "permitidoPara": ["Administrador"]
         }
     ]
 }
