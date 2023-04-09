@@ -6,7 +6,7 @@
             </div>
             <div id="menu-opciones">
                 <div v-for="opcion, index in opciones" class="opcion-menu" :key="opcion.key"
-                    :class="{ active: IDitem === index }" @click="cambiarID(index, opcion.path)">
+                    :class="{ active: IDitem === index }" @click="cambiarID(index, opcion.nameroute)">
                     <a class="d-flex" href="#">
                         <span class="d-block icono-opcion"><font-awesome-icon :icon="opcion.icono" /></span>
                         <span class=" d-block nombre-opcion"> {{ opcion.nombreElemento }} </span>
@@ -203,6 +203,7 @@ const store = generalStore();
 const cookies = document.cookie.split(';')
 const nombreUsuario = store.desencriptarData(cookies[0].split('=')[1], 'nombreusuario')
 const rol = store.desencriptarData(cookies[1].split('=')[1], 'rol');
+const sucursalcode = store.desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
 
 /**
  * Recuperamos la información del localStorage y de las cookies
@@ -225,9 +226,10 @@ const IDitem = ref(0)
  * @param {*} ID recibe el ID de la opción a la que se le ha dado click
  * @param {*} path recibe el path de la vista referenciada por la opción del menu
  */
-const cambiarID = (ID, path) => {
+const cambiarID = (ID, nameroute) => {
     IDitem.value = ID
-    console.log(path)
+    console.log(nameroute)
+    //router.push({ name: nameroute, params: { rol, sucursalcode } });
 }
 
 const cerrarSesion = () => {
