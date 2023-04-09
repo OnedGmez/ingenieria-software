@@ -5,7 +5,7 @@
                 <img class="img-fluid" src="../assets/logo.png" alt="Valenciana">
             </div>
             <div id="menu-opciones">
-                <div v-for="opcion, index in contenido" class="opcion-menu" :key="opcion.key"
+                <div v-for="opcion, index in opciones" class="opcion-menu" :key="opcion.key"
                     :class="{ active: IDitem === index }" @click="cambiarID(index, opcion.path)">
                     <a class="d-flex" href="#">
                         <span class="d-block icono-opcion"><font-awesome-icon :icon="opcion.icono" /></span>
@@ -199,20 +199,23 @@ import { ref } from "vue";
 import router from "@/router";
 import { generalStore } from '@/store/index.js'
 
-const gralStore = generalStore();
+const store = generalStore();
+const cookies = document.cookie.split(';')
+const nombreUsuario = store.desencriptarData(cookies[0].split('=')[1], 'nombreusuario')
+const rol = store.desencriptarData(cookies[1].split('=')[1], 'rol');
 
+/**
+ * Recuperamos la información del localStorage y de las cookies
+ */
 const dataUsuario = JSON.parse(localStorage.getItem('usuario'))
+const urlphoto = ref(dataUsuario[0]['urlphoto']);
 
-const nombreUsuario = ref(dataUsuario['nombreusuario']);
-const rol = ref(gralStore.desencriptarData(dataUsuario['rol'], 'rol'));
-const urlphoto = ref(dataUsuario['urlphoto']);
-let contenido;
+const menu = store.menu
+const opciones = ref('')
 
 const cargarMenu = () => {
-    gralStore.filtrar(rol.value);
-    contenido = gralStore.nuevoMenu;
+    opciones.value = menu.filter(opcion => opcion.permitidoPara.filter(permitido => permitido == rol));
 }
-
 cargarMenu()
 
 const IDitem = ref(0)
