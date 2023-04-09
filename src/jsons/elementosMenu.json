@@ -2,6 +2,7 @@
     "elementos":[
         {
             "nombreElemento":"Inventario",
+            "nameroute": "inventario",
             "path":"/inventario",
             "icono":"boxes-stacked",
             "key": "elm0",
@@ -9,6 +10,7 @@
         },
         {
             "nombreElemento":"Representantes Proveedores",
+            "nameroute": "rproveedores",
             "path":"/representantes",
             "icono": "business-time",
             "key": "elm1",
@@ -16,6 +18,7 @@
         },
         {
             "nombreElemento":"Proveedores",
+            "nameroute":"proveedores",
             "path":"/proveedores",
             "icono": "building",
             "key": "elm2",
@@ -23,6 +26,7 @@
         },
         {
             "nombreElemento":"Empleados",
+            "nameroute":"empleados",
             "path":"/empleados",
             "icono": "user-tie",
             "key": "elm3",
@@ -30,6 +34,7 @@
         },
         {
             "nombreElemento":"Ordenes",
+            "nameroute":"ordenes",
             "path":"/ordenes",
             "icono": "clipboard-list",
             "key": "elm4",
@@ -37,6 +42,7 @@
         },
         {
             "nombreElemento":"Reportes",
+            "nameroute":"reportes",
             "path":"/reportes",
             "icono": "file-signature",
             "key": "elm5",
