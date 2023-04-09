@@ -17,7 +17,7 @@ const propsAlerta = defineProps([
     position: absolute;
     top: 0;
     right: 0;
-    z-index: 3;
+    z-index: 1056;
     padding: 15px 35px;
     margin: 5px;
     align-items: center;
@@ -25,6 +25,7 @@ const propsAlerta = defineProps([
     border: solid #ebf8ff;
     border-bottom: solid #6195baac;
     color: #3581B8;
+    width: fit-content;
 }
 
 .alert-warning{
