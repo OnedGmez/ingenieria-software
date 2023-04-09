@@ -13,14 +13,15 @@
                 </div>
                 <div class="modal-footer">
                     <div class="botones izquierda">
-                        <button v-if="ordenarModo === false" @click="mostrarModal" id="boton-actualizar" type="button"
-                            class="btn boton-desplegable">
+                        <button v-if="ordenarModo === false && data['available'] === true" @click="mostrarModal"
+                            id="boton-actualizar" type="button" class="btn boton-desplegable">
                             <div class="d-flex">
                                 <span class="d-block icono-boton"><font-awesome-icon icon="pen-to-square" /></span>
                                 <span class=" d-block nombre-boton"> Actualizar </span>
                             </div>
                         </button>
-                        <button v-if="ordenarModo === true" id="boton-agregar" type="button" class="btn boton-desplegable">
+                        <button v-if="ordenarModo === true && data['available'] === true" id="boton-agregar"
+                            @click="pushOrden" type="button" class="btn boton-desplegable">
                             <div class="d-flex">
                                 <span class="d-block icono-boton"><font-awesome-icon icon="plus" /></span>
                                 <span class=" d-block nombre-boton"> Añadir </span>
@@ -36,6 +37,9 @@
     </div>
     <modalCRUD v-if="mostrandoModalCRUD" @ocultar-modal="() => mostrarModal()" :data=data :modulo=modulo
         accion="Actualizar" />
+
+    <modalCantidadesOrden v-if="indicarCantidad" @ocultar-modal="() => mostrarMCantidad()" :stock="data['stock']"
+        @cerrar="() => mostrarMCantidad()" @confirmar="(cantidad) => confirmar(cantidad)" />
 </template>
 
 <style scoped>
@@ -144,7 +148,8 @@
     .modal .modal-dialog .modal-content .modal-header .modal-title {
         font-size: calc(1em + 1.1vw);
     }
-    .modal .modal-dialog .modal-content{
+
+    .modal .modal-dialog .modal-content {
         margin: 0 35px;
     }
 }
@@ -155,9 +160,12 @@ import { ref } from 'vue';
 import { generalStore } from '@/store/index.js';
 import dataModalProducto from '@/components/minicomponents/dataModalProductos.vue'
 import modalCRUD from '@/components/modalCRUD.vue';
+import modalCantidadesOrden from '@/components/minicomponents/cantidadesOrden.vue'
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal'])
 const mostrandoModalCRUD = ref(false)
+const indicarCantidad = ref(false)
+const stockOrdenado = ref(0)
 
 /**
  * Traemos el valor del modo de Ordenar para activar o desactivar el botón de añadir productos a la orden
@@ -171,6 +179,25 @@ const cerrarModal = () => {
 
 const mostrarModal = () => {
     mostrandoModalCRUD.value = !mostrandoModalCRUD.value
+}
+
+const mostrarMCantidad = () => {
+    indicarCantidad.value = !indicarCantidad.value
+}
+
+//Falta agregar el codigo de orden y en la view de inventario agregar un modal para indicar el destino de los productos
+const confirmar = (cantidad) =>{
+    stockOrdenado.value = cantidad
+    const cuerpoDetalle = {
+        'quantity': stockOrdenado.value,
+        'lotnumber': productoModal.data['lotnumber'],
+        'productcode': productoModal.data['productcode'],
+        'ordercode': ''
+    }
+}
+
+const pushOrden = () => {
+    mostrarMCantidad()
 }
 
 const productoModal = defineProps([
