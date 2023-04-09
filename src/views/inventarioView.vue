@@ -4,8 +4,9 @@
     <div class="cuerpo-vista">
       <div class="cabecera-filtros">
         <!--Llamamos el componente de la cabecera y llenamos sus propiedades-->
-        <cabeceraComp nombreModulo="INVENTARIO" :nombreSucursal="data['sucursalname']" :codigoSucursal="data['sucursalcode']"
-          :departamento="data['department']" :colonia="data['colony']" />
+        <cabeceraComp nombreModulo="INVENTARIO" :nombreSucursal="encabezado['sucursalname']"
+          :codigoSucursal="encabezado['sucursalcode']" :departamento="encabezado['department']"
+          :colonia="encabezado['colony']" />
 
         <div class="controles-filtrado-inventario container-fluid">
           <div class="barra-filtros d-flex align-items-end">
@@ -27,8 +28,8 @@
               <span class=" d-block nombre-boton"> Terminar orden </span>
             </div>
           </button>
-          <button v-if="modoOrdenar === false && data.sucursalname === 'Bodega Central'" @click="mostrarModalAgregarProductos" id="boton-agregar-producto"
-            type="button" class="btn boton-desplegable">
+          <button v-if="modoOrdenar === false && encabezado.sucursalname === 'Bodega Central'"
+            @click="mostrarModalAgregarProductos" id="boton-agregar-producto" type="button" class="btn boton-desplegable">
             <div class="contenido-boton d-flex">
               <span class="d-block icono-boton"><font-awesome-icon icon="circle-plus" /></span>
               <span class=" d-block nombre-boton"> Nuevo Producto </span>
@@ -39,12 +40,13 @@
 
       <div class="container-fluid">
         <div class="row">
-          <tarjetaInventario v-for="producto, index in dataProductos" :data="producto" modulo="Inventario" />
+          <tarjetaInventario v-for="producto in dataProductos" :data="producto" modulo="Inventario" />
         </div>
       </div>
     </div>
   </div>
-  <modalFiltros v-if="mostrandoFiltros === true" @ocultar-modal="() => mostrarModalFiltros()" />
+  <modalFiltros v-if="mostrandoFiltros === true" @ocultar-modal="() => mostrarModalFiltros()"
+    @aplicar-filtros="(availableF, categoriaF, sucursalF) => configurarFiltros(availableF, categoriaF, sucursalF)" />
   <modalCRUD v-if="mostrandoAgregar === true" modulo="Inventario" accion="Crear"
     @ocultar-modal="() => mostrarModalAgregarProductos()" />
 
@@ -53,6 +55,8 @@
   
 <script setup>
 import { generalStore } from '@/store/index.js'
+import { supabase } from '@/lib/supabaseClient'
+import { ref, watchEffect } from 'vue'
 
 import MenuSpace from '@/components/menu.vue'
 import cabeceraComp from '@/components/cabecera.vue'
@@ -61,8 +65,6 @@ import barraBusqueda from '@/components/barraBusqueda.vue'
 import modalFiltros from '@/components/modalFiltros.vue'
 import modalCRUD from '@/components/modalCRUD.vue'
 import alerta from '@/components/minicomponents/alerta.vue'
-
-import { ref } from 'vue'
 
 /**
  * variable que contiene los metodos y variables de la store que retornamos (a modo de ser utilizadas como variables globales)
@@ -74,179 +76,25 @@ const mostrandoAgregar = ref(false)
 const modoOrdenar = ref(store.ordenarModo)
 const mostrandoAlerta = ref(false)
 const mensaje = ref('')
+const dataProductos = ref([{}])
+const available = ref(true)
+const filtradaDisponibildad = ref(false)
+const filtradaCategoria = ref(false)
+const dataDisponibilidad = ref([{}])
+const dataCategoria = ref([{}])
+const dataFiltrada = ref([{}])
+
+const cookies = document.cookie.split(';')
+const sucursalcode = store.desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
 
 const dataVista = ref(JSON.parse(localStorage.getItem('usuario')))
-const data = ref({
-  sucursalname: dataVista.value['sucursalname'],
-  sucursalcode: dataVista.value['sucursalcode'],
-  department: dataVista.value['department'],
-  colony: dataVista.value['colony']
-})
 
-const dataProductos = ref(
-  [{
-    'productcode': 'P1',
-    'name': "Aceminofen",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Tylenol",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Amoxicilina",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P1',
-    'name': "Aceminofen",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Tylenol",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Amoxicilina",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P1',
-    'name': "Aceminofen",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Tylenol",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Amoxicilina",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P1',
-    'name': "Aceminofen",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Tylenol",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Amoxicilina",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P1',
-    'name': "Aceminofen",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Tylenol",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Amoxicilina",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P1',
-    'name': "Aceminofen",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Tylenol",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Amoxicilina",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P1',
-    'name': "Aceminofen",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Tylenol",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Amoxicilina",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P1',
-    'name': "Aceminofen",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Tylenol",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Amoxicilina",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P1',
-    'name': "Aceminofen",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Tylenol",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  },
-  {
-    'productcode': 'P2',
-    'name': "Amoxicilina",
-    'categoryname': "Pastillas",
-    'productdescription': "Prueba de descripción del producto, para tenerlo estático"
-  }
-  ])
+const encabezado = ref({
+  sucursalname: dataVista.value[0]['sucursalname'],
+  sucursalcode: sucursalcode,
+  department: dataVista.value[0]['department'],
+  colony: dataVista.value[0]['colony']
+})
 
 /**
  * Función para cambiar el valor de la bool para mostrar u ocultar el modal de los filtros
@@ -266,10 +114,10 @@ const Ordenar = () => {
 
   if (modoOrdenar.value === true) {
     mensaje.value = 'Orden abierta'
-    mostrandoAlerta.value = !mostrandoAlerta.value
+    usarAlerta()
   } else {
     mensaje.value = 'Orden culminada'
-    mostrandoAlerta.value = !mostrandoAlerta.value
+    usarAlerta()
   }
 }
 
@@ -284,11 +132,78 @@ const usarAlerta = () => {
 const mostrarModalAgregarProductos = () => {
   mostrandoAgregar.value = !mostrandoAgregar.value
 }
+
+const cargarProductos = async () => {
+  try {
+    let { data, error } = await supabase
+      .rpc('mostrarproductos', {
+        sucursalcode: sucursalcode
+      })
+
+    if (error) console.error(error)
+
+    if (data != '') {
+      store.dataNoFiltrada = data
+      dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
+    }
+
+  } catch (error) {
+    alert(error)
+  }
+}
+cargarProductos()
+
+
+const configurarFiltros = (availableF, categoriaF, sucursalF) => {
+  if (sucursalF != '') {
+    //cargarProductos(sucursalF)
+  }
+  filtrarDisponibilidad(availableF, categoriaF)
+  //filtrarCategoria(categoriaF)
+}
+
+const filtrarDisponibilidad = (disponibilidadFiltro, categoriaFiltro) => {
+  if(disponibilidadFiltro === 'true'){
+    disponibilidadFiltro = true
+  }
+  if(disponibilidadFiltro === 'false'){
+    disponibilidadFiltro = false
+  }
+
+  if(categoriaFiltro != ''){
+    filtradaCategoria.value = true
+  }else{
+    filtradaCategoria.value = false
+  }
+  console.log(categoriaFiltro)
+
+  if (disponibilidadFiltro == available.value && filtradaCategoria.value == false) {
+    dataProductos.value = dataProductos.value
+  } else {
+    dataProductos.value = store.dataNoFiltrada.filter(producto => {
+      available.value = !available.value
+      filtradaDisponibildad.value = true
+      if(filtradaCategoria.value == false){
+        return producto.available == disponibilidadFiltro
+      }else{
+        return producto.available == disponibilidadFiltro && producto.categorycode == categoriaFiltro
+      }
+    })
+  }
+}
+
+//store.dataNoFiltrada = data sin filtros (productos disponibles y no disponibles) por sucursal
+//dataDisponibilidad = data con filtro de disponibilidad
+//dataCategoria = data con filtro de categoria
+//datafiltrada = data con filtro de categoria y disponibilidad (para la barra de búsqueda)
+
+
+
 </script>
 
 <style scoped>
 #vista-inventario .cuerpo-vista {
-  width: fit-content;
+  width: 100%;
   max-width: 100%;
   height: fit-content;
   position: relative;
