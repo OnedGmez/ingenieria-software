@@ -12,12 +12,12 @@
     <div class="form d-flex">
       <div class="input-group">
         <span class="input-group-text" id="usuario-input"></span>
-        <input type="text" class="form-control" required placeholder="Usuario/Correo electrónico" v-model="user"
-        pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" aria-label="Usuario" aria-describedby="usuario-input">
+        <input type="text" class="form-control"  @keyup.enter="emisionInicioSesion" autofocus required placeholder="Usuario/Correo electrónico" v-model="user"
+        aria-label="Usuario" aria-describedby="usuario-input">
       </div>
       <div class="input-group">
         <span class="input-group-text" id="contra-input"></span>
-        <input type="password" class="form-control" required placeholder="Contraseña" v-model="password" aria-label="Contrasenia"
+        <input type="password" class="form-control" @keyup.enter="emisionInicioSesion" required placeholder="Contraseña" v-model="password" aria-label="Contrasenia"
           aria-describedby="contra-input">
       </div>
       <a href="#">Olvidé mi contraseña</a>
