@@ -2,6 +2,10 @@
     <div class="data">
         <p class="data-text">{{ dataProducto['productdescription'] }}</p>
         <div class="d-flex">
+            <span class="data-modal"> Código: {{ dataProducto['productcode'] }}</span>
+            <span class="data-modal"> Proveedor: {{ dataProducto['vendorname'] }}</span>
+        </div>
+        <div class="d-flex">
             <span class="data-modal"> Categoría: {{ dataProducto['categoryname'] }}</span>
             <span class="data-modal"> Lote: {{ dataProducto['lotnumber'] }} </span>
         </div>
@@ -11,7 +15,7 @@
         </div>
         <div class="d-flex">
             <span class="data-modal"> {{ dataProducto['units'] }}/caja</span>
-            <span class="data-modal"> {{ dataProducto['stock'] }} </span>
+            <span class="data-modal"> Stock: {{ dataProducto['stock'] }} Unidades </span>
         </div>
     </div>
 </template>
