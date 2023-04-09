@@ -9,7 +9,7 @@ const routes = [
     alias: '/'
   },
   {
-    path: '/inventario/:rol/:sucursal',
+    path: '/inventario/:rol/:sucursalcode',
     name: 'inventario',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
