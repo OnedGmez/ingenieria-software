@@ -1,9 +1,9 @@
 <template>
     <!--El evento clic abre el modal-->
-    <div @click="mostrarModal" class="contenedor col-6 col-md-3 col-lg-2">
-        <div :id=data.code class="card">
+    <div v-if="data['urlimage'] != undefined" @click="mostrarModal" class="contenedor col-12 col-md-3 col-lg-2">
+        <div :class="[data['available'] === false ? 'noDispo' : '']" :id=data.code class="card">
             <div class="encabezado-img">
-                <img src="../assets/img/aceta.jpg" class="card-img-top img-fluid" alt="...">
+                <img :src="require('../assets/img/' + data['urlimage'])" class="card-img-top img-fluid" alt="...">
             </div>
             <div class="card-body">
                 <div class="card-title">
@@ -26,6 +26,7 @@
     margin: 4px;
     border-radius: 15px;
     filter: drop-shadow(0px 0px 3px #3f596bbf);
+    box-sizing: border-box;
 }
 
 .card:hover {
@@ -57,6 +58,14 @@
     margin: 0;
     text-align: center;
     font-family: 'fredoka-family';
+}
+
+.noDispo{
+    filter: opacity(.65);
+}
+
+.noDispo:hover{
+    filter: opacity(.7);
 }
 
 /*
