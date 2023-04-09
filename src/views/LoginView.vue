@@ -25,6 +25,7 @@
 import router from "@/router";
 import { ref } from "vue";
 import { generalStore } from "@/store";
+import { useUsuarioStore } from "@/store/usuario";
 import { sha256 } from 'js-sha256'
 import { supabase } from "@/lib/supabaseClient";
 import alerta from "@/components/minicomponents/alerta.vue";
@@ -33,10 +34,17 @@ import LoginSpace from '@/components/LoginSpace.vue'
 const mostrandoAlerta = ref(false)
 const mensaje = ref('')
 const store = generalStore()
+const userStore = useUsuarioStore()
 
-sessionStorage.removeItem('token')
-localStorage.removeItem('usuario')
+store.limpiarStorages()
+store.limpiarFiltros()
 
+/**
+ * dev: Oned Gómez
+ * Función que nos sirve para validar los datos de inicio de sesión
+ * @param {*} usuario recibe el nombre de usuario o el email
+ * @param {*} contrasenia contraseña establecida por el usuario para iniciar sesión
+ */
 const validarSesion = async (usuario, contrasenia) => {
   if (usuario != '' && contrasenia != '') {
     try {
@@ -54,14 +62,44 @@ const validarSesion = async (usuario, contrasenia) => {
       if (data != '') {
         const rol = data[0]['rol'];
         const nombreusuario = data[0]['nombreusuario'];
-        const sucursal = data[0]['sucursalcode']
-      
-        store.guardarLocalStorage(data[0], 'usuario')
-        router.push({ name: 'inventario', params: { rol, sucursal } });
+        const sucursalcode = data[0]['sucursalcode']
+        const urlphoto = data[0]['urlphoto']
+        const employeecode = data[0]['employeecode']
+        const sucursalname = data[0]['sucursalname']
+        const department = data[0]['department']
+        const colony = data[0]['colony']
+
+        const dataToken = [{
+          employeecode,
+          nombreusuario,
+          rol,
+          sucursalcode
+        }]
+
+        const dataAdicional = [{
+          urlphoto,
+          sucursalname,
+          colony,
+          department
+        }]
+
+        userStore.crearToken(dataToken)
+        document.cookie = "nombreusuario" + "=" + store.encriptarData(nombreusuario, 'nombreusuario') + ";path=/;"
+        document.cookie = "rol" + "=" + store.encriptarData(rol, 'rol') + ";path=/;"
+        document.cookie = "sucursalcode" + "=" + store.encriptarData(sucursalcode, 'sucursalcode') + ";path=/;"
+        document.cookie = "employeecode" + "=" + store.encriptarData(employeecode, 'employeecode') + ";path=/;"
+        store.guardarLocalStorage(dataAdicional, 'usuario')
+        store.cargarProveedores()
+        store.cargaCategorias()
+        if(rol === 'Administrador'){
+          store.cargarSucursales()
+        }
+
+        router.push({ name: 'inventario', params: { rol, sucursalcode } });
       } else {
         mensaje.value = 'Usuario y/o contraseña incorrecta(o)'
         usarAlerta()
-      }
+      } 
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message)
