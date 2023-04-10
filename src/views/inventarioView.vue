@@ -40,7 +40,7 @@
 
       <div class="container-fluid">
         <div class="row">
-          <tarjetaInventario v-for="producto in dataProductos" :data="producto" modulo="Inventario" />
+          <tarjetaInventario v-for="producto in dataProductos" :key="producto.productcode" :data="producto" modulo="Inventario" />
         </div>
       </div>
     </div>
@@ -80,9 +80,6 @@ const dataProductos = ref([{}])
 const available = ref(true)
 const filtradaDisponibildad = ref(false)
 const filtradaCategoria = ref(false)
-const dataDisponibilidad = ref([{}])
-const dataCategoria = ref([{}])
-const dataFiltrada = ref([{}])
 
 const cookies = document.cookie.split(';')
 const sucursalcode = store.desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
@@ -158,11 +155,10 @@ const configurarFiltros = (availableF, categoriaF, sucursalF) => {
   if (sucursalF != '') {
     //cargarProductos(sucursalF)
   }
-  filtrarDisponibilidad(availableF, categoriaF)
-  //filtrarCategoria(categoriaF)
+  filtrar(availableF, categoriaF)
 }
 
-const filtrarDisponibilidad = (disponibilidadFiltro, categoriaFiltro) => {
+const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
   if(disponibilidadFiltro === 'true'){
     disponibilidadFiltro = true
   }
@@ -192,12 +188,11 @@ const filtrarDisponibilidad = (disponibilidadFiltro, categoriaFiltro) => {
   }
 }
 
-//store.dataNoFiltrada = data sin filtros (productos disponibles y no disponibles) por sucursal
-//dataDisponibilidad = data con filtro de disponibilidad
-//dataCategoria = data con filtro de categoria
-//datafiltrada = data con filtro de categoria y disponibilidad (para la barra de búsqueda)
-
-
+watchEffect(() =>{
+  if(filtradaDisponibildad.value == false && filtradaCategoria.value == false){
+    dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
+  }
+})
 
 </script>
 
