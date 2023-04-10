@@ -10,8 +10,9 @@ export const generalStore = defineStore('store', () => {
   const menu = ref(menuOpciones.elementos);
   const dataNoFiltrada = ref([{}])
   const ordenarModo = ref(false)
-  const nuevoMenu = ref([])
   const respuesta = ref('')
+  const filtradaDisponibildad = ref(false)
+  const filtradaCategoria = ref(false)
   const productosOrden = ref([{}])
 
   const nuevoProducto = ref('')
@@ -136,6 +137,7 @@ export const generalStore = defineStore('store', () => {
 
 
   const actualizarProducto = async (valores) => {
+    filtradaCategoria.value=false
     try {
       const { data, error } = await supabase
         .from('sucursalsinventory')
@@ -165,6 +167,7 @@ export const generalStore = defineStore('store', () => {
 
   //ref: funcion en DB
   const agregarProducto = async (valores) => {
+    filtradaCategoria.value = false
     const cookies = document.cookie.split(';')
     const sucursalcode = desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
     const codigoempleado = desencriptarData(cookies[3].split('=')[1], 'employeecode')
@@ -253,8 +256,6 @@ export const generalStore = defineStore('store', () => {
               'vendorname': valores.vendorname,
               'urlimage': valores.urlimage
             }
-
-            console.log(nuevoProducto.value)
           }
         }
       } else {
@@ -363,7 +364,6 @@ export const generalStore = defineStore('store', () => {
   }
 
   return {
-    nuevoMenu,
     menu,
     setModoOrden,
     ordenarModo,
@@ -378,6 +378,8 @@ export const generalStore = defineStore('store', () => {
     agregarProducto,
     limpiarStorages,
     limpiarFiltros,
-    fechaActual
+    fechaActual,
+    filtradaDisponibildad,
+    filtradaCategoria
   }
 })
