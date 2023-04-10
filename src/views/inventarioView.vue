@@ -190,7 +190,10 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
 
 watchEffect(() =>{
   if(filtradaDisponibildad.value == false && filtradaCategoria.value == false){
+    available.value = true
     dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
+  }else{
+
   }
 })
 
