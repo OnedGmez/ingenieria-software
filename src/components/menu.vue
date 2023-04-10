@@ -214,8 +214,14 @@ const urlphoto = ref(dataUsuario[0]['urlphoto']);
 const menu = store.menu
 const opciones = ref('')
 
-const cargarMenu = () => {
-    opciones.value = menu.filter(opcion => opcion.permitidoPara.filter(permitido => permitido == rol));
+const cargarMenu = () => { 
+    opciones.value = menu.filter(opcion => {
+        for (let i = 0; i < opcion.permitidoPara.length; i++) {
+            if (opcion.permitidoPara[i] == rol){
+                return true
+            }
+        }
+    });
 }
 cargarMenu()
 
