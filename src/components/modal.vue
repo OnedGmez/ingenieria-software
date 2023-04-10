@@ -35,11 +35,12 @@
             </div>
         </div>
     </div>
-    <modalCRUD v-if="mostrandoModalCRUD" @ocultar-modal="() => mostrarModal()" :data=data :modulo=modulo
+    <modalCRUD v-if="mostrandoModalCRUD" @ocultar-modal="(alerta) => mostrarModal(alerta)" :data=data :modulo=modulo
         accion="Actualizar" />
 
     <modalCantidadesOrden v-if="indicarCantidad" @ocultar-modal="() => mostrarMCantidad()" :stock="data['stock']"
         @cerrar="() => mostrarMCantidad()" @confirmar="(cantidad) => confirmar(cantidad)" />
+    <alerta v-if="mostrandoAlerta === true" :mensaje="mensaje" :error='err' />
 </template>
 
 <style scoped>
@@ -160,12 +161,17 @@ import { ref } from 'vue';
 import { generalStore } from '@/store/index.js';
 import dataModalProducto from '@/components/minicomponents/dataModalProductos.vue'
 import modalCRUD from '@/components/modalCRUD.vue';
+import alerta from './minicomponents/alerta.vue';
 import modalCantidadesOrden from '@/components/minicomponents/cantidadesOrden.vue'
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal'])
 const mostrandoModalCRUD = ref(false)
 const indicarCantidad = ref(false)
 const stockOrdenado = ref(0)
+
+const err = ref(false)
+const mensaje = ref('')
+const mostrandoAlerta = ref(false)
 
 /**
  * Traemos el valor del modo de Ordenar para activar o desactivar el botón de añadir productos a la orden
@@ -177,8 +183,13 @@ const cerrarModal = () => {
     emisiones('ocultarModal')
 }
 
-const mostrarModal = () => {
+const mostrarModal = (alerta) => {
     mostrandoModalCRUD.value = !mostrandoModalCRUD.value
+    if (mostrandoModalCRUD.value == false) {
+        mensaje.value = alerta[0]['mensaje']
+        err.value = alerta[0]['error']
+        usarAlerta()
+    }
 }
 
 const mostrarMCantidad = () => {
@@ -186,7 +197,7 @@ const mostrarMCantidad = () => {
 }
 
 //Falta agregar el codigo de orden y en la view de inventario agregar un modal para indicar el destino de los productos
-const confirmar = (cantidad) =>{
+const confirmar = (cantidad) => {
     stockOrdenado.value = cantidad
     const cuerpoDetalle = {
         'quantity': stockOrdenado.value,
@@ -194,6 +205,11 @@ const confirmar = (cantidad) =>{
         'productcode': productoModal.data['productcode'],
         'ordercode': ''
     }
+}
+
+const usarAlerta = () => {
+    mostrandoAlerta.value = !mostrandoAlerta.value
+    setTimeout(() => { mostrandoAlerta.value = !mostrandoAlerta.value; }, 1900);
 }
 
 const pushOrden = () => {
