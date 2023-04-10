@@ -1,6 +1,6 @@
 <template>
     <!--El evento clic abre el modal-->
-    <div v-if="data['urlimage'] != undefined" @click="mostrarModal" class="contenedor col-12 col-md-3 col-lg-2">
+    <div v-if="data['urlimage'] != undefined" @click="mostrarModal" class="contenedor col-6 col-md-3 col-lg-2">
         <div :class="[data['available'] === false ? 'noDispo' : '']" :id=data.code class="card">
             <div class="encabezado-img">
                 <img :src="require('../assets/img/' + data['urlimage'])" class="card-img-top img-fluid" alt="...">
@@ -27,6 +27,7 @@
     border-radius: 15px;
     filter: drop-shadow(0px 0px 3px #3f596bbf);
     box-sizing: border-box;
+    line-height: normal;
 }
 
 .card:hover {
@@ -38,7 +39,7 @@
     width: 95%;
     height: 30%;
     margin: 1% auto 0 auto;
-    border-radius:inherit;
+    border-radius: inherit;
 
 }
 
@@ -49,6 +50,7 @@
 
 .card .card-body {
     padding: 0px 4px 5px 4px;
+    line-height: normal;
 }
 
 .card .card-body .card-title {
@@ -60,11 +62,11 @@
     font-family: 'fredoka-family';
 }
 
-.noDispo{
+.noDispo {
     filter: opacity(.65);
 }
 
-.noDispo:hover{
+.noDispo:hover {
     filter: opacity(.7);
 }
 
@@ -85,8 +87,6 @@
         font-size: calc(1em + 1vw);
     }
 }
-
-
 </style>
 
 <script setup>
