@@ -78,8 +78,6 @@ const mostrandoAlerta = ref(false)
 const mensaje = ref('')
 const dataProductos = ref([{}])
 const available = ref(true)
-const filtradaDisponibildad = ref(false)
-const filtradaCategoria = ref(false)
 
 const cookies = document.cookie.split(';')
 const sucursalcode = store.desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
@@ -167,19 +165,18 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
   }
 
   if(categoriaFiltro != ''){
-    filtradaCategoria.value = true
+    store.filtradaCategoria = true
   }else{
-    filtradaCategoria.value = false
+    store.filtradaCategoria = false
   }
-  console.log(categoriaFiltro)
 
-  if (disponibilidadFiltro == available.value && filtradaCategoria.value == false) {
+  if (disponibilidadFiltro == available.value && store.filtradaCategoria == false) {
     dataProductos.value = dataProductos.value
   } else {
     dataProductos.value = store.dataNoFiltrada.filter(producto => {
       available.value = !available.value
-      filtradaDisponibildad.value = true
-      if(filtradaCategoria.value == false){
+      store.filtradaDisponibildad = true
+      if(store.filtradaCategoria == false){
         return producto.available == disponibilidadFiltro
       }else{
         return producto.available == disponibilidadFiltro && producto.categorycode == categoriaFiltro
@@ -189,11 +186,9 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
 }
 
 watchEffect(() =>{
-  if(filtradaDisponibildad.value == false && filtradaCategoria.value == false){
+  if(store.filtradaCategoria == false){
     available.value = true
     dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
-  }else{
-
   }
 })
 
