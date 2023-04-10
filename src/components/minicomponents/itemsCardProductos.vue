@@ -24,12 +24,17 @@ const propsProducto = defineProps([
     text-align: center;
     font-family: 'fredoka-family';
     font-size: calc(.9em + 0.04vw);
+    overflow: hidden;
 }
 
 .card-text {
     font-size: calc(.9em + 0.04vw) !important;
     font-weight: 100!important;
-    line-height: normal;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    overflow: hidden;
 }
 
 /*
