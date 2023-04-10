@@ -84,7 +84,7 @@ const respuesta = ref('')
 const guardar = ref(null)
 
 const cerrarModal = () => {
-    emisiones('ocultarModal')
+    emisiones('ocultarModal', respuesta.value)
 }
 
 const modalProps = defineProps([
@@ -105,9 +105,7 @@ const confirmarAcción = async () => {
             if (modalProps.accion === "Crear") {
                 if (guardar.value.productcode !== '' && guardar.value.name !== '' && guardar.value.lotnumber !== '' && guardar.value.productdescription !== '' && guardar.value.categoryname !== '' && guardar.value.expirationdate !== '' && guardar.value.vendorcode !== '' && guardar.value.stock !== '' && guardar.value.units !== '' && guardar.value.purchaseprice) {
                     respuesta.value = await store.agregarProducto(guardar.value)
-                    mensaje.value = respuesta.value[0]['mensaje']
-                    err.value = respuesta.value[0]['error']
-                    usarAlerta()
+                    cerrarModal()
                 } else {
                     mensaje.value = "Debes proporcionar la información solicitada"
                     err.value = true
@@ -117,9 +115,7 @@ const confirmarAcción = async () => {
                 if (modalProps.accion === "Actualizar") {
                     if (guardar.value.stock !== '' && guardar.value.expirationdate !== '' && guardar.value.lotnumber !== '' && guardar.value.productcode !== '' && guardar.value.sucursalinventorycode !== '') {
                         respuesta.value = await store.actualizarProducto(guardar.value)
-                        mensaje.value = respuesta.value[0]['mensaje']
-                        err.value = respuesta.value[0]['error']
-                        usarAlerta()
+                        cerrarModal()
                     } else {
                         mensaje.value = "Debes proporcionar la información solicitada"
                         err.value = true
@@ -140,6 +136,6 @@ const confirmarAcción = async () => {
 
 const usarAlerta = () => {
     mostrandoAlerta.value = !mostrandoAlerta.value
-    setTimeout(() => { mostrandoAlerta.value = !mostrandoAlerta.value; }, 1900);
+    setTimeout(() => { mostrandoAlerta.value = !mostrandoAlerta.value; cerrarModal() }, 1900);
 }
 </script>
