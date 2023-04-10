@@ -186,7 +186,7 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
 }
 
 watchEffect(() =>{
-  if(store.filtradaCategoria == false){
+  if(store.filtradaDisponibildad == false && store.filtradaCategoria == false){
     available.value = true
     dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
   }
