@@ -138,6 +138,7 @@ export const generalStore = defineStore('store', () => {
 
   const actualizarProducto = async (valores) => {
     filtradaCategoria.value=false
+    filtradaDisponibildad.value = false
     try {
       const { data, error } = await supabase
         .from('sucursalsinventory')
@@ -168,6 +169,7 @@ export const generalStore = defineStore('store', () => {
   //ref: funcion en DB
   const agregarProducto = async (valores) => {
     filtradaCategoria.value = false
+    filtradaDisponibildad.value = false
     const cookies = document.cookie.split(';')
     const sucursalcode = desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
     const codigoempleado = desencriptarData(cookies[3].split('=')[1], 'employeecode')
