@@ -1,7 +1,7 @@
 <template>
     <div class="input-group">
-        <span @click="buscar" class="input-group-text" id="busqueda-input"><font-awesome-icon icon="magnifying-glass" /></span>
-        <input type="text" class="form-control" aria-label="Busqueda" v-model="valorBuscar" aria-describedby="busqueda-input">
+        <span class="input-group-text" id="busqueda-input"><font-awesome-icon icon="magnifying-glass" /></span>
+        <input type="text" @keyup="buscar" class="form-control" aria-label="Busqueda" v-model="valorBuscar" aria-describedby="busqueda-input">
     </div>
 </template>
 
@@ -34,8 +34,9 @@
 import { ref } from 'vue';
 
 const valorBuscar = ref('')
+const emisiones = defineEmits(['busqueda'])
 
 const buscar = () =>{
-    console.log(valorBuscar.value)
+    emisiones('busqueda', valorBuscar.value)
 }
 </script>
