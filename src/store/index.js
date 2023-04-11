@@ -13,6 +13,7 @@ export const generalStore = defineStore('store', () => {
   const respuesta = ref('')
   const filtradaDisponibildad = ref(false)
   const filtradaCategoria = ref(false)
+  const filtradaBusqueda = ref(false)
   const productosOrden = ref([{}])
 
   const nuevoProducto = ref('')
