@@ -10,7 +10,7 @@
 
         <div class="controles-filtrado-inventario container-fluid">
           <div class="barra-filtros d-flex align-items-end">
-            <barraBusqueda />
+            <barraBusqueda @busqueda="(buscar) => filtrarBusqueda(buscar)" />
             <button @click="mostrarModalFiltros" type="button" class="btn boton-filtros">
               <div class="contenido-boton d-flex">
                 <span class="d-block icono-boton"><font-awesome-icon icon="arrow-down-wide-short" /></span>
@@ -40,7 +40,8 @@
 
       <div class="container-fluid">
         <div class="row">
-          <tarjetaInventario v-for="producto in dataProductos" :key="producto.productcode" :data="producto" modulo="Inventario" />
+          <tarjetaInventario v-for="producto in dataProductos" :key="producto.productcode" :data="producto"
+            modulo="Inventario" />
         </div>
       </div>
     </div>
@@ -65,6 +66,7 @@ import barraBusqueda from '@/components/barraBusqueda.vue'
 import modalFiltros from '@/components/modalFiltros.vue'
 import modalCRUD from '@/components/modalCRUD.vue'
 import alerta from '@/components/minicomponents/alerta.vue'
+import { faL } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * variable que contiene los metodos y variables de la store que retornamos (a modo de ser utilizadas como variables globales)
@@ -157,16 +159,16 @@ const configurarFiltros = (availableF, categoriaF, sucursalF) => {
 }
 
 const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
-  if(disponibilidadFiltro === 'true'){
+  if (disponibilidadFiltro === 'true') {
     disponibilidadFiltro = true
   }
-  if(disponibilidadFiltro === 'false'){
+  if (disponibilidadFiltro === 'false') {
     disponibilidadFiltro = false
   }
 
-  if(categoriaFiltro != ''){
+  if (categoriaFiltro != '') {
     store.filtradaCategoria = true
-  }else{
+  } else {
     store.filtradaCategoria = false
   }
 
@@ -176,17 +178,28 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
     dataProductos.value = store.dataNoFiltrada.filter(producto => {
       available.value = !available.value
       store.filtradaDisponibildad = true
-      if(store.filtradaCategoria == false){
+      if (store.filtradaCategoria == false) {
         return producto.available == disponibilidadFiltro
-      }else{
+      } else {
         return producto.available == disponibilidadFiltro && producto.categorycode == categoriaFiltro
       }
     })
   }
 }
 
-watchEffect(() =>{
-  if(store.filtradaDisponibildad == false && store.filtradaCategoria == false){
+const filtrarBusqueda = (buscar) => {
+  if(buscar == ''){
+    store.filtrarBusqueda = false
+    dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
+  }else{
+    dataProductos.value = dataProductos.value.filter(producto => {
+      return ((producto.name).toLowerCase()).match((buscar).toLowerCase())
+    })
+  }
+}
+
+watchEffect(() => {
+  if (store.filtradaDisponibildad == false && store.filtradaCategoria == false && store.filtrarBusqueda == false) {
     available.value = true
     dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
   }
