@@ -36,8 +36,6 @@ label {
 import { ref, defineEmits } from "vue";
 const valor = ref('')
 const emisiones = defineEmits(['codigo'])
-const categoria = ref('')
-const sucursal = ref('')
 
 const propsSelectBox = defineProps([
     'data',
