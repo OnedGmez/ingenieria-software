@@ -199,7 +199,8 @@ const filtrarBusqueda = (buscar) => {
 }
 
 watchEffect(() => {
-  if (store.filtradaDisponibildad == false && store.filtradaCategoria == false && store.filtrarBusqueda == false) {
+  if (store.filtradaDisponibildad == false && store.filtradaCategoria == false && store.filtradaBusqueda == false) {
+    console.log('estoy aca')
     available.value = true
     dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
   }
