@@ -383,6 +383,7 @@ export const generalStore = defineStore('store', () => {
     limpiarFiltros,
     fechaActual,
     filtradaDisponibildad,
-    filtradaCategoria
+    filtradaCategoria,
+    filtradaBusqueda
   }
 })
