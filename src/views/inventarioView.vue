@@ -49,9 +49,9 @@
   <modalFiltros v-if="mostrandoFiltros === true" @ocultar-modal="() => mostrarModalFiltros()"
     @aplicar-filtros="(availableF, categoriaF, sucursalF) => configurarFiltros(availableF, categoriaF, sucursalF)" />
   <modalCRUD v-if="mostrandoAgregar === true" modulo="Inventario" accion="Crear"
-    @ocultar-modal="() => mostrarModalAgregarProductos()" />
+    @ocultar-modal="(alerta) => mostrarModalAgregarProductos(alerta)" />
 
-  <alerta v-if="mostrandoAlerta === true" :mensaje="mensaje" error='false' />
+  <alerta v-if="mostrandoAlerta === true" :mensaje="mensaje" :error="err" />
 </template>
   
 <script setup>
@@ -78,6 +78,7 @@ const mostrandoAgregar = ref(false)
 const modoOrdenar = ref(store.ordenarModo)
 const mostrandoAlerta = ref(false)
 const mensaje = ref('')
+const err = ref(false)
 const dataProductos = ref([{}])
 const available = ref(true)
 
@@ -111,9 +112,11 @@ const Ordenar = () => {
 
   if (modoOrdenar.value === true) {
     mensaje.value = 'Orden abierta'
+    err.value = false
     usarAlerta()
   } else {
     mensaje.value = 'Orden culminada'
+    err.value = false
     usarAlerta()
   }
 }
@@ -126,8 +129,13 @@ const usarAlerta = () => {
 /**
  * Función que servirá para abrir el modal con el formulario para agregar los productos al inventario general
  */
-const mostrarModalAgregarProductos = () => {
+const mostrarModalAgregarProductos = (alerta) => {
   mostrandoAgregar.value = !mostrandoAgregar.value
+  if (mostrandoAgregar.value == false) {
+    mensaje.value = alerta[0]['mensaje']
+    err.value = alerta[0]['error']
+    usarAlerta()
+  }
 }
 
 const cargarProductos = async () => {
@@ -136,8 +144,6 @@ const cargarProductos = async () => {
       .rpc('mostrarproductos', {
         sucursalcode: sucursalcode
       })
-
-    if (error) console.error(error)
 
     if (data != '') {
       store.dataNoFiltrada = data
@@ -188,10 +194,10 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
 }
 
 const filtrarBusqueda = (buscar) => {
-  if(buscar == ''){
-    store.filtrarBusqueda = false
+  if (buscar == '') {
+    store.filtradaBusqueda = false
     dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
-  }else{
+  } else {
     dataProductos.value = dataProductos.value.filter(producto => {
       return ((producto.name).toLowerCase()).match((buscar).toLowerCase())
     })
@@ -200,7 +206,6 @@ const filtrarBusqueda = (buscar) => {
 
 watchEffect(() => {
   if (store.filtradaDisponibildad == false && store.filtradaCategoria == false && store.filtradaBusqueda == false) {
-    console.log('estoy aca')
     available.value = true
     dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
   }
