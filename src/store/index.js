@@ -281,7 +281,7 @@ export const generalStore = defineStore('store', () => {
           const { data, error } = await supabase
             .from('sucursalsinventory')
             .update({ stock: valores.stock })
-            .eq('sucursalinventorycode', sucursalinventorycode)
+            .eq('sucursalinventorycode', sucursalinventorycode[0]['sucursalinventorycode'])
 
           if (error) {
             respuesta.value = [{
