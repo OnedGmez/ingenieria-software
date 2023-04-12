@@ -40,7 +40,7 @@
 
       <div class="container-fluid">
         <div class="row">
-          <tarjetaInventario v-for="producto in dataProductos" :key="producto.productcode" :data="producto"
+          <tarjetaInventario v-for="producto in dataProductos" :data="producto"
             modulo="Inventario" />
         </div>
       </div>
@@ -131,7 +131,7 @@ const usarAlerta = () => {
  */
 const mostrarModalAgregarProductos = (alerta) => {
   mostrandoAgregar.value = !mostrandoAgregar.value
-  if (mostrandoAgregar.value == false) {
+  if (mostrandoAgregar.value == false && alerta != '') {
     mensaje.value = alerta[0]['mensaje']
     err.value = alerta[0]['error']
     usarAlerta()
@@ -182,7 +182,7 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
     dataProductos.value = dataProductos.value
   } else {
     dataProductos.value = store.dataNoFiltrada.filter(producto => {
-      available.value = !available.value
+      available.value = disponibilidadFiltro
       store.filtradaDisponibildad = true
       if (store.filtradaCategoria == false) {
         return producto.available == disponibilidadFiltro
@@ -198,6 +198,7 @@ const filtrarBusqueda = (buscar) => {
     store.filtradaBusqueda = false
     dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
   } else {
+    store.filtradaBusqueda = true
     dataProductos.value = dataProductos.value.filter(producto => {
       return ((producto.name).toLowerCase()).match((buscar).toLowerCase())
     })
