@@ -322,7 +322,7 @@ export const generalStore = defineStore('store', () => {
         (payload) => {
           switch (payload.eventType) {
             case 'INSERT':
-              dataNoFiltrada.value.push(nuevoProducto.value)
+              dataNoFiltrada.value.unshift(nuevoProducto.value)
               break;
             case 'UPDATE':
               const productoTMP = dataNoFiltrada.value.filter(producto => producto.sucursalinventorycode == payload.old['sucursalinventorycode']);
