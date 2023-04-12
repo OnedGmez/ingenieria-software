@@ -113,7 +113,7 @@ const confirmarAcción = async () => {
                 }
             } else {
                 if (modalProps.accion === "Actualizar") {
-                    if (guardar.value.stock !== '' && guardar.value.expirationdate !== '' && guardar.value.lotnumber !== '' && guardar.value.productcode !== '' && guardar.value.sucursalinventorycode !== '') {
+                    if (guardar.value.stock !== '') {
                         respuesta.value = await store.actualizarProducto(guardar.value)
                         cerrarModal()
                     } else {
@@ -136,6 +136,6 @@ const confirmarAcción = async () => {
 
 const usarAlerta = () => {
     mostrandoAlerta.value = !mostrandoAlerta.value
-    setTimeout(() => { mostrandoAlerta.value = !mostrandoAlerta.value; cerrarModal() }, 1900);
+    setTimeout(() => { mostrandoAlerta.value = !mostrandoAlerta.value; }, 1900);
 }
 </script>
