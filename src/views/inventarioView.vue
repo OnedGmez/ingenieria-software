@@ -203,7 +203,7 @@ const filtrarBusqueda = (buscar) => {
     }
   } else {
     store.filtradaBusqueda = true
-    if (categoria !== '') {
+    if (categoria !== null) {
       dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value && producto.categorycode == categoria)
     } else {
       dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
