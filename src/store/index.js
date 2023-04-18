@@ -28,12 +28,14 @@ export const generalStore = defineStore('store', () => {
     localStorage.removeItem('productos')
     localStorage.removeItem('sucursales')
     localStorage.removeItem('categorias')
+    localStorage.removeItem('proveedores')
   }
 
   const limpiarFiltros = () => {
     localStorage.removeItem('filtro-existencia')
     localStorage.removeItem('filtro-categoria')
     localStorage.removeItem('filtro-sucursal')
+    localStorage.removeItem('filtro-activo')
   }
   limpiarFiltros()
 
