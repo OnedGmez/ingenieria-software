@@ -203,7 +203,8 @@ const store = generalStore();
 const cookies = document.cookie.split(';')
 const nombreUsuario = store.desencriptarData(cookies[0].split('=')[1], 'nombreusuario')
 const rol = store.desencriptarData(cookies[1].split('=')[1], 'rol');
-const sucursalcode = store.desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
+
+const sucursalname = JSON.parse(localStorage.getItem('usuario'))[0]['sucursalname']
 
 /**
  * Recuperamos la información del localStorage y de las cookies
@@ -218,6 +219,16 @@ const cargarMenu = () => {
     opciones.value = menu.filter(opcion => {
         for (let i = 0; i < opcion.permitidoPara.length; i++) {
             if (opcion.permitidoPara[i] == rol){
+                return true
+            }
+        }
+    });
+
+    opciones.value = opciones.value.filter(opcion => {
+        if(opcion.sucursal == sucursalname){
+            return true
+        }else{
+            if(opcion.sucursal == 'Todas'){
                 return true
             }
         }
