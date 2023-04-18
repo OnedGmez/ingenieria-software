@@ -191,7 +191,7 @@ const cerrarModal = () => {
 
 const mostrarModal = (alerta) => {
     mostrandoModalCRUD.value = !mostrandoModalCRUD.value
-    if (mostrandoModalCRUD.value == false) {
+    if (mostrandoModalCRUD.value == false && alerta !== '') {
         mensaje.value = alerta[0]['mensaje']
         err.value = alerta[0]['error']
         usarAlerta()
