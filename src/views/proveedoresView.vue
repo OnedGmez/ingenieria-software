@@ -152,7 +152,6 @@ const filtrarBusqueda = (buscar) => {
 
 watchEffect(() => {
     if (store.filtradaDisponibildad == false && store.filtradaBusqueda == false) {
-        available.value = true
         dataProveedores.value = store.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == available.value)
     }
 })
