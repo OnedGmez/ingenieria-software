@@ -214,6 +214,7 @@ const urlphoto = ref(dataUsuario[0]['urlphoto']);
 
 const menu = store.menu
 const opciones = ref('')
+const IDitem = ref(store.IDItemMenu)
 
 const cargarMenu = () => { 
     opciones.value = menu.filter(opcion => {
@@ -236,15 +237,13 @@ const cargarMenu = () => {
 }
 cargarMenu()
 
-const IDitem = ref(0)
-
 /**
  * dev: Oned Gómez
  * @param {*} ID recibe el ID de la opción a la que se le ha dado click
  * @param {*} path recibe el path de la vista referenciada por la opción del menu
  */
 const cambiarID = (ID, nameroute) => {
-    IDitem.value = ID
+    store.IDItemMenu = ID
     console.log(nameroute)
     //router.push({ name: nameroute, params: { rol, sucursalcode } });
 }
