@@ -7,6 +7,9 @@
                     <div v-if="modulo === 'Inventario'" class="formulario">
                         <formularioProductos ref="guardar" :data=data :accion=accion />
                     </div>
+                    <div v-if="modulo === 'Proveedores'" class="formulario">
+                        <formularioACProveedores ref="guardar" :data=data :accion=accion />
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" @click="confirmarAcción" class="btn btn-confirmar">Confirmar</button>
@@ -71,6 +74,9 @@ import formularioProductos from '@/components/minicomponents/formularioACProduct
 import alerta from './minicomponents/alerta.vue';
 import { generalStore } from '@/store';
 
+
+import formularioACProveedores from './minicomponents/formularioACProveedores.vue';
+
 import { ref } from 'vue';
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal'])
@@ -126,8 +132,21 @@ const confirmarAcción = async () => {
             }
             break;
 
-        case 'Empleados':
+        case 'Proveedores':
+            if (modalProps.accion == 'Inventario') {
 
+            } else {
+                if (modalProps.accion == 'Actualizar') {
+                    if (guardar.value.country !== '' && guardar.value.urlimage !== '') {
+                        respuesta.value = await store.actualizarProveedor(guardar.value)
+                        cerrarModal()
+                    } else {
+                        mensaje.value = "Debes proporcionar la información solicitada"
+                        err.value = true
+                        usarAlerta()
+                    }
+                }
+            }
             break;
     }
 }
