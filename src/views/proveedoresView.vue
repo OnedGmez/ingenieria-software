@@ -113,7 +113,7 @@ const cargarProveedores = async () => {
 
         if (data != '') {
             store.dataNoFiltradaProveedores = data
-            dataProveedores.value = store.dataNoFiltradaProveedores.filter(proveedor => proveedor.active == available.value)
+            dataProveedores.value = store.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == available.value)
         }
     } catch (error) {
         mensaje.value = error
@@ -183,7 +183,7 @@ const filtrarBusqueda = (buscar) => {
 watchEffect(() => {
     if (store.filtradaDisponibildad == false && store.filtradaBusqueda == false) {
         available.value = true
-        dataProveedores.value = store.dataNoFiltradaProveedores.filter(proveedor => proveedor.active == available.value)
+        dataProveedores.value = store.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == available.value)
     }
 })
 
