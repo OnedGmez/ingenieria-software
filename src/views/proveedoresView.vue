@@ -35,7 +35,7 @@
         </div>
     </div>
     <modalFiltros modulo="Proveedores" v-if="mostrandoFiltros === true" @ocultar-modal="() => mostrarModalFiltros()"
-        @aplicar-filtros="(availableF, categoriaF) => configurarFiltros(availableF, categoriaF)" />
+        @aplicar-filtros="(availableF) => configurarFiltros(availableF)" />
     <modalCRUD v-if="mostrandoAgregar === true" modulo="Proveedores" accion="Crear"
         @ocultar-modal="(alerta) => mostrarModalAgregarProveedor(alerta)" />
 
@@ -124,8 +124,8 @@ const cargarProveedores = async () => {
 cargarProveedores()
 
 
-const configurarFiltros = (availableF, categoriaF) => {
-    filtrar(availableF, categoriaF)
+const configurarFiltros = (availableF) => {
+    filtrar(availableF)
 }
 
 const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
@@ -136,26 +136,7 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
         disponibilidadFiltro = false
     }
 
-    if (categoriaFiltro !== '') {
-        store.filtradaCategoria = true
-    } else {
-        store.filtradaCategoria = false
-    }
-
-    if (disponibilidadFiltro == available.value && store.filtradaCategoria == false) {
-        dataProveedores.value = store.dataNoFiltrada.filter(producto => producto.available == disponibilidadFiltro)
-        store.filtradaDisponibildad = false
-    } else {
-        dataProveedores.value = store.dataNoFiltrada.filter(producto => {
-            available.value = disponibilidadFiltro
-            store.filtradaDisponibildad = true
-            if (store.filtradaCategoria == false) {
-                return producto.available == disponibilidadFiltro
-            } else {
-                return producto.available == disponibilidadFiltro && producto.categorycode == categoriaFiltro
-            }
-        })
-    }
+    dataProveedores.value = store.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == disponibilidadFiltro)
 }
 
 const filtrarBusqueda = (buscar) => {
