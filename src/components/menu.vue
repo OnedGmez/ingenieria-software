@@ -6,7 +6,7 @@
             </div>
             <div id="menu-opciones">
                 <div v-for="opcion, index in opciones" class="opcion-menu" :key="opcion.key"
-                    :class="{ active: IDitem === index }" @click="cambiarID(index, opcion.nameroute)">
+                    :class="{ active: IDitem === index.toString()}" @click="cambiarID(index, opcion.nameroute)">
                     <a class="d-flex" href="#">
                         <span class="d-block icono-opcion"><font-awesome-icon :icon="opcion.icono" /></span>
                         <span class=" d-block nombre-opcion"> {{ opcion.nombreElemento }} </span>
@@ -198,6 +198,7 @@ a {
 import { ref } from "vue";
 import router from "@/router";
 import { generalStore } from '@/store/index.js'
+import { useRoute } from "vue-router";
 
 const store = generalStore();
 const cookies = document.cookie.split(';')
@@ -205,6 +206,7 @@ const nombreUsuario = store.desencriptarData(cookies[0].split('=')[1], 'nombreus
 const rol = store.desencriptarData(cookies[1].split('=')[1], 'rol');
 const sucursalcode = store.desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
 const sucursalname = JSON.parse(localStorage.getItem('usuario'))[0]['sucursalname']
+const routeParams = useRoute()
 
 /**
  * Recuperamos la información del localStorage y de las cookies
@@ -212,9 +214,11 @@ const sucursalname = JSON.parse(localStorage.getItem('usuario'))[0]['sucursalnam
 const dataUsuario = JSON.parse(localStorage.getItem('usuario'))
 const urlphoto = ref(dataUsuario[0]['urlphoto']);
 
+const IDitem = ref((routeParams.params.id))
+
 const menu = store.menu
 const opciones = ref('')
-const IDitem = ref(store.IDItemMenu)
+
 
 const cargarMenu = () => { 
     opciones.value = menu.filter(opcion => {
@@ -242,10 +246,9 @@ cargarMenu()
  * @param {*} ID recibe el ID de la opción a la que se le ha dado click
  * @param {*} path recibe el path de la vista referenciada por la opción del menu
  */
-const cambiarID = (ID, nameroute) => {
-    store.IDItemMenu = ID
-    console.log(nameroute)
-    //router.push({ name: nameroute, params: { rol, sucursalcode } });
+const cambiarID = (id, nameroute) => {
+    IDitem.value = id.toString()
+    router.push({ name: nameroute, params: { id, rol, sucursalcode } });
 }
 
 const cerrarSesion = () => {
