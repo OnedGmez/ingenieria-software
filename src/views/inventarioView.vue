@@ -177,6 +177,7 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
   }
 
   if (disponibilidadFiltro == available.value && store.filtradaCategoria == false) {
+    console.log(disponibilidadFiltro)
     dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == disponibilidadFiltro)
     store.filtradaDisponibildad = false
   } else {
@@ -194,9 +195,10 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
 
 const filtrarBusqueda = (buscar) => {
   const categoria = localStorage.getItem('filtro-categoria')
+  console.log(categoria)
   if (buscar == '') {
     store.filtradaBusqueda = false
-    if (categoria !== '') {
+    if (categoria !== null) {
       dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value && producto.categorycode == categoria)
     } else {
       dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
@@ -216,7 +218,6 @@ const filtrarBusqueda = (buscar) => {
 
 watchEffect(() => {
   if (store.filtradaDisponibildad == false && store.filtradaCategoria == false && store.filtradaBusqueda == false) {
-    available.value = true
     dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
   }
 })
