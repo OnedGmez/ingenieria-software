@@ -8,8 +8,10 @@
                 </div>
                 <!--Condicionamos la fotogafía pensando en los otros módulos y que la ruta a las img será diferente-->
                 <img v-if="modulo === 'Inventario'" src="../assets/img/aceta.jpg" class="img-fluid" alt="...">
+                <img v-if="modulo === 'Proveedores'" src="../assets/img/aceta.jpg" class="img-fluid" alt="...">
                 <div class="modal-body">
                     <dataModalProducto v-if="modulo === 'Inventario'" :dataProducto="data" />
+                    <dataModalProveedor v-if="modulo === 'Proveedores'" :dataProveedor="data" />
                 </div>
                 <div class="modal-footer">
                     <div class="botones izquierda">
@@ -20,7 +22,7 @@
                                 <span class=" d-block nombre-boton"> Actualizar </span>
                             </div>
                         </button>
-                        <button v-if="ordenarModo === true && data['available'] === true" id="boton-agregar"
+                        <button v-if="ordenarModo === true && data['available'] === true && modulo === 'Inventario'" id="boton-agregar"
                             @click="pushOrden" type="button" class="btn boton-desplegable">
                             <div class="d-flex">
                                 <span class="d-block icono-boton"><font-awesome-icon icon="plus" /></span>
@@ -163,6 +165,9 @@ import dataModalProducto from '@/components/minicomponents/dataModalProductos.vu
 import modalCRUD from '@/components/modalCRUD.vue';
 import alerta from './minicomponents/alerta.vue';
 import modalCantidadesOrden from '@/components/minicomponents/cantidadesOrden.vue'
+
+
+import dataModalProveedor from '@/components/minicomponents/dataModalProveedores.vue';
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal'])
 const mostrandoModalCRUD = ref(false)
