@@ -44,6 +44,7 @@
     
 <script setup>
 import { generalStore } from '@/store/index.js'
+import { useProveedorStore } from '@/store/proveedores'
 import { supabase } from '@/lib/supabaseClient'
 import { ref, watchEffect } from 'vue'
 
@@ -59,6 +60,7 @@ import alerta from '@/components/minicomponents/alerta.vue'
  * variable que contiene los metodos y variables de la store que retornamos (a modo de ser utilizadas como variables globales)
  */
 const store = generalStore()
+const storeProveedor = useProveedorStore()
 
 const mostrandoFiltros = ref(false)
 const mostrandoAgregar = ref(false)
@@ -112,8 +114,8 @@ const cargarProveedores = async () => {
             .rpc('mostrarproveedores')
 
         if (data != '') {
-            store.dataNoFiltradaProveedores = data
-            dataProveedores.value = store.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == available.value)
+            storeProveedor.dataNoFiltradaProveedores = data
+            dataProveedores.value = storeProveedor.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == available.value)
         }
     } catch (error) {
         mensaje.value = error
@@ -135,12 +137,12 @@ const filtrar = (disponibilidadFiltro) => {
     if (disponibilidadFiltro == 'false') {
         disponibilidadFiltro = false
     }
-    dataProveedores.value = store.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == disponibilidadFiltro)
+    dataProveedores.value = storeProveedor.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == disponibilidadFiltro)
 }
 
 const filtrarBusqueda = (buscar) => {
     if (buscar == '') {
-        dataProveedores.value = store.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == available.value)
+        dataProveedores.value = storeProveedor.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == available.value)
         store.filtradaBusqueda = false
     } else {
         store.filtradaBusqueda = true
@@ -152,7 +154,7 @@ const filtrarBusqueda = (buscar) => {
 
 watchEffect(() => {
     if (store.filtradaDisponibildad == false && store.filtradaBusqueda == false) {
-        dataProveedores.value = store.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == available.value)
+        dataProveedores.value = storeProveedor.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == available.value)
     }
 })
 
