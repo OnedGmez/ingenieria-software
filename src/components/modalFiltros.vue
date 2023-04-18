@@ -8,7 +8,6 @@
                         <div class="contenedor-etiqueta">
                             <span class="icono"> <font-awesome-icon icon="filter" /> </span>
                             <span class="detalle">{{ existencia }}</span>
-
                         </div>
                         <div v-if="categoriaNombre !== ''" class="contenedor-etiqueta">
                             <span class="icono"> <font-awesome-icon icon="filter" /> </span>
@@ -19,10 +18,11 @@
                     <div class="filtros-secundarios">
                         <div class="filtro-existencia d-flex filtro">
                             <input v-model="available" type="checkbox" name="checkExistencia" id="existencia">
-                            <label for="existencia">En existencia</label>
+                            <label v-if="modulo === 'Inventario'" for="existencia">En existencia</label>
+                            <label v-if="modulo === 'Proveedores'" for="existencia">Activo</label>
                         </div>
-                        <selectBox class="filtro" label="Categorias:" :data="categorias" :seleccionado="categoria"
-                            @codigo="(codigoC) => modificarCodigoCategoria(codigoC)" />
+                        <selectBox v-if="modulo === 'Inventario'" class="filtro" label="Categorias:" :data="categorias"
+                            :seleccionado="categoria" @codigo="(codigoC) => modificarCodigoCategoria(codigoC)" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -41,11 +41,11 @@
     backdrop-filter: blur(2px) brightness(0.75);
 }
 
-.etiquetas-filtros{
+.etiquetas-filtros {
     display: flex;
 }
 
-.contenedor-etiqueta{
+.contenedor-etiqueta {
     margin-right: 12px;
     background-color: #3581b828;
     color: #3F596B;
@@ -53,22 +53,23 @@
     padding: 0 7px;
 }
 
-.contenedor-etiqueta .icono{
+.contenedor-etiqueta .icono {
     margin-right: 8px;
 }
 
-.contenedor-etiqueta .detalle{
+.contenedor-etiqueta .detalle {
     font-weight: 600;
     font-size: calc(.5em + .45vw);
 }
 
-.contenedor-etiqueta .icono-close{
+.contenedor-etiqueta .icono-close {
     margin-left: 8px;
     font-size: calc(.5em + .35vw);
 }
 
-.contenedor-etiqueta .icono-close:hover{
-    color: red!important;;
+.contenedor-etiqueta .icono-close:hover {
+    color: red !important;
+    ;
 }
 
 .modal .modal-dialog .modal-content .modal-footer .btn {
@@ -134,8 +135,12 @@ import { generalStore } from '@/store';
 import { ref } from 'vue';
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal', 'aplicarFiltros'])
+const propsFiltros = defineProps([
+    'modulo'
+])
+
 const categorias = ref('')
-const store =  generalStore()
+const store = generalStore()
 
 //Constantes reactivas que se utilizaran para los filtros
 const available = ref('')
@@ -152,9 +157,17 @@ const cerrarModal = () => {
  * Funcion que sirve para emitir el evento de aplicación de filtros a la información, adicional se guarda el valor de los filtros al localStorage para ayudar a la persistencia de esos filtros
  */
 const aplicarFiltros = () => {
-    emisiones('aplicarFiltros', available.value, categoria.value)
-    localStorage.setItem('filtro-existencia', available.value)
-    localStorage.setItem('filtro-categoria', categoria.value)
+    switch (propsFiltros.modulo) {
+        case 'Inventario':
+            emisiones('aplicarFiltros', available.value, categoria.value)
+            localStorage.setItem('filtro-existencia', available.value)
+            localStorage.setItem('filtro-categoria', categoria.value)
+            break;
+        case 'Proveedores':
+            emisiones('aplicarFiltros', available.value)
+            localStorage.setItem('filtro-activo', available.value)
+            break;
+    }
     emisiones('ocultarModal')
 }
 
@@ -172,19 +185,31 @@ const modificarCodigoCategoria = (codigoC) => {
  * Función para inicializar el valor de los filtros cada vez que aparezca el modal (hacer que los aplicados filtros prevalezcan entre cada aparición del modal)
  */
 const iniciarlizarFiltros = () => {
-    if (localStorage.getItem('filtro-existencia') !== null) {
-        available.value = localStorage.getItem('filtro-existencia')
-    } else {
-        available.value = true
-    }
+    switch (propsFiltros.modulo) {
+        case 'Inventario':
+            if (localStorage.getItem('filtro-existencia') !== null) {
+                available.value = localStorage.getItem('filtro-existencia')
+            } else {
+                available.value = true
+            }
 
-    if (localStorage.getItem('filtro-categoria') !== null) {
-        categoria.value = localStorage.getItem('filtro-categoria')
-    } else {
-        categoria.value = ''
+            if (localStorage.getItem('filtro-categoria') !== null) {
+                categoria.value = localStorage.getItem('filtro-categoria')
+            } else {
+                categoria.value = ''
+            }
+            break;
+        case 'Proveedores':
+            if (localStorage.getItem('filtro-activo') !== null) {
+                available.value = localStorage.getItem('filtro-activo')
+            } else {
+                available.value = true
+            }
+            break;
     }
 }
 iniciarlizarFiltros()
+
 /**
  * dev: Oned Gomez
  * Función para cargar la información de las categorias y sucursales a los filtros
@@ -197,11 +222,22 @@ const cargarSelect = () => {
 }
 cargarSelect()
 
-if (available.value == true || available.value == 'true') {
-    existencia.value = "En existencia"
-} else {
-    existencia.value = "Sin existencia"
+if (propsFiltros.modulo === 'Inventario') {
+    if (available.value == true || available.value == 'true') {
+        existencia.value = "En existencia"
+    } else {
+        existencia.value = "Sin existencia"
+    }
 }
+
+if (propsFiltros.modulo === 'Proveedores') {
+    if (available.value == true || available.value == 'true') {
+        existencia.value = "Activo"
+    } else {
+        existencia.value = "Inactivo"
+    }
+}
+
 
 const buscarNombreCategoria = () => {
     if (categoria.value !== '') {
@@ -211,7 +247,7 @@ const buscarNombreCategoria = () => {
 }
 buscarNombreCategoria()
 
-const elimiarFiltroCat = () =>{
+const elimiarFiltroCat = () => {
     categoria.value = ''
     store.filtradaCategoria = false
     localStorage.removeItem('filtro-categoria')
