@@ -35,7 +35,7 @@ const mostrandoAlerta = ref(false)
 const mensaje = ref('')
 const store = generalStore()
 const userStore = useUsuarioStore()
-
+const id = 0
 store.limpiarStorages()
 store.limpiarFiltros()
 
@@ -95,7 +95,7 @@ const validarSesion = async (usuario, contrasenia) => {
           store.cargarSucursales()
         }
 
-        router.push({ name: 'inventario', params: { rol, sucursalcode } });
+        router.push({ name: 'inventario', params: { id , rol, sucursalcode } });
       } else {
         mensaje.value = 'Usuario y/o contraseña incorrecta(o)'
         usarAlerta()
