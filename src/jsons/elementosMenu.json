@@ -6,7 +6,7 @@
             "path":"/inventario",
             "icono":"boxes-stacked",
             "key": "elm0",
-            "permitidoPara": ["Administrador"],
+            "permitidoPara": ["Administrador", "Bodega", "Cajero"],
             "sucursal": "Todas"
         },
         {
@@ -33,7 +33,7 @@
             "path":"/empleados",
             "icono": "user-tie",
             "key": "elm3",
-            "permitidoPara": ["Administrador"],
+            "permitidoPara": ["Administrador", "Bodega"],
             "sucursal": "Todas"
         },
         {
@@ -42,7 +42,7 @@
             "path":"/ordenes",
             "icono": "clipboard-list",
             "key": "elm4",
-            "permitidoPara": ["Administrador"],
+            "permitidoPara": ["Administrador", "Bodega"],
             "sucursal": "Todas"
         },
         {
