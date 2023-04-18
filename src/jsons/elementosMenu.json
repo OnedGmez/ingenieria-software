@@ -33,7 +33,7 @@
             "path":"/empleados",
             "icono": "user-tie",
             "key": "elm3",
-            "permitidoPara": ["Administrador", "Bodega"],
+            "permitidoPara": ["Administrador"],
             "sucursal": "Todas"
         },
         {
