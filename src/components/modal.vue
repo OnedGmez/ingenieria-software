@@ -22,7 +22,7 @@
                                 <span class=" d-block nombre-boton"> Actualizar </span>
                             </div>
                         </button>
-                        <button v-if="ordenarModo === true && data['available'] === true && modulo === 'Inventario'" id="boton-agregar"
+                        <button v-if="ordenarModo === true && data['available'] === true && modulo === 'Inventario' && rol !== 'Cajero'" id="boton-agregar"
                             @click="pushOrden" type="button" class="btn boton-desplegable">
                             <div class="d-flex">
                                 <span class="d-block icono-boton"><font-awesome-icon icon="plus" /></span>
@@ -174,18 +174,20 @@ const emisiones = defineEmits(['ocultarModal'])
 const mostrandoModalCRUD = ref(false)
 const indicarCantidad = ref(false)
 const stockOrdenado = ref(0)
+const cookies = document.cookie.split(';')
+
+/**
+ * Traemos el valor del modo de Ordenar para activar o desactivar el botón de añadir productos a la orden
+ */
+ const store = generalStore()
+const storeProducto = useProductoStore()
+const ordenarModo = storeProducto.ordenarModo
 
 const err = ref(false)
 const mensaje = ref('')
 const mostrandoAlerta = ref(false)
 const sucursalname = JSON.parse(localStorage.getItem('usuario'))[0]['sucursalname']
-
-/**
- * Traemos el valor del modo de Ordenar para activar o desactivar el botón de añadir productos a la orden
- */
-const store = generalStore()
-const storeProducto = useProductoStore()
-const ordenarModo = storeProducto.ordenarModo
+const rol = store.desencriptarData(cookies[1].split('=')[1], 'rol');
 
 const cerrarModal = () => {
     emisiones('ocultarModal')
