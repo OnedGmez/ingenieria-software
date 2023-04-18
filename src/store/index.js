@@ -8,7 +8,8 @@ import { supabase } from '@/lib/supabaseClient'
 export const generalStore = defineStore('store', () => {
   const storeUsuario = useUsuarioStore()
   const menu = ref(menuOpciones.elementos);
-  const dataNoFiltrada = ref([{}])
+  const dataNoFiltradaProductos = ref([{}])
+  const dataNoFiltradaProveedores = ref([{}])
   const ordenarModo = ref(false)
   const respuesta = ref('')
   const filtradaDisponibildad = ref(false)
@@ -321,10 +322,10 @@ export const generalStore = defineStore('store', () => {
         (payload) => {
           switch (payload.eventType) {
             case 'INSERT':
-              dataNoFiltrada.value.unshift(nuevoProducto.value)
+              dataNoFiltradaProductos.value.unshift(nuevoProducto.value)
               break;
             case 'UPDATE':
-              const productoTMP = dataNoFiltrada.value.filter(producto => producto.sucursalinventorycode == payload.old['sucursalinventorycode']);
+              const productoTMP = dataNoFiltradaProductos.value.filter(producto => producto.sucursalinventorycode == payload.old['sucursalinventorycode']);
               const productoActualizao = {
                 'available': payload.new['available'],
                 'categorycode': productoTMP[0].categorycode,
@@ -343,7 +344,7 @@ export const generalStore = defineStore('store', () => {
                 'vendorcode': productoTMP[0].vendorcode,
                 'vendorname': productoTMP[0].vendorname
               }
-              dataNoFiltrada.value = (JSON.parse(JSON.stringify(dataNoFiltrada.value).replaceAll(JSON.stringify(productoTMP[0]), JSON.stringify(productoActualizao))))
+              dataNoFiltradaProductos.value = (JSON.parse(JSON.stringify(dataNoFiltradaProductos.value).replaceAll(JSON.stringify(productoTMP[0]), JSON.stringify(productoActualizao))))
               break;
           }
         }
@@ -376,7 +377,8 @@ export const generalStore = defineStore('store', () => {
     cargarSucursales,
     cargaCategorias,
     actualizarProducto,
-    dataNoFiltrada,
+    dataNoFiltradaProductos,
+    dataNoFiltradaProveedores,
     agregarProducto,
     limpiarStorages,
     limpiarFiltros,
