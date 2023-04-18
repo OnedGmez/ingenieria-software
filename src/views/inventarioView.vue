@@ -18,7 +18,8 @@
               </div>
             </button>
           </div>
-          <button @click="Ordenar" id="boton-generar-orden" type="button" class="btn boton-desplegable">
+          <button v-if="encabezado['sucursalname'] !== 'Bodega Central'" @click="Ordenar" id="boton-generar-orden"
+            type="button" class="btn boton-desplegable">
             <div v-if="modoOrdenar === false" class="contenido-boton d-flex">
               <span class="d-block icono-boton"><font-awesome-icon icon="file-circle-plus" /></span>
               <span class=" d-block nombre-boton"> Generar Orden </span>
@@ -40,14 +41,13 @@
 
       <div class="container-fluid">
         <div class="row">
-          <tarjetaInventario v-for="producto in dataProductos" :data="producto"
-            modulo="Inventario" />
+          <tarjetaInventario v-for="producto in dataProductos" :data="producto" modulo="Inventario" />
         </div>
       </div>
     </div>
   </div>
   <modalFiltros v-if="mostrandoFiltros === true" @ocultar-modal="() => mostrarModalFiltros()"
-    @aplicar-filtros="(availableF, categoriaF, sucursalF) => configurarFiltros(availableF, categoriaF, sucursalF)" />
+    @aplicar-filtros="(availableF, categoriaF) => configurarFiltros(availableF, categoriaF)" />
   <modalCRUD v-if="mostrandoAgregar === true" modulo="Inventario" accion="Crear"
     @ocultar-modal="(alerta) => mostrarModalAgregarProductos(alerta)" />
 
@@ -66,7 +66,6 @@ import barraBusqueda from '@/components/barraBusqueda.vue'
 import modalFiltros from '@/components/modalFiltros.vue'
 import modalCRUD from '@/components/modalCRUD.vue'
 import alerta from '@/components/minicomponents/alerta.vue'
-import { faL } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * variable que contiene los metodos y variables de la store que retornamos (a modo de ser utilizadas como variables globales)
@@ -157,29 +156,27 @@ const cargarProductos = async () => {
 cargarProductos()
 
 
-const configurarFiltros = (availableF, categoriaF, sucursalF) => {
-  if (sucursalF != '') {
-    //cargarProductos(sucursalF)
-  }
+const configurarFiltros = (availableF, categoriaF) => {
   filtrar(availableF, categoriaF)
 }
 
 const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
-  if (disponibilidadFiltro === 'true') {
+  if (disponibilidadFiltro == 'true') {
     disponibilidadFiltro = true
   }
-  if (disponibilidadFiltro === 'false') {
+  if (disponibilidadFiltro == 'false') {
     disponibilidadFiltro = false
   }
 
-  if (categoriaFiltro != '') {
+  if (categoriaFiltro !== '') {
     store.filtradaCategoria = true
   } else {
     store.filtradaCategoria = false
   }
 
   if (disponibilidadFiltro == available.value && store.filtradaCategoria == false) {
-    dataProductos.value = dataProductos.value
+    dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == disponibilidadFiltro)
+    store.filtradaDisponibildad = false
   } else {
     dataProductos.value = store.dataNoFiltrada.filter(producto => {
       available.value = disponibilidadFiltro
@@ -194,11 +191,21 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
 }
 
 const filtrarBusqueda = (buscar) => {
+  const categoria = localStorage.getItem('filtro-categoria')
   if (buscar == '') {
     store.filtradaBusqueda = false
-    dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
+    if (categoria !== '') {
+      dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value && producto.categorycode == categoria)
+    } else {
+      dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
+    }
   } else {
     store.filtradaBusqueda = true
+    if (categoria !== '') {
+      dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value && producto.categorycode == categoria)
+    } else {
+      dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
+    }
     dataProductos.value = dataProductos.value.filter(producto => {
       return ((producto.name).toLowerCase()).match((buscar).toLowerCase())
     })
