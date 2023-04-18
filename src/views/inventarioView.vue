@@ -46,7 +46,7 @@
       </div>
     </div>
   </div>
-  <modalFiltros v-if="mostrandoFiltros === true" @ocultar-modal="() => mostrarModalFiltros()"
+  <modalFiltros v-if="mostrandoFiltros === true" modulo="Inventario" @ocultar-modal="() => mostrarModalFiltros()"
     @aplicar-filtros="(availableF, categoriaF) => configurarFiltros(availableF, categoriaF)" />
   <modalCRUD v-if="mostrandoAgregar === true" modulo="Inventario" accion="Crear"
     @ocultar-modal="(alerta) => mostrarModalAgregarProductos(alerta)" />
@@ -145,12 +145,14 @@ const cargarProductos = async () => {
       })
 
     if (data != '') {
-      store.dataNoFiltrada = data
-      dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
+      store.dataNoFiltradaProductos = data
+      dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
     }
 
   } catch (error) {
-    alert(error)
+    mensaje.value = error
+    err.value = true
+    usarAlerta()
   }
 }
 cargarProductos()
@@ -175,10 +177,10 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
   }
 
   if (disponibilidadFiltro == available.value && store.filtradaCategoria == false) {
-    dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == disponibilidadFiltro)
+    dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == disponibilidadFiltro)
     store.filtradaDisponibildad = false
   } else {
-    dataProductos.value = store.dataNoFiltrada.filter(producto => {
+    dataProductos.value = store.dataNoFiltradaProductos.filter(producto => {
       available.value = disponibilidadFiltro
       store.filtradaDisponibildad = true
       if (store.filtradaCategoria == false) {
@@ -195,16 +197,16 @@ const filtrarBusqueda = (buscar) => {
   if (buscar == '') {
     store.filtradaBusqueda = false
     if (categoria !== '') {
-      dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value && producto.categorycode == categoria)
+      dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value && producto.categorycode == categoria)
     } else {
-      dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
+      dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
     }
   } else {
     store.filtradaBusqueda = true
     if (categoria !== '') {
-      dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value && producto.categorycode == categoria)
+      dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value && producto.categorycode == categoria)
     } else {
-      dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
+      dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
     }
     dataProductos.value = dataProductos.value.filter(producto => {
       return ((producto.name).toLowerCase()).match((buscar).toLowerCase())
@@ -215,7 +217,7 @@ const filtrarBusqueda = (buscar) => {
 watchEffect(() => {
   if (store.filtradaDisponibildad == false && store.filtradaCategoria == false && store.filtradaBusqueda == false) {
     available.value = true
-    dataProductos.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
+    dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
   }
 })
 
