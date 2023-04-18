@@ -10,19 +10,19 @@
             "sucursal": "Todas"
         },
         {
-            "nombreElemento":"Representantes Proveedores",
-            "nameroute": "rproveedores",
-            "path":"/representantes",
-            "icono": "business-time",
+            "nombreElemento":"Proveedores",
+            "nameroute":"proveedores",
+            "path":"/proveedores",
+            "icono": "building",
             "key": "elm1",
             "permitidoPara": ["Administrador"],
             "sucursal": "Bodega Central"
         },
         {
-            "nombreElemento":"Proveedores",
-            "nameroute":"proveedores",
-            "path":"/proveedores",
-            "icono": "building",
+            "nombreElemento":"Representantes Proveedores",
+            "nameroute": "rproveedores",
+            "path":"/representantes",
+            "icono": "business-time",
             "key": "elm2",
             "permitidoPara": ["Administrador"],
             "sucursal": "Bodega Central"
