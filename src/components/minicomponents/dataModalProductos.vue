@@ -2,20 +2,20 @@
     <div class="data">
         <p class="data-text">{{ dataProducto['productdescription'] }}</p>
         <div class="d-flex">
-            <span class="data-modal"> Código: {{ dataProducto['productcode'] }}</span>
-            <span class="data-modal"> Proveedor: {{ dataProducto['vendorname'] }}</span>
+            <span class="data-modal"> Código: <span class="data-modal-valor">{{ dataProducto['productcode'] }}</span></span>
+            <span class="data-modal"> Proveedor: <span class="data-modal-valor">{{ dataProducto['vendorname'] }}</span></span>
         </div>
         <div class="d-flex">
-            <span class="data-modal"> Categoría: {{ dataProducto['categoryname'] }}</span>
-            <span class="data-modal"> Lote: {{ dataProducto['lotnumber'] }} </span>
+            <span class="data-modal"> Categoría: <span class="data-modal-valor">{{ dataProducto['categoryname'] }}</span></span>
+            <span class="data-modal"> Lote: <span class="data-modal-valor">{{ dataProducto['lotnumber'] }}</span> </span>
         </div>
         <div class="d-flex">
-            <span class="data-modal"> Precio: {{dataProducto['purchaseprice']}} </span>
-            <span class="data-modal"> Expira: {{ dataProducto['expirationdate'] }} </span>
+            <span class="data-modal"> Precio: <span class="data-modal-valor">{{dataProducto['purchaseprice']}}</span></span>
+            <span class="data-modal"> Expira: <span class="data-modal-valor">{{ dataProducto['expirationdate'] }}</span></span>
         </div>
         <div class="d-flex">
-            <span class="data-modal"> {{ dataProducto['units'] }}/caja</span>
-            <span class="data-modal"> Stock: {{ dataProducto['stock'] }} Unidades </span>
+            <span class="data-modal"> <span class="data-modal-valor">{{ dataProducto['units'] }}</span>/caja</span>
+            <span class="data-modal"> Stock: <span class="data-modal-valor">{{ dataProducto['stock'] }}</span>  Unidades </span>
         </div>
     </div>
 </template>
@@ -29,13 +29,20 @@ const propsProductoModal = defineProps([
 
 <style scoped>
 .data{
-    font-size: medium;
     font-family: 'fredoka-family';
     font-size: calc(.9em + 0.04vw) !important;
 }
 
 .data .data-text{
     text-align: center;
+    font-weight: 100;
+}
+
+.data .data-modal{
+    font-weight: 400;
+}
+
+.data .data-modal .data-modal-valor{
     font-weight: 100;
 }
 
