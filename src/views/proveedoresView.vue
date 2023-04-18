@@ -128,36 +128,25 @@ const configurarFiltros = (availableF) => {
     filtrar(availableF)
 }
 
-const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
+const filtrar = (disponibilidadFiltro) => {
     if (disponibilidadFiltro == 'true') {
         disponibilidadFiltro = true
     }
     if (disponibilidadFiltro == 'false') {
         disponibilidadFiltro = false
     }
-
     dataProveedores.value = store.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == disponibilidadFiltro)
 }
 
 const filtrarBusqueda = (buscar) => {
-    const categoria = localStorage.getItem('filtro-categoria')
     if (buscar == '') {
+        dataProveedores.value = store.dataNoFiltradaProveedores.filter(proveedor => proveedor.available == available.value)
         store.filtradaBusqueda = false
-        if (categoria !== '') {
-            dataProveedores.value = store.dataNoFiltrada.filter(producto => producto.available == available.value && producto.categorycode == categoria)
-        } else {
-            dataProveedores.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
-        }
     } else {
         store.filtradaBusqueda = true
-        if (categoria !== '') {
-            dataProveedores.value = store.dataNoFiltrada.filter(producto => producto.available == available.value && producto.categorycode == categoria)
-        } else {
-            dataProveedores.value = store.dataNoFiltrada.filter(producto => producto.available == available.value)
-        }
         dataProveedores.value = dataProveedores.value.filter(producto => {
             return ((producto.name).toLowerCase()).match((buscar).toLowerCase())
-        })
+        })   
     }
 }
 
