@@ -56,6 +56,7 @@
   
 <script setup>
 import { generalStore } from '@/store/index.js'
+import { useProductoStore } from '@/store/productos.js'
 import { supabase } from '@/lib/supabaseClient'
 import { ref, watchEffect } from 'vue'
 
@@ -71,6 +72,7 @@ import alerta from '@/components/minicomponents/alerta.vue'
  * variable que contiene los metodos y variables de la store que retornamos (a modo de ser utilizadas como variables globales)
  */
 const store = generalStore()
+const storeProducto = useProductoStore()
 
 const mostrandoFiltros = ref(false)
 const mostrandoAgregar = ref(false)
@@ -106,8 +108,8 @@ const mostrarModalFiltros = () => {
  * despues de actualizar la variable en el store, volvemos a actualizar la variable local
  */
 const Ordenar = () => {
-  store.setModoOrden()
-  modoOrdenar.value = store.ordenarModo
+  storeProducto.setModoOrden()
+  modoOrdenar.value = storeProducto.ordenarModo
 
   if (modoOrdenar.value === true) {
     mensaje.value = 'Orden abierta'
@@ -145,8 +147,8 @@ const cargarProductos = async () => {
       })
 
     if (data != '') {
-      store.dataNoFiltradaProductos = data
-      dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
+      storeProducto.dataNoFiltradaProductos = data
+      dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
     }
 
   } catch (error) {
@@ -178,10 +180,10 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
 
   if (disponibilidadFiltro == available.value && store.filtradaCategoria == false) {
     console.log(disponibilidadFiltro)
-    dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == disponibilidadFiltro)
+    dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => producto.available == disponibilidadFiltro)
     store.filtradaDisponibildad = false
   } else {
-    dataProductos.value = store.dataNoFiltradaProductos.filter(producto => {
+    dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => {
       available.value = disponibilidadFiltro
       store.filtradaDisponibildad = true
       if (store.filtradaCategoria == false) {
@@ -199,16 +201,16 @@ const filtrarBusqueda = (buscar) => {
   if (buscar == '') {
     store.filtradaBusqueda = false
     if (categoria !== null) {
-      dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value && producto.categorycode == categoria)
+      dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => producto.available == available.value && producto.categorycode == categoria)
     } else {
-      dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
+      dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
     }
   } else {
     store.filtradaBusqueda = true
     if (categoria !== null) {
-      dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value && producto.categorycode == categoria)
+      dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => producto.available == available.value && producto.categorycode == categoria)
     } else {
-      dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
+      dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
     }
     dataProductos.value = dataProductos.value.filter(producto => {
       return ((producto.name).toLowerCase()).match((buscar).toLowerCase())
@@ -218,7 +220,7 @@ const filtrarBusqueda = (buscar) => {
 
 watchEffect(() => {
   if (store.filtradaDisponibildad == false && store.filtradaCategoria == false && store.filtradaBusqueda == false) {
-    dataProductos.value = store.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
+    dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
   }
 })
 
