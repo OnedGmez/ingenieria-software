@@ -13,7 +13,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="botones izquierda">
-                        <button v-if="ordenarModo === false && data['available'] === true" @click="mostrarModal"
+                        <button v-if="ordenarModo === false && data['available'] === true && sucursalname == 'Bodega Central'" @click="mostrarModal"
                             id="boton-actualizar" type="button" class="btn boton-desplegable">
                             <div class="d-flex">
                                 <span class="d-block icono-boton"><font-awesome-icon icon="pen-to-square" /></span>
@@ -172,6 +172,7 @@ const stockOrdenado = ref(0)
 const err = ref(false)
 const mensaje = ref('')
 const mostrandoAlerta = ref(false)
+const sucursalname = JSON.parse(localStorage.getItem('usuario'))[0]['sucursalname']
 
 /**
  * Traemos el valor del modo de Ordenar para activar o desactivar el botón de añadir productos a la orden
@@ -196,7 +197,7 @@ const mostrarMCantidad = () => {
     indicarCantidad.value = !indicarCantidad.value
 }
 
-//Falta agregar el codigo de orden y en la view de inventario agregar un modal para indicar el destino de los productos
+//Falta agregar el codigo de orden
 const confirmar = (cantidad) => {
     stockOrdenado.value = cantidad
     const cuerpoDetalle = {
