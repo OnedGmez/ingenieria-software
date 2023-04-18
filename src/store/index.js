@@ -11,7 +11,6 @@ export const generalStore = defineStore('store', () => {
   const dataNoFiltrada = ref([{}])
   const ordenarModo = ref(false)
   const respuesta = ref('')
-  const IDItemMenu = ref(0)
   const filtradaDisponibildad = ref(false)
   const filtradaCategoria = ref(false)
   const filtradaBusqueda = ref(false)
@@ -21,7 +20,6 @@ export const generalStore = defineStore('store', () => {
 
   const date = new Date();
   const fechaActual = String(date.getFullYear()) + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
-
 
   const limpiarStorages = () => {
     sessionStorage.removeItem('token')
@@ -385,7 +383,6 @@ export const generalStore = defineStore('store', () => {
     fechaActual,
     filtradaDisponibildad,
     filtradaCategoria,
-    filtradaBusqueda,
-    IDItemMenu
+    filtradaBusqueda
   }
 })
