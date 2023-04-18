@@ -4,13 +4,22 @@
         <div class="modal-dialog-centered modal-sm modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
+                    <div class="etiquetas-filtros">
+                        <div class="contenedor-etiqueta">
+                            <span class="icono"> <font-awesome-icon icon="filter" /> </span>
+                            <span class="detalle">{{ existencia }}</span>
+
+                        </div>
+                        <div v-if="categoriaNombre !== ''" class="contenedor-etiqueta">
+                            <span class="icono"> <font-awesome-icon icon="filter" /> </span>
+                            <span class="detalle"> {{ categoriaNombre }}</span>
+                            <span @click="elimiarFiltroCat" class="icono-close"> <font-awesome-icon icon="xmark" /> </span>
+                        </div>
+                    </div>
                     <div class="filtros-secundarios">
-                        <selectBox class="filtro" label="Sucursales:" :data="sucursales" :seleccionado="sucursal"
-                            @codigo="(codigoC) => modificarCodigoSucursal(codigoC)" />
                         <div class="filtro-existencia d-flex filtro">
-                            <input v-model="available" type="checkbox"
-                                name="checkExistencia" id="existencia">
-                            <label for="existencia">En existencias</label>
+                            <input v-model="available" type="checkbox" name="checkExistencia" id="existencia">
+                            <label for="existencia">En existencia</label>
                         </div>
                         <selectBox class="filtro" label="Categorias:" :data="categorias" :seleccionado="categoria"
                             @codigo="(codigoC) => modificarCodigoCategoria(codigoC)" />
@@ -30,6 +39,36 @@
 /*Estilos modificados*/
 .show {
     backdrop-filter: blur(2px) brightness(0.75);
+}
+
+.etiquetas-filtros{
+    display: flex;
+}
+
+.contenedor-etiqueta{
+    margin-right: 12px;
+    background-color: #3581b828;
+    color: #3F596B;
+    width: max-content;
+    padding: 0 7px;
+}
+
+.contenedor-etiqueta .icono{
+    margin-right: 8px;
+}
+
+.contenedor-etiqueta .detalle{
+    font-weight: 600;
+    font-size: calc(.5em + .45vw);
+}
+
+.contenedor-etiqueta .icono-close{
+    margin-left: 8px;
+    font-size: calc(.5em + .35vw);
+}
+
+.contenedor-etiqueta .icono-close:hover{
+    color: red!important;;
 }
 
 .modal .modal-dialog .modal-content .modal-footer .btn {
@@ -91,17 +130,18 @@ label {
 
 <script setup>
 import selectBox from '@/components/selectBox.vue'
+import { generalStore } from '@/store';
 import { ref } from 'vue';
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal', 'aplicarFiltros'])
 const categorias = ref('')
-const sucursales = ref('')
+const store =  generalStore()
 
 //Constantes reactivas que se utilizaran para los filtros
 const available = ref('')
-const categoria = ref('')
-const sucursal = ref('')
 const existencia = ref('')
+const categoria = ref('')
+const categoriaNombre = ref('')
 
 const cerrarModal = () => {
     emisiones('ocultarModal')
@@ -112,10 +152,9 @@ const cerrarModal = () => {
  * Funcion que sirve para emitir el evento de aplicación de filtros a la información, adicional se guarda el valor de los filtros al localStorage para ayudar a la persistencia de esos filtros
  */
 const aplicarFiltros = () => {
-    emisiones('aplicarFiltros', available.value, categoria.value, sucursal.value)
+    emisiones('aplicarFiltros', available.value, categoria.value)
     localStorage.setItem('filtro-existencia', available.value)
     localStorage.setItem('filtro-categoria', categoria.value)
-    localStorage.setItem('filtro-sucursal', sucursal.value)
     emisiones('ocultarModal')
 }
 
@@ -123,10 +162,6 @@ const modificarCodigoCategoria = (codigoC) => {
     categoria.value = codigoC
 }
 
-const modificarCodigoSucursal = (codigoC) => {
-    sucursal.value = codigoC
-}
-
 
 /**
  * dev: Oned Gómez
@@ -136,7 +171,7 @@ const modificarCodigoSucursal = (codigoC) => {
  * dev: Oned Gómez
  * Función para inicializar el valor de los filtros cada vez que aparezca el modal (hacer que los aplicados filtros prevalezcan entre cada aparición del modal)
  */
- const iniciarlizarFiltros = () => {
+const iniciarlizarFiltros = () => {
     if (localStorage.getItem('filtro-existencia') !== null) {
         available.value = localStorage.getItem('filtro-existencia')
     } else {
@@ -147,12 +182,6 @@ const modificarCodigoSucursal = (codigoC) => {
         categoria.value = localStorage.getItem('filtro-categoria')
     } else {
         categoria.value = ''
-    }
-
-    if (localStorage.getItem('filtro-sucursal') !== null) {
-        sucursal.value = localStorage.getItem('filtro-sucursal')
-    } else {
-        sucursal.value = ''
     }
 }
 iniciarlizarFiltros()
@@ -165,12 +194,28 @@ const cargarSelect = () => {
     categorias.value = categorias.value.replaceAll('"categorycode":', '"code":')
     categorias.value = categorias.value.replaceAll('"categoryname":', '"name":')
     categorias.value = JSON.parse(categorias.value)
-
-
-    sucursales.value = localStorage.getItem('sucursales');
-    sucursales.value = sucursales.value.replaceAll('"sucursalcode":', '"code":')
-    sucursales.value = sucursales.value.replaceAll('"sucursalname":', '"name":')
-    sucursales.value = JSON.parse(sucursales.value)
 }
 cargarSelect()
+
+if (available.value == true || available.value == 'true') {
+    existencia.value = "En existencia"
+} else {
+    existencia.value = "Sin existencia"
+}
+
+const buscarNombreCategoria = () => {
+    if (categoria.value !== '') {
+        categoriaNombre.value = categorias.value.filter(cate => cate['code'] == categoria.value)[0]['name']
+        console.log(categoriaNombre.value)
+    }
+}
+buscarNombreCategoria()
+
+const elimiarFiltroCat = () =>{
+    categoria.value = ''
+    store.filtradaCategoria = false
+    localStorage.removeItem('filtro-categoria')
+    categoriaNombre.value = ''
+}
+
 </script>
