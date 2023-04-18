@@ -73,6 +73,8 @@
 import formularioProductos from '@/components/minicomponents/formularioACProducto.vue'
 import alerta from './minicomponents/alerta.vue';
 import { generalStore } from '@/store';
+import { useProveedorStore } from '@/store/proveedores';
+import { useProductoStore } from '@/store/productos';
 
 
 import formularioACProveedores from './minicomponents/formularioACProveedores.vue';
@@ -82,6 +84,9 @@ import { ref } from 'vue';
 const emisiones = defineEmits(['ocultarModal'])
 
 const store = generalStore()
+const storeProveedor = useProveedorStore()
+const storeProducto = useProductoStore()
+
 const mostrandoAlerta = ref(false)
 const mensaje = ref('')
 const err = ref(false)
@@ -110,7 +115,7 @@ const confirmarAcción = async () => {
         case 'Inventario':
             if (modalProps.accion === "Crear") {
                 if (guardar.value.productcode !== '' && guardar.value.name !== '' && guardar.value.lotnumber !== '' && guardar.value.productdescription !== '' && guardar.value.categoryname !== '' && guardar.value.expirationdate !== '' && guardar.value.vendorcode !== '' && guardar.value.stock !== '' && guardar.value.units !== '' && guardar.value.purchaseprice) {
-                    respuesta.value = await store.agregarProducto(guardar.value)
+                    respuesta.value = await storeProducto.agregarProducto(guardar.value)
                     cerrarModal()
                 } else {
                     mensaje.value = "Debes proporcionar la información solicitada"
@@ -120,7 +125,7 @@ const confirmarAcción = async () => {
             } else {
                 if (modalProps.accion === "Actualizar") {
                     if (guardar.value.stock !== '') {
-                        respuesta.value = await store.actualizarProducto(guardar.value)
+                        respuesta.value = await storeProducto.actualizarProducto(guardar.value)
                         cerrarModal()
                     } else {
                         mensaje.value = "Debes proporcionar la información solicitada"
@@ -133,12 +138,19 @@ const confirmarAcción = async () => {
             break;
 
         case 'Proveedores':
-            if (modalProps.accion == 'Inventario') {
-
+            if (modalProps.accion == 'Crear') {
+                if (guardar.value.name !== '' && guardar.value.country !== '' && guardar.value.urlimage !== '') {
+                    respuesta.value = await storeProveedor.agregarProveedor(guardar.value)
+                    cerrarModal()
+                } else {
+                    mensaje.value = "Debes proporcionar la información solicitada"
+                    err.value = true
+                    usarAlerta()
+                }
             } else {
                 if (modalProps.accion == 'Actualizar') {
                     if (guardar.value.country !== '' && guardar.value.urlimage !== '') {
-                        respuesta.value = await store.actualizarProveedor(guardar.value)
+                        respuesta.value = await storeProveedor.actualizarProveedor(guardar.value)
                         cerrarModal()
                     } else {
                         mensaje.value = "Debes proporcionar la información solicitada"
