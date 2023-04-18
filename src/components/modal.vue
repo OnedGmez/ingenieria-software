@@ -161,6 +161,7 @@
 <script setup>
 import { ref } from 'vue';
 import { generalStore } from '@/store/index.js';
+import { useProductoStore } from '@/store/productos';
 import dataModalProducto from '@/components/minicomponents/dataModalProductos.vue'
 import modalCRUD from '@/components/modalCRUD.vue';
 import alerta from './minicomponents/alerta.vue';
@@ -183,7 +184,8 @@ const sucursalname = JSON.parse(localStorage.getItem('usuario'))[0]['sucursalnam
  * Traemos el valor del modo de Ordenar para activar o desactivar el botón de añadir productos a la orden
  */
 const store = generalStore()
-const ordenarModo = store.ordenarModo
+const storeProducto = useProductoStore()
+const ordenarModo = storeProducto.ordenarModo
 
 const cerrarModal = () => {
     emisiones('ocultarModal')
