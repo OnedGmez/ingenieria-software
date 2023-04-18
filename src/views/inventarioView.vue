@@ -18,7 +18,7 @@
               </div>
             </button>
           </div>
-          <button v-if="encabezado['sucursalname'] !== 'Bodega Central'" @click="Ordenar" id="boton-generar-orden"
+          <button v-if="encabezado['sucursalname'] !== 'Bodega Central' && rol !== 'Cajero'" @click="Ordenar" id="boton-generar-orden"
             type="button" class="btn boton-desplegable">
             <div v-if="modoOrdenar === false" class="contenido-boton d-flex">
               <span class="d-block icono-boton"><font-awesome-icon icon="file-circle-plus" /></span>
@@ -76,7 +76,7 @@ const storeProducto = useProductoStore()
 
 const mostrandoFiltros = ref(false)
 const mostrandoAgregar = ref(false)
-const modoOrdenar = ref(store.ordenarModo)
+const modoOrdenar = ref(storeProducto.ordenarModo)
 const mostrandoAlerta = ref(false)
 const mensaje = ref('')
 const err = ref(false)
@@ -85,7 +85,8 @@ const available = ref(true)
 
 const cookies = document.cookie.split(';')
 const sucursalcode = store.desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
-
+const sucursalname = JSON.parse(localStorage.getItem('usuario'))[0]['sucursalname']
+const rol = store.desencriptarData(cookies[1].split('=')[1], 'rol');
 const dataVista = ref(JSON.parse(localStorage.getItem('usuario')))
 
 const encabezado = ref({
@@ -106,6 +107,7 @@ const mostrarModalFiltros = () => {
  * La función cambia el valor de la bool para activar o desactivar el modo para Ordenar
  * El valor de la variable activará o no el botón para agregar a la orden un producto de las tarjetas
  * despues de actualizar la variable en el store, volvemos a actualizar la variable local
+ * Cambiamos el contenido del inventario para poder ver lo que podemos ordenar
  */
 const Ordenar = () => {
   storeProducto.setModoOrden()
@@ -115,10 +117,12 @@ const Ordenar = () => {
     mensaje.value = 'Orden abierta'
     err.value = false
     usarAlerta()
+    cargarProductos('Suc-1')
   } else {
     mensaje.value = 'Orden culminada'
     err.value = false
     usarAlerta()
+    cargarProductos(sucursalcode)
   }
 }
 
@@ -139,7 +143,12 @@ const mostrarModalAgregarProductos = (alerta) => {
   }
 }
 
-const cargarProductos = async () => {
+/**
+ * dev: Oned Gómez
+ * Función que nos cargará los productos según la sucursal, también la usaremos para cambiar el contenido del inventario cuando se active el modo ordenar
+ * @param {*} sucursalcode: Contiene el código de la sucursal en la que nos encontramos registrados
+ */
+const cargarProductos = async (sucursalcode) => {
   try {
     let { data, error } = await supabase
       .rpc('mostrarproductos', {
@@ -157,7 +166,7 @@ const cargarProductos = async () => {
     usarAlerta()
   }
 }
-cargarProductos()
+cargarProductos(sucursalcode)
 
 
 const configurarFiltros = (availableF, categoriaF) => {
