@@ -203,7 +203,7 @@ const store = generalStore();
 const cookies = document.cookie.split(';')
 const nombreUsuario = store.desencriptarData(cookies[0].split('=')[1], 'nombreusuario')
 const rol = store.desencriptarData(cookies[1].split('=')[1], 'rol');
-
+const sucursalcode = store.desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
 const sucursalname = JSON.parse(localStorage.getItem('usuario'))[0]['sucursalname']
 
 /**
