@@ -161,7 +161,9 @@ const aplicarFiltros = () => {
         case 'Inventario':
             emisiones('aplicarFiltros', available.value, categoria.value)
             localStorage.setItem('filtro-existencia', available.value)
-            localStorage.setItem('filtro-categoria', categoria.value)
+            if (categoria.value !== ''){
+                localStorage.setItem('filtro-categoria', categoria.value)
+            }
             break;
         case 'Proveedores':
             emisiones('aplicarFiltros', available.value)
@@ -242,7 +244,6 @@ if (propsFiltros.modulo === 'Proveedores') {
 const buscarNombreCategoria = () => {
     if (categoria.value !== '') {
         categoriaNombre.value = categorias.value.filter(cate => cate['code'] == categoria.value)[0]['name']
-        console.log(categoriaNombre.value)
     }
 }
 buscarNombreCategoria()
