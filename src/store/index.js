@@ -140,7 +140,7 @@ export const generalStore = defineStore('store', () => {
 
 
   const actualizarProducto = async (valores) => {
-    filtradaCategoria.value=false
+    filtradaCategoria.value = false
     filtradaDisponibildad.value = false
     try {
       const { data, error } = await supabase
@@ -156,6 +156,39 @@ export const generalStore = defineStore('store', () => {
       } else {
         respuesta.value = [{
           'mensaje': '¡Producto actualizado exitosamente!',
+          'error': false
+        }]
+      }
+    } catch (error) {
+      respuesta.value = [{
+        'mensaje': error,
+        'error': true
+      }]
+    } finally {
+      return respuesta.value
+    }
+  }
+
+  const actualizarProveedor = async (valores) => {
+    filtradaDisponibildad.value = false
+    try {
+
+      const { data, error } = await supabase
+        .from('vendors')
+        .update({
+          country: valores.country,
+          urlimage: valores.urlimage
+        })
+        .eq('vendorcode', valores.vendorcode)
+
+      if (error) {
+        respuesta.value = [{
+          'mensaje': error,
+          'error': true
+        }]
+      } else {
+        respuesta.value = [{
+          'mensaje': '¡Proveedor actualizado exitosamente!',
           'error': false
         }]
       }
@@ -379,6 +412,7 @@ export const generalStore = defineStore('store', () => {
     cargarSucursales,
     cargaCategorias,
     actualizarProducto,
+    actualizarProveedor,
     dataNoFiltradaProductos,
     dataNoFiltradaProveedores,
     agregarProducto,
