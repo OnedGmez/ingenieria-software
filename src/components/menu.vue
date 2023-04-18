@@ -33,7 +33,7 @@
 /*
 * Al contenedor con clase menu, le daremos una posición sticky, para mantener en la misma posición al menú
 */
-#vista-inventario .menu {
+.menu {
     position: sticky;
     top: 0;
     height: 100vh;
