@@ -5,7 +5,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="etiquetas-filtros">
-                        <div class="contenedor-etiqueta">
+                        <div v-if="modulo !== 'Ordenes'" class="contenedor-etiqueta">
                             <span class="icono"> <font-awesome-icon icon="filter" /> </span>
                             <span class="detalle">{{ existencia }}</span>
                         </div>
@@ -14,12 +14,46 @@
                             <span class="detalle"> {{ categoriaNombre }}</span>
                             <span @click="elimiarFiltroCat" class="icono-close"> <font-awesome-icon icon="xmark" /> </span>
                         </div>
+                        <div v-if="modulo === 'Ordenes' && estatus !== ''" class="contenedor-etiqueta">
+                            <span class="icono"> <font-awesome-icon icon="filter" /> </span>
+                            <span class="detalle"> {{ estatusNombre }}</span>
+                            <span @click="reestablecerEstatus" class="icono-close"> <font-awesome-icon icon="xmark" />
+                            </span>
+                        </div>
                     </div>
                     <div class="filtros-secundarios">
                         <div class="filtro-existencia d-flex filtro">
-                            <input v-model="available" type="checkbox" name="checkExistencia" id="existencia">
+                            <input v-model="available" v-if="modulo !== 'Ordenes'" type="checkbox" name="checkExistencia"
+                                id="existencia">
                             <label v-if="modulo === 'Inventario'" for="existencia">En existencia</label>
                             <label v-if="modulo === 'Proveedores'" for="existencia">Activo</label>
+                        </div>
+                        <div class="filtros-estatus" v-if="modulo === 'Ordenes'">
+                            <div class="estatus">
+                                <input class="radio" v-model="estatus" :on-select="estatus == 'G'" type="radio"
+                                    name="tipo-orden" id="generada-orden" value="G">
+                                <label for="existencia">Ordenes Generadas</label>
+                            </div>
+                            <div class="estatus">
+                                <input class="radio" v-model="estatus" :on-select="estatus == 'C'" type="radio"
+                                    name="tipo-orden" id="cancelada-orden" value="C">
+                                <label for="existencia">Ordenes Canceladas</label>
+                            </div>
+                            <div class="estatus">
+                                <input class="radio" v-model="estatus" :on-select="estatus == 'A'" type="radio"
+                                    name="tipo-orden" id="aceptada-orden" value="A">
+                                <label for="existencia">Ordenes Aceptadas</label>
+                            </div>
+                            <div class="estatus">
+                                <input class="radio" v-model="estatus" :on-select="estatus == 'R'" type="radio"
+                                    name="tipo-orden" id="rechazada-orden" value="R">
+                                <label for="existencia">Ordenes Rechazadas</label>
+                            </div>
+                            <div class="estatus">
+                                <input class="radio" v-model="estatus" :on-select="estatus == 'D'" type="radio"
+                                    name="tipo-orden" id="completadas-orden" value="D">
+                                <label for="existencia">Ordenes Completadas</label>
+                            </div>
                         </div>
                         <selectBox v-if="modulo === 'Inventario'" class="filtro" label="Categorias:" :data="categorias"
                             :seleccionado="categoria" @codigo="(codigoC) => modificarCodigoCategoria(codigoC)" />
@@ -117,7 +151,8 @@
     margin: 20px 5px;
 }
 
-.modal-body .filtros-secundarios>.filtro:last-child #existencia {
+.modal-body .filtros-secundarios>.filtro #existencia,
+.radio {
     margin-right: 5px;
 }
 
@@ -145,8 +180,10 @@ const store = generalStore()
 //Constantes reactivas que se utilizaran para los filtros
 const available = ref('')
 const existencia = ref('')
+const estatus = ref('G')
 const categoria = ref('')
 const categoriaNombre = ref('')
+const estatusNombre = ref('')
 
 const cerrarModal = () => {
     emisiones('ocultarModal')
@@ -161,7 +198,7 @@ const aplicarFiltros = () => {
         case 'Inventario':
             emisiones('aplicarFiltros', available.value, categoria.value)
             localStorage.setItem('filtro-existencia', available.value)
-            if (categoria.value !== ''){
+            if (categoria.value !== '') {
                 localStorage.setItem('filtro-categoria', categoria.value)
             }
             break;
@@ -169,10 +206,19 @@ const aplicarFiltros = () => {
             emisiones('aplicarFiltros', available.value)
             localStorage.setItem('filtro-activo', available.value)
             break;
+        case 'Ordenes':
+            emisiones('aplicarFiltros', estatus.value)
+            localStorage.setItem('filtro-estatus', estatus.value)
+            break;
     }
     emisiones('ocultarModal')
 }
 
+/**
+ * dev: Oned Gómez
+ * Función para cambiar el contenido de la variable local que contiene el código de la categoria seleccionada en el selectbox
+ * @param {*} codigoC: Contiene el codigo de la categoria seleccionada
+ */
 const modificarCodigoCategoria = (codigoC) => {
     categoria.value = codigoC
 }
@@ -208,23 +254,31 @@ const iniciarlizarFiltros = () => {
                 available.value = true
             }
             break;
+        case 'Ordenes':
+            if (localStorage.getItem('filtro-estatus') !== null) {
+                estatus.value = localStorage.getItem('filtro-estatus')
+            } else {
+                estatus.value = 'G'
+            }
+            break;
     }
 }
 iniciarlizarFiltros()
 
-/**
+
+if (propsFiltros.modulo === 'Inventario') {
+    /**
  * dev: Oned Gomez
  * Función para cargar la información de las categorias y sucursales a los filtros
  */
-const cargarSelect = () => {
-    categorias.value = localStorage.getItem('categorias');
-    categorias.value = categorias.value.replaceAll('"categorycode":', '"code":')
-    categorias.value = categorias.value.replaceAll('"categoryname":', '"name":')
-    categorias.value = JSON.parse(categorias.value)
-}
-cargarSelect()
+    const cargarSelect = () => {
+        categorias.value = localStorage.getItem('categorias');
+        categorias.value = categorias.value.replaceAll('"categorycode":', '"code":')
+        categorias.value = categorias.value.replaceAll('"categoryname":', '"name":')
+        categorias.value = JSON.parse(categorias.value)
+    }
+    cargarSelect()
 
-if (propsFiltros.modulo === 'Inventario') {
     if (available.value == true || available.value == 'true') {
         existencia.value = "En existencia"
     } else {
@@ -240,6 +294,26 @@ if (propsFiltros.modulo === 'Proveedores') {
     }
 }
 
+if (propsFiltros.modulo === 'Ordenes') {
+    switch (estatus.value) {
+        case 'G':
+            estatusNombre.value = 'Generadas'
+            break;
+        case 'C':
+            estatusNombre.value = 'Canceladas'
+            break;
+        case 'A':
+            estatusNombre.value = 'Aceptadas'
+            break;
+        case 'R':
+            estatusNombre.value = 'Rechazadas'
+            break;
+        case 'D':
+            estatusNombre.value = 'Completadas'
+            break;
+    }
+}
+
 
 const buscarNombreCategoria = () => {
     if (categoria.value !== '') {
@@ -248,11 +322,24 @@ const buscarNombreCategoria = () => {
 }
 buscarNombreCategoria()
 
+/**
+ * dev: Oned Gómez
+ * Función que nos ayudará a quitar el filtro de categoria en el inventario (cuando esté seleccionada alguna categoria)
+ */
 const elimiarFiltroCat = () => {
     categoria.value = ''
     store.filtradaCategoria = false
     localStorage.removeItem('filtro-categoria')
     categoriaNombre.value = ''
+}
+
+/**
+ * dev: Oned Gómez
+ * Función que nos ayudará a reestablecer el estatus de las ordenes renderizadas
+ */
+const reestablecerEstatus = () => {
+    estatus.value = 'G'
+    estatusNombre.value = 'Generadas'
 }
 
 </script>
