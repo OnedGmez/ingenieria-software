@@ -18,8 +18,8 @@
               </div>
             </button>
           </div>
-          <button v-if="encabezado['sucursalname'] !== 'Bodega Central' && rol !== 'Cajero'" @click="Ordenar" id="boton-generar-orden"
-            type="button" class="btn boton-desplegable">
+          <button v-if="encabezado['sucursalname'] !== 'Bodega Central' && rol !== 'Cajero'" @click="Ordenar"
+            id="boton-generar-orden" type="button" class="btn boton-desplegable">
             <div v-if="modoOrdenar === false" class="contenido-boton d-flex">
               <span class="d-block icono-boton"><font-awesome-icon icon="file-circle-plus" /></span>
               <span class=" d-block nombre-boton"> Generar Orden </span>
@@ -82,10 +82,10 @@ const mensaje = ref('')
 const err = ref(false)
 const dataProductos = ref([{}])
 const available = ref(true)
+const respuesta = ref('')
 
 const cookies = document.cookie.split(';')
 const sucursalcode = store.desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
-const sucursalname = JSON.parse(localStorage.getItem('usuario'))[0]['sucursalname']
 const rol = store.desencriptarData(cookies[1].split('=')[1], 'rol');
 const dataVista = ref(JSON.parse(localStorage.getItem('usuario')))
 
@@ -115,15 +115,20 @@ const Ordenar = () => {
 
   if (modoOrdenar.value === true) {
     mensaje.value = 'Orden abierta'
-    err.value = false
+    err.value = 'false'
     usarAlerta()
     cargarProductos('Suc-1')
   } else {
-    mensaje.value = 'Orden culminada'
-    err.value = false
-    usarAlerta()
+    guardarOrden()
     cargarProductos(sucursalcode)
   }
+}
+
+const guardarOrden = async () => {
+  respuesta.value = await storeProducto.generarOrden()
+  mensaje.value = respuesta.value[0]['mensaje']
+  err.value = respuesta.value[0]['error']
+  usarAlerta()
 }
 
 const usarAlerta = () => {
@@ -162,7 +167,7 @@ const cargarProductos = async (sucursalcode) => {
 
   } catch (error) {
     mensaje.value = error
-    err.value = true
+    err.value = 'true'
     usarAlerta()
   }
 }
@@ -206,7 +211,6 @@ const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
 
 const filtrarBusqueda = (buscar) => {
   const categoria = localStorage.getItem('filtro-categoria')
-  console.log(categoria)
   if (buscar == '') {
     store.filtradaBusqueda = false
     if (categoria !== null) {
