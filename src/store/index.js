@@ -11,7 +11,6 @@ export const generalStore = defineStore('store', () => {
   const filtradaDisponibildad = ref(false)
   const filtradaCategoria = ref(false)
   const filtradaBusqueda = ref(false)
-  const productosOrden = ref([{}])
 
   let date = new Date();
   const fechaActual = String(date.getFullYear()) + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
