@@ -5,23 +5,22 @@ import { ref, watch, watchEffect } from 'vue'
 import CryptoJS from 'crypto-js'
 import { supabase } from '@/lib/supabaseClient'
 
-
-
-
 export const useProductoStore = defineStore("productoStore", () => {
-    const dataNoFiltradaProductos = ref([{}])
-    const store = generalStore()
-    const respuesta = ref('')
-    const ordenarModo = ref(false)
+  const cookies = document.cookie.split(';')
+  const dataNoFiltradaProductos = ref([{}])
+  const store = generalStore()
+  const respuesta = ref('')
+  const ordenarModo = ref(false)
+  const productosOrdenados = ref([])
 
-    const nuevoProducto = ref('')
-    
-    /**
-     * dev: Oned Gómez
-     * Función para actualizar un producto que seleccionamos en las tarjetas
-     * @param {*} valores: Contiene la información que deseamos actualizar y el código del producto que deseamos actualizar
-     * @returns: Devuelve una respuesta de éxito o fracaso después de actualizar
-     */
+  const nuevoProducto = ref('')
+
+  /**
+   * dev: Oned Gómez
+   * Función para actualizar un producto que seleccionamos en las tarjetas
+   * @param {*} valores: Contiene la información que deseamos actualizar y el código del producto que deseamos actualizar
+   * @returns: Devuelve una respuesta de éxito o fracaso después de actualizar
+   */
   const actualizarProducto = async (valores) => {
     store.filtradaCategoria = false
     store.filtradaDisponibildad = false
@@ -34,18 +33,85 @@ export const useProductoStore = defineStore("productoStore", () => {
       if (error) {
         respuesta.value = [{
           'mensaje': error,
-          'error': true
+          'error': 'true'
         }]
       } else {
         respuesta.value = [{
           'mensaje': '¡Producto actualizado exitosamente!',
-          'error': false
+          'error': 'false'
         }]
       }
     } catch (error) {
       respuesta.value = [{
         'mensaje': error,
-        'error': true
+        'error': 'true'
+      }]
+    } finally {
+      return respuesta.value
+    }
+  }
+
+
+  /**
+   * dev: Oned Gómez
+   * Función que nos sirve para enviar los datos de la orden y sus productos a la base de datos 
+   * @returns retorna una respuesta con un mensaje y un bool de error, para poder mostrar la alerta
+   */
+  const generarOrden = async () => {
+    const codigoempleado = store.desencriptarData(cookies[3].split('=')[1], 'employeecode')
+    const sucursalcode = store.desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
+    try {
+      let date = new Date();
+      const fechaHora = store.fechaActual + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '.' + date.getMilliseconds()
+      const codigoOrden = CryptoJS.MD5(codigoempleado + '-' + sucursalcode + '-' + '1' + '-' + fechaHora).toString()
+      const { data, error } = await supabase
+        .from('orders')
+        .insert([
+          {
+            ordercode: codigoOrden.substring(0,9),
+            timedateofshipment: fechaHora,
+            ordertypecode: 1,
+            sender: codigoempleado,
+            sucursalcode: sucursalcode,
+            status: 'G'
+          },
+        ])
+
+      if (error) {
+        respuesta.value = [{
+          'mensaje': error,
+          'error': 'true'
+        }]
+      } else {
+        for (const producto of productosOrdenados.value) {
+          const { data, error } = await supabase
+            .from('detailsorder')
+            .insert([
+              {
+                ordercode: codigoOrden.substring(0, 9),
+                sucursalinventorycode: producto.sucursalinventorycode,
+                expirationdate: producto.expirationdate,
+                quantity: producto.quantity
+              }
+            ])
+
+          if (error) {
+            respuesta.value = [{
+              'mensaje': error,
+              'error': 'true'
+            }]
+            break;
+          }
+        }
+        respuesta.value = [{
+          'mensaje': 'Orden añadida correctamente',
+          'error': 'false'
+        }]
+      }
+    } catch (error) {
+      respuesta.value = [{
+        'mensaje': error,
+        'error': 'true'
       }]
     } finally {
       return respuesta.value
@@ -57,8 +123,8 @@ export const useProductoStore = defineStore("productoStore", () => {
     store.filtradaCategoria = false
     store.filtradaDisponibildad = false
     const cookies = document.cookie.split(';')
-    const sucursalcode = desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
-    const codigoempleado = desencriptarData(cookies[3].split('=')[1], 'employeecode')
+    const sucursalcode = store.desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
+    const codigoempleado = store.desencriptarData(cookies[3].split('=')[1], 'employeecode')
     try {
       //Primero buscamos si existe el producto que deseamos almacenar
       let { data: products, error } = await supabase
@@ -93,7 +159,7 @@ export const useProductoStore = defineStore("productoStore", () => {
         if (error) {
           respuesta.value = [{
             'mensaje': error,
-            'error': true
+            'error': 'true'
           }]
         } else {
           //guardar en el inventario
@@ -113,12 +179,12 @@ export const useProductoStore = defineStore("productoStore", () => {
           if (error) {
             respuesta.value = [{
               'mensaje': error,
-              'error': true
+              'error': 'true'
             }]
           } else {
             respuesta.value = [{
               'mensaje': '¡Producto guardado exitosamente!',
-              'error': false
+              'error': 'false'
             }]
             //Variable para capturar la información completa del producto ingresado
             const available = ref(false)
@@ -159,7 +225,7 @@ export const useProductoStore = defineStore("productoStore", () => {
         if (error) {
           respuesta.value = [{
             'mensaje': error,
-            'error': true
+            'error': 'true'
           }]
         } else {
           //Actualizamos el stock con su codigo de sucursal
@@ -171,12 +237,12 @@ export const useProductoStore = defineStore("productoStore", () => {
           if (error) {
             respuesta.value = [{
               'mensaje': error,
-              'error': true
+              'error': 'true'
             }]
           } else {
             respuesta.value = [{
               'mensaje': '¡Producto actualizado exitosamente!',
-              'error': false
+              'error': 'false'
             }]
           }
         }
@@ -185,26 +251,26 @@ export const useProductoStore = defineStore("productoStore", () => {
       if (error) {
         respuesta.value = [{
           'mensaje': error,
-          'error': true
+          'error': 'true'
         }]
       }
 
     } catch (error) {
       respuesta.value = [{
         'mensaje': error,
-        'error': true
+        'error': 'true'
       }]
     } finally {
       return respuesta.value
     }
   }
 
-    /**
-   * Función que nos ayuda a cambiar el valor del modo para ordenar productos
-   */
-    const setModoOrden = () => {
-        ordenarModo.value = !ordenarModo.value
-      }
+  /**
+ * Función que nos ayuda a cambiar el valor del modo para ordenar productos
+ */
+  const setModoOrden = () => {
+    ordenarModo.value = !ordenarModo.value
+  }
 
   watchEffect(() => {
     const sucursalsinventory = supabase.channel('custom-all-channel')
@@ -247,11 +313,13 @@ export const useProductoStore = defineStore("productoStore", () => {
   })
 
 
-    return{
-        setModoOrden,
-        ordenarModo,
-        agregarProducto,
-        actualizarProducto,
-        dataNoFiltradaProductos,
-    }
+  return {
+    setModoOrden,
+    ordenarModo,
+    agregarProducto,
+    actualizarProducto,
+    dataNoFiltradaProductos,
+    productosOrdenados,
+    generarOrden
+  }
 })
