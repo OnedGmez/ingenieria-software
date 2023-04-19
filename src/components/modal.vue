@@ -15,15 +15,17 @@
                 </div>
                 <div class="modal-footer">
                     <div class="botones izquierda">
-                        <button v-if="ordenarModo === false && data['available'] === true && sucursalname == 'Bodega Central'" @click="mostrarModal"
-                            id="boton-actualizar" type="button" class="btn boton-desplegable">
+                        <button
+                            v-if="ordenarModo === false && data['available'] === true && sucursalname == 'Bodega Central'"
+                            @click="mostrarModal" id="boton-actualizar" type="button" class="btn boton-desplegable">
                             <div class="d-flex">
                                 <span class="d-block icono-boton"><font-awesome-icon icon="pen-to-square" /></span>
                                 <span class=" d-block nombre-boton"> Actualizar </span>
                             </div>
                         </button>
-                        <button v-if="ordenarModo === true && data['available'] === true && modulo === 'Inventario' && rol !== 'Cajero'" id="boton-agregar"
-                            @click="pushOrden" type="button" class="btn boton-desplegable">
+                        <button
+                            v-if="ordenarModo === true && data['available'] === true && modulo === 'Inventario' && rol !== 'Cajero'"
+                            id="boton-agregar" @click="pushOrden" type="button" class="btn boton-desplegable agregar">
                             <div class="d-flex">
                                 <span class="d-block icono-boton"><font-awesome-icon icon="plus" /></span>
                                 <span class=" d-block nombre-boton"> Añadir </span>
@@ -116,6 +118,7 @@
 
 .modal .modal-dialog .modal-content .modal-footer #boton-agregar {
     padding: 0px 1px 0px 5.5px !important;
+    width: 26px;
 }
 
 .modal .modal-dialog .modal-content .modal-footer .boton-desplegable:hover {
@@ -173,13 +176,12 @@ import dataModalProveedor from '@/components/minicomponents/dataModalProveedores
 const emisiones = defineEmits(['ocultarModal'])
 const mostrandoModalCRUD = ref(false)
 const indicarCantidad = ref(false)
-const stockOrdenado = ref(0)
 const cookies = document.cookie.split(';')
 
 /**
  * Traemos el valor del modo de Ordenar para activar o desactivar el botón de añadir productos a la orden
  */
- const store = generalStore()
+const store = generalStore()
 const storeProducto = useProductoStore()
 const ordenarModo = storeProducto.ordenarModo
 
@@ -206,14 +208,38 @@ const mostrarMCantidad = () => {
     indicarCantidad.value = !indicarCantidad.value
 }
 
-//Falta agregar el codigo de orden
+/**
+ * dev: Oned Gómez
+ * Función para agregar un producto con su respectiva cantidad a la orden
+ * @param {*} cantidad: Cantidad deseada del producto añadido
+ * Luego de confirmar, se valida que el producto seleccionado no exista ya en el json que contiene los productos, en caso de existir, se suman las cantidades requeridas 
+ */ 
 const confirmar = (cantidad) => {
-    stockOrdenado.value = cantidad
-    const cuerpoDetalle = {
-        'quantity': stockOrdenado.value,
-        'lotnumber': productoModal.data['lotnumber'],
-        'productcode': productoModal.data['productcode'],
-        'ordercode': ''
+    const valores = ref([{}])
+    const productoOrdenado = {
+        'quantity': cantidad,
+        'sucursalinventorycode': productoModal.data['sucursalinventorycode'],
+        'expirationdate': productoModal.data['expirationdate']
+    }
+
+    if (cantidad > 0) {
+        const index = storeProducto.productosOrdenados.findIndex(producto => producto.sucursalinventorycode == productoModal.data['sucursalinventorycode'])
+        if (index !== -1) {
+            const cantidadAnterior = storeProducto.productosOrdenados[index]['quantity']
+            storeProducto.productosOrdenados[index]['quantity'] = cantidadAnterior + cantidad
+        } else {
+            storeProducto.productosOrdenados.push(productoOrdenado)
+        }
+
+        valores.value = {
+            'sucursalinventorycode': productoModal.data['sucursalinventorycode'],
+            'stock': -cantidad
+        }
+        storeProducto.actualizarProducto(valores.value)
+    }else{
+        mensaje.value = 'No es posible agregar la cantidad de 0 a la orden del producto'
+        err.value = 'true'
+        usarAlerta()
     }
 }
 
