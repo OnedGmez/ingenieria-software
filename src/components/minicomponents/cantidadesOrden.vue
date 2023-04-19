@@ -36,8 +36,6 @@ const confirmar = () =>{
 const cerrar = () =>{
     emisiones('cerrar')
 }
-
-
 </script>
 
 <style scoped>
@@ -105,8 +103,8 @@ const cerrar = () =>{
 
 .modal-cantidad {
     position: absolute;
-    top: 115%;
-    right: 25%;
+    top: 105%;
+    right: 30%;
     z-index: 1056;
     padding: 15px 35px;
     margin: 5px;
