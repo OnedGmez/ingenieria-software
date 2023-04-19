@@ -119,7 +119,7 @@ const confirmarAcción = async () => {
                     cerrarModal()
                 } else {
                     mensaje.value = "Debes proporcionar la información solicitada"
-                    err.value = true
+                    err.value = 'true'
                     usarAlerta()
                 }
             } else {
@@ -129,7 +129,7 @@ const confirmarAcción = async () => {
                         cerrarModal()
                     } else {
                         mensaje.value = "Debes proporcionar la información solicitada"
-                        err.value = true
+                        err.value = 'true'
                         usarAlerta()
                     }
 
@@ -144,7 +144,7 @@ const confirmarAcción = async () => {
                     cerrarModal()
                 } else {
                     mensaje.value = "Debes proporcionar la información solicitada"
-                    err.value = true
+                    err.value = 'true'
                     usarAlerta()
                 }
             } else {
@@ -154,7 +154,7 @@ const confirmarAcción = async () => {
                         cerrarModal()
                     } else {
                         mensaje.value = "Debes proporcionar la información solicitada"
-                        err.value = true
+                        err.value = 'true'
                         usarAlerta()
                     }
                 }
