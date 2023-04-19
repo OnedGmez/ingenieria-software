@@ -127,7 +127,6 @@
 
 <script setup>
 import { ref, defineExpose } from 'vue';
-import selectBox from '@/components/selectBox.vue';
 import { generalStore } from '@/store/index.js'
 
 const store = generalStore()
