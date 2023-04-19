@@ -6,8 +6,6 @@ import CryptoJS from 'crypto-js'
 import { supabase } from '@/lib/supabaseClient'
 
 
-
-
 export const useProveedorStore = defineStore("proveedorStore", () => {
 
     const dataNoFiltradaProveedores = ref([{}])
@@ -37,28 +35,32 @@ export const useProveedorStore = defineStore("proveedorStore", () => {
             if (error) {
                 respuesta.value = [{
                     'mensaje': error,
-                    'error': true
+                    'error': 'true'
                 }]
             } else {
                 respuesta.value = [{
                     'mensaje': '¡Proveedor actualizado exitosamente!',
-                    'error': false
+                    'error': 'false'
                 }]
             }
         } catch (error) {
             respuesta.value = [{
                 'mensaje': error,
-                'error': true
+                'error': 'true'
             }]
         } finally {
             return respuesta.value
         }
     }
 
-
+    /**
+ * dev: Oned Gómez
+ * Función que nos facilitará la adición de un nuevo proveedor 
+ * @param {*} valores: Contiene la información necesaria para efectuar correctamente la adición
+ * @returns: Devuelve un mensaje de éxito o fracaso al realizar la actualización
+ */
     const agregarProveedor = async (valores) => {
         try {
-
             const { data, error } = await supabase
                 .from('vendors')
                 .insert([
@@ -68,7 +70,7 @@ export const useProveedorStore = defineStore("proveedorStore", () => {
                         urlimage: valores.urlimage
                     },
                 ])
-            const vendorcode = CryptoJS.MD5('MK-2023-04-18-Estados Unidos').toString()
+            const vendorcode = CryptoJS.MD5(valores.name + '-' + valores.relationshipinitiation + '-' + valores.country).toString()
             nuevoProveedor.value = {
                 'available': false,
                 'country': valores.country,
@@ -82,18 +84,18 @@ export const useProveedorStore = defineStore("proveedorStore", () => {
             if (!error) {
                 respuesta.value = [{
                     'mensaje': 'Proveedor agregado éxitosamente, estado: Inactivo',
-                    'error': false
+                    'error': 'false'
                 }]
             }else{
                 respuesta.value = [{
                     'mensaje': error,
-                    'error': true
+                    'error': 'true'
                 }]
             }
         } catch (error) {
             respuesta.value = [{
                 'mensaje': error,
-                'error': true
+                'error': 'true'
             }]
         } finally {
             return respuesta.value
