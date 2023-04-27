@@ -6,15 +6,22 @@ import { useUsuarioStore } from './usuario.js'
 import { supabase } from '@/lib/supabaseClient'
 
 export const generalStore = defineStore('store', () => {
+  //Variables que hacen referencia al o los stores que maneja el proyecto
   const storeUsuario = useUsuarioStore()
   const menu = ref(menuOpciones.elementos); 
+
+  //Booleanas para definir si están activados unos u otros filtros
   const filtradaDisponibildad = ref(false)
   const filtradaCategoria = ref(false)
   const filtradaBusqueda = ref(false)
 
   let date = new Date();
   const fechaActual = String(date.getFullYear()) + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
-
+  const fechaEdadValida = String(date.getFullYear() - 18) + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+/**
+ * dev: Oned Gómez
+ * Función que utilizamos para limpiar la data del localstorage una vez que salgamos de la sesión
+ */
   const limpiarStorages = () => {
     sessionStorage.removeItem('token')
     localStorage.removeItem('usuario')
@@ -24,6 +31,10 @@ export const generalStore = defineStore('store', () => {
     localStorage.removeItem('proveedores')
   }
 
+  /**
+   * dev: Oned Gómez
+   * Función que es utilizada para eliminar el registro de los filtros al iniciar la aplicación y al cerrar sesión 
+   */
   const limpiarFiltros = () => {
     localStorage.removeItem('filtro-existencia')
     localStorage.removeItem('filtro-categoria')
@@ -34,7 +45,7 @@ export const generalStore = defineStore('store', () => {
 
   /**
    * dev: Oned Gómez
-   * Función que nos ayudará a guardar en el LocalStorage toda la información que necesitamos que persista
+   * Función que nos ayudará a guardar en el LocalStorage toda la información que necesitamos que persista para ser manipulada más adelante
    * @param {*} data Recibe la información que deseamos guardar en el localStorage
    * @param {*} key Se usa como la key de la tupla {key: value} y se usa como filtro para saber que tipo de información guardamos
    * @constant {*} usuario Almacena la información que respecta al usuario (rol, nombre, foto) para crear un JSON que utilizaremos para crear el token de sesión
@@ -56,7 +67,7 @@ export const generalStore = defineStore('store', () => {
 
   /**
    * dev: Oned Gómez
-   * Función para hacer la petición de categorias a la API de la base de datos para posteriormente almacenar la data en localStorge
+   * Función para hacer la petición de categorias a la API de la base de datos para posteriormente almacenar la data en localStorge y utilizarla donde sea requerida
    */
   const cargaCategorias = async () => {
     try {
@@ -78,7 +89,7 @@ export const generalStore = defineStore('store', () => {
 
   /**
  * dev: Oned Gómez
- * Función para hacer la petición de sucursales a la API de la base de datos para posteriormente almacenar la data en localStorge
+ * Función para hacer la petición de sucursales a la API de la base de datos para posteriormente almacenar la data en localStorge y utilizarla donde sea requerida
  */
   const cargarSucursales = async () => {
     try {
@@ -102,7 +113,7 @@ export const generalStore = defineStore('store', () => {
 
   /**
 * dev: Oned Gómez
-* Función para hacer la petición de proveedores a la API de la base de datos para posteriormente almacenar la data en localStorge
+* Función para hacer la petición de proveedores a la API de la base de datos para posteriormente almacenar la data en localStorge y utilizarla donde sea requerida
 */
   const cargarProveedores = async () => {
     try {
@@ -126,10 +137,24 @@ export const generalStore = defineStore('store', () => {
   /**
 * Funciones de utilidad pública
 */
+/**
+ * dev: Oned Gómez
+ * Función utilizada para encriptar data, especificamente textos, cantidades, etc. con el algoritmo de MD5
+ * @param {*} data: Contiene la información que deseamos encriptar
+ * @param {*} key: Identificador que solicita el algoritmo para poder encriptar de mejor manera
+ * @returns devuelve una cadena de texto de 32 caracteres que representa la data ya pasada por el algoritmo de encriptado 
+ */
   const encriptarData = (data, key) => {
     return CryptoJS.AES.encrypt(data, key).toString();
   }
 
+  /**
+   * dev: Oned Gómez
+   * Función utilizada básicamente para revertir el proceso de encriptación, porque el algoritmo permite encriptar y desencriptar teniendo la key con la que fue la data encriptada
+   * @param {*} data: Contiene cadena de texto que deseamos desencriptar (cabe recalcar que el algoritmo detecta si es MD5 la encriptación porque los primeros caracteres representan un patrón del algoritmo)
+   * @param {*} key: Identificador para desencriptar, debe ser el mismo con el que fue encriptada la data
+   * @returns devuelve la información desencriptada y lista para utilizarse
+   */
   const desencriptarData = (data, key) => {
     return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
   }
@@ -147,6 +172,7 @@ export const generalStore = defineStore('store', () => {
     fechaActual,
     filtradaDisponibildad,
     filtradaCategoria,
-    filtradaBusqueda
+    filtradaBusqueda,
+    fechaEdadValida
   }
 })
