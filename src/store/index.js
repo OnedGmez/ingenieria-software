@@ -173,6 +173,21 @@ export const generalStore = defineStore('store', () => {
     }
   }
 
+    /**
+   * dev: Oned Gómez
+   * Función que evalua un texto para validar que tenga la estructura de una contraseña valida: La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula.
+Puede tener otros símbolos.
+   * @param {*} contrasenia: texto que se desea evaluar para obtener la retroalimentación si es o no válida
+   * @returns: devuelve true si la contraseña cumple con la expresión regular y false sino
+   */
+    const validarContrasenia = (contrasenia) => {
+      if (/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/.test(contrasenia)) {
+        return true
+      } else {
+        return false
+      }
+    }
+
   /**
    * dev: Oned Gómez
    * Función que nos devuelve la edad, con relación a la fecha actual y la fecha de nacimiento, es decir, (fechaHoy - fechaNacimiento)
