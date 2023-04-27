@@ -159,6 +159,32 @@ export const generalStore = defineStore('store', () => {
     return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
   }
 
+  /**
+   * dev: Oned Gómez
+   * Función que evalua un texto para validar que tenga la estructura de un correo valido
+   * @param {*} correo: texto que se desea evaluar para obtener la retroalimentación si es o no válido
+   * @returns: devuelve true si el correo cumple con la expresión regular y false sino
+   */
+  const validarCorreo = (correo) => {
+    if (/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test(correo)) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  /**
+   * dev: Oned Gómez
+   * Función que nos devuelve la edad, con relación a la fecha actual y la fecha de nacimiento, es decir, (fechaHoy - fechaNacimiento)
+   * @param {*} fechaNacimiento: Contiene la infmormación de fecha de nacimiento de la cuál deseamos obtener la edad
+   * @returns devuelve un entero que representa la edad que se obtuvo por medio de la fecha que se indicó
+   */
+  const calcularEdad = (fechaNacimiento) => {
+    var fechaFin = new Date(fechaActual).getTime();
+    var fechaInicio = new Date(fechaNacimiento).getTime();
+    return Math.round((fechaFin - fechaInicio) / (1000 * 60 * 60 * 24 * 365))
+  }
+
   return {
     menu,
     encriptarData,
@@ -169,6 +195,8 @@ export const generalStore = defineStore('store', () => {
     cargaCategorias,
     limpiarStorages,
     limpiarFiltros,
+    validarCorreo,
+    calcularEdad,
     fechaActual,
     filtradaDisponibildad,
     filtradaCategoria,
