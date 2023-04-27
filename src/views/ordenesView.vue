@@ -22,7 +22,7 @@
       </div>
       <div class="container-fluid">
         <div class="row">
-          <tarjetaOrden v-for="orden in dataOrdenes" :data="orden"/>
+          <tarjetaOrden v-for="orden in dataOrdenes" :data="orden" />
         </div>
       </div>
     </div>
@@ -61,6 +61,7 @@ const mensaje = ref('')
 const err = ref(false)
 const dataOrdenes = ref([{}])
 const available = ref(true)
+const valor = ref('')
 
 const cookies = document.cookie.split(';')
 const sucursalcode = store.desencriptarData(cookies[2].split('=')[1], 'sucursalcode')
@@ -120,67 +121,31 @@ const cargarOrdenes = async () => {
 cargarOrdenes()
 
 
-const configurarFiltros = (availableF, categoriaF) => {
-  filtrar(availableF, categoriaF)
+const configurarFiltros = (estatusF) => {
+  filtrar(estatusF)
 }
 
-const filtrar = (disponibilidadFiltro, categoriaFiltro) => {
-  if (disponibilidadFiltro == 'true') {
-    disponibilidadFiltro = true
-  }
-  if (disponibilidadFiltro == 'false') {
-    disponibilidadFiltro = false
-  }
-
-  if (categoriaFiltro !== '') {
-    store.filtradaCategoria = true
-  } else {
-    store.filtradaCategoria = false
-  }
-
-  if (disponibilidadFiltro == available.value && store.filtradaCategoria == false) {
-    console.log(disponibilidadFiltro)
-    dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => producto.available == disponibilidadFiltro)
-    store.filtradaDisponibildad = false
-  } else {
-    dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => {
-      available.value = disponibilidadFiltro
-      store.filtradaDisponibildad = true
-      if (store.filtradaCategoria == false) {
-        return producto.available == disponibilidadFiltro
-      } else {
-        return producto.available == disponibilidadFiltro && producto.categorycode == categoriaFiltro
-      }
-    })
-  }
+const filtrar = (estatusF) => {
+  dataOrdenes.value = storeOrden.dataNoFiltradaOrdenes.filter(orden => orden.status == estatusF)
 }
 
 const filtrarBusqueda = (buscar) => {
-  const categoria = localStorage.getItem('filtro-categoria')
-  if (buscar == '') {
-    store.filtradaBusqueda = false
-    if (categoria !== null) {
-      dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => producto.available == available.value && producto.categorycode == categoria)
-    } else {
-      dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
-    }
-  } else {
-    store.filtradaBusqueda = true
-    if (categoria !== null) {
-      dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => producto.available == available.value && producto.categorycode == categoria)
-    } else {
-      dataProductos.value = storeProducto.dataNoFiltradaProductos.filter(producto => producto.available == available.value)
-    }
-    dataProductos.value = dataProductos.value.filter(producto => {
-      return ((producto.name).toLowerCase()).match((buscar).toLowerCase())
+  if (buscar !== '') {
+    dataOrdenes.value = dataOrdenes.value.filter(orden => {
+      return ((orden.sender).toLowerCase()).match((buscar).toLowerCase())
     })
+  }else{
+    if(localStorage.getItem('filtro-estatus') !== null){
+      valor.value = localStorage.getItem('filtro-estatus')
+    }else{
+      valor.value = 'G'
+    }
+    dataOrdenes.value = (storeOrden.dataNoFiltradaOrdenes).filter(orden => orden.status == valor.value)
   }
 }
 
 watchEffect(() => {
-  if (store.filtradaDisponibildad == false && store.filtradaCategoria == false && store.filtradaBusqueda == false) {
-    
-  }
+  dataOrdenes.value = (storeOrden.dataNoFiltradaOrdenes).filter(orden => orden.status == 'G')
 })
 
 </script>
