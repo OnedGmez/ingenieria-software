@@ -8,7 +8,7 @@ import { supabase } from '@/lib/supabaseClient'
 export const generalStore = defineStore('store', () => {
   //Variables que hacen referencia al o los stores que maneja el proyecto
   const storeUsuario = useUsuarioStore()
-  const menu = ref(menuOpciones.elementos); 
+  const menu = ref(menuOpciones.elementos);
 
   //Booleanas para definir si están activados unos u otros filtros
   const filtradaDisponibildad = ref(false)
@@ -18,10 +18,10 @@ export const generalStore = defineStore('store', () => {
   let date = new Date();
   const fechaActual = String(date.getFullYear()) + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
   const fechaEdadValida = String(date.getFullYear() - 18) + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
-/**
- * dev: Oned Gómez
- * Función que utilizamos para limpiar la data del localstorage una vez que salgamos de la sesión
- */
+  /**
+   * dev: Oned Gómez
+   * Función que utilizamos para limpiar la data del localstorage una vez que salgamos de la sesión
+   */
   const limpiarStorages = () => {
     sessionStorage.removeItem('token')
     localStorage.removeItem('usuario')
@@ -137,13 +137,13 @@ export const generalStore = defineStore('store', () => {
   /**
 * Funciones de utilidad pública
 */
-/**
- * dev: Oned Gómez
- * Función utilizada para encriptar data, especificamente textos, cantidades, etc. con el algoritmo de MD5
- * @param {*} data: Contiene la información que deseamos encriptar
- * @param {*} key: Identificador que solicita el algoritmo para poder encriptar de mejor manera
- * @returns devuelve una cadena de texto de 32 caracteres que representa la data ya pasada por el algoritmo de encriptado 
- */
+  /**
+   * dev: Oned Gómez
+   * Función utilizada para encriptar data, especificamente textos, cantidades, etc. con el algoritmo de MD5
+   * @param {*} data: Contiene la información que deseamos encriptar
+   * @param {*} key: Identificador que solicita el algoritmo para poder encriptar de mejor manera
+   * @returns devuelve una cadena de texto de 32 caracteres que representa la data ya pasada por el algoritmo de encriptado 
+   */
   const encriptarData = (data, key) => {
     return CryptoJS.AES.encrypt(data, key).toString();
   }
@@ -173,20 +173,20 @@ export const generalStore = defineStore('store', () => {
     }
   }
 
-    /**
-   * dev: Oned Gómez
-   * Función que evalua un texto para validar que tenga la estructura de una contraseña valida: La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula.
+  /**
+ * dev: Oned Gómez
+ * Función que evalua un texto para validar que tenga la estructura de una contraseña valida: La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula.
 Puede tener otros símbolos.
-   * @param {*} contrasenia: texto que se desea evaluar para obtener la retroalimentación si es o no válida
-   * @returns: devuelve true si la contraseña cumple con la expresión regular y false sino
-   */
-    const validarContrasenia = (contrasenia) => {
-      if (/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/.test(contrasenia)) {
-        return true
-      } else {
-        return false
-      }
+ * @param {*} contrasenia: texto que se desea evaluar para obtener la retroalimentación si es o no válida
+ * @returns: devuelve true si la contraseña cumple con la expresión regular y false sino
+ */
+  const validarContrasenia = (contrasenia) => {
+    if (/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/.test(contrasenia)) {
+      return true
+    } else {
+      return false
     }
+  }
 
   /**
    * dev: Oned Gómez
@@ -217,6 +217,7 @@ Puede tener otros símbolos.
     filtradaDisponibildad,
     filtradaCategoria,
     filtradaBusqueda,
-    fechaEdadValida
+    fechaEdadValida,
+    subirArchivo
   }
 })
