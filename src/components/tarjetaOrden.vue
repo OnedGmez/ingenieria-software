@@ -30,14 +30,19 @@
 
 <style scoped>
 .contenedor{
+    margin-top: 10px;
     border-bottom-right-radius: 30px;
     border-bottom: 1.5px #3581B8 solid;
 }
 
 .contenedor .contenido-tarjeta{
-    margin: 4px;
+    margin: 10px;
     font-family: 'fredoka-family';
     font-size: calc(.9em + 0.04vw) !important;
+}
+
+.contenedor .contenido-tarjeta:hover{
+    cursor: pointer;
 }
 
 .contenido-tarjeta .informacion .cabecera-informacion span{
@@ -74,7 +79,7 @@
 }
 
 .aceptada{
-    color: greenyellow;
+    color: rgb(255, 151, 47);
 }
 
 .descargada{
@@ -95,5 +100,4 @@ const propsOrden = defineProps([
 const abrirDetalles = () =>{
     mostrandoModal.value = !mostrandoModal.value
 }
-console.log(propsOrden.data)
 </script>

@@ -10,11 +10,33 @@
                 }}</span></span>
             </div>
         </div>
-        <ul v-for="producto in dataDetalle" class="list-group list-group-flush">
-            <li class="list-group-item">An item</li>
+        <ul class="list-group list-group-flush">
+            <li v-for="producto in dataDetalle" :key="producto['sucursalinventorycode']" class="list-group-item">
+                <div class="d-flex data-detalles">
+                    <div class="grupo-uno">
+                        <div class="d-flex nombre">
+                            <span>Nombre producto: {{ producto['productname'] }}</span>
+                            <span>Lote: {{ producto['lotnumber'] }}</span>
+                        </div>
+                        <div class="nombre">
+                            <span>Fecha de expiración: {{ producto['expirationdate'] }}</span>
+                        </div>
+                    </div>
+                    <div class="cantidad">
+                        <span>Cantidad solicitada: {{ producto['quantity'] }}</span>
+                    </div>
+                </div>
+            </li>
         </ul>
         <div class="card-footer">
-            <button v-if="data['status'] == 'G' && sucursalname !== 'Bodega Central'" type="button" class="btn btn-cancelar" @click="cancelarOrden">Cancelar
+            <button v-if="data['status'] == 'G' && sucursalname !== 'Bodega Central'" type="button" class="btn btn-cancelar"
+                @click="actualizarOrden('D')">Recibida</button>
+            <button v-if="data['status'] == 'G' && sucursalname == 'Bodega Central'" type="button" class="btn btn-aceptar"
+                @click="actualizarOrden('A')">Aceptar</button>
+            <button v-if="data['status'] == 'G' && sucursalname == 'Bodega Central'" type="button" class="btn btn-rechazar"
+                @click="actualizarOrden('R')">Rechazar</button>
+            <button v-if="data['status'] == 'G' && sucursalname !== 'Bodega Central'" type="button" class="btn btn-cancelar"
+                @click="actualizarOrden('C')">Cancelar
                 orden</button>
             <button type="button" class="btn btn-cerrar" @click="cerrarModal">Cerrar</button>
         </div>
@@ -65,6 +87,7 @@ const cargarDetalles = async () => {
 
         if (data !== '') {
             dataDetalle.value = data
+            console.log(dataDetalle.value)
         }
 
     } catch (error) {
@@ -85,15 +108,15 @@ const cerrarModal = () => {
  * @param {*} ordercode: Contiene el hash code de la orden que deseamos cancelar
  * @returns: retorna el mensaje de exito o fracaso que mostrará la alerta
  */
-const cancelarOrden = async () => {
+const actualizarOrden = async (estatus) => {
     try {
         const { data, error } = await supabase
             .from('orders')
-            .update({ status: 'C' })
+            .update({ status: estatus })
             .eq('ordercode', propsDetalle.data['ordercode'])
 
         if (!error) {
-            mensaje.value = 'Orden cancelada exitosamente'
+            mensaje.value = 'Orden actualizada exitosamente'
             err.value = 'false'
             storeProductos.updateAuth = false
             usarAlerta()
@@ -121,6 +144,16 @@ const usarAlerta = () => {
     right: 12%;
     top: 50%;
     padding: 0;
+}
+
+.nombre span:first-child{
+    margin-right: 20px;
+}
+
+.data-detalles{
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
 }
 
 .card-header .detalle-sucursal-pedido {
@@ -161,6 +194,28 @@ const usarAlerta = () => {
 .btn-cancelar {
     color: rgb(97, 0, 19) !important;
     border: 1.6px solid rgb(97, 0, 19) !important;
+}
+
+.btn-aceptar {
+    color: rgb(255, 151, 47) !important;
+    border: 1.6px solid rgb(255, 151, 47) !important;
+}
+
+.btn-aceptar:hover {
+    color: #fff !important;
+    background-color: rgb(255, 151, 47) !important;
+    border: 1.6px solid rgb(255, 151, 47) !important;
+}
+
+.btn-rechazar {
+    color: red !important;
+    border: 1.6px solid red !important;
+}
+
+.btn-rechazar:hover {
+    color: #fff !important;
+    background-color: red !important;
+    border: 1.6px solid red !important;
 }
 
 .card .card-footer .btn:hover {
