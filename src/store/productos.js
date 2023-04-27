@@ -12,6 +12,7 @@ export const useProductoStore = defineStore("productoStore", () => {
   const respuesta = ref('')
   const ordenarModo = ref(false)
   const productosOrdenados = ref([])
+  const updateAuth = ref(true)
 
   const nuevoProducto = ref('')
 
@@ -68,7 +69,7 @@ export const useProductoStore = defineStore("productoStore", () => {
         .from('orders')
         .insert([
           {
-            ordercode: codigoOrden.substring(0,9),
+            ordercode: codigoOrden.substring(0, 9),
             timedateofshipment: fechaHora,
             ordertypecode: 1,
             sender: codigoempleado,
@@ -283,26 +284,29 @@ export const useProductoStore = defineStore("productoStore", () => {
               dataNoFiltradaProductos.value.unshift(nuevoProducto.value)
               break;
             case 'UPDATE':
-              const productoTMP = dataNoFiltradaProductos.value.filter(producto => producto.sucursalinventorycode == payload.old['sucursalinventorycode']);
-              const productoActualizado = {
-                'available': payload.new['available'],
-                'categorycode': productoTMP[0].categorycode,
-                'categoryname': productoTMP[0].categoryname,
-                'expirationdate': productoTMP[0].expirationdate,
-                'lotnumber': productoTMP[0].lotnumber,
-                'name': productoTMP[0].name,
-                'productcode': productoTMP[0].productcode,
-                'productdescription': productoTMP[0].productdescription,
-                'purchaseprice': productoTMP[0].purchaseprice,
-                'stock': payload.new['stock'],
-                'sucursalinventorycode': productoTMP[0].sucursalinventorycode,
-                'units': productoTMP[0].units,
-                'unitsale': productoTMP[0].unitsale,
-                'urlimage': productoTMP[0].urlimage,
-                'vendorcode': productoTMP[0].vendorcode,
-                'vendorname': productoTMP[0].vendorname
+              if (updateAuth.value == true) {
+                const productoTMP = dataNoFiltradaProductos.value.filter(producto => producto.sucursalinventorycode == payload.old['sucursalinventorycode']);
+                const productoActualizado = {
+                  'available': payload.new['available'],
+                  'categorycode': productoTMP[0].categorycode,
+                  'categoryname': productoTMP[0].categoryname,
+                  'expirationdate': productoTMP[0].expirationdate,
+                  'lotnumber': productoTMP[0].lotnumber,
+                  'name': productoTMP[0].name,
+                  'productcode': productoTMP[0].productcode,
+                  'productdescription': productoTMP[0].productdescription,
+                  'purchaseprice': productoTMP[0].purchaseprice,
+                  'stock': payload.new['stock'],
+                  'sucursalinventorycode': productoTMP[0].sucursalinventorycode,
+                  'units': productoTMP[0].units,
+                  'unitsale': productoTMP[0].unitsale,
+                  'urlimage': productoTMP[0].urlimage,
+                  'vendorcode': productoTMP[0].vendorcode,
+                  'vendorname': productoTMP[0].vendorname
+                }
+                dataNoFiltradaProductos.value = (JSON.parse(JSON.stringify(dataNoFiltradaProductos.value).replaceAll(JSON.stringify(productoTMP[0]), JSON.stringify(productoActualizado))))
               }
-              dataNoFiltradaProductos.value = (JSON.parse(JSON.stringify(dataNoFiltradaProductos.value).replaceAll(JSON.stringify(productoTMP[0]), JSON.stringify(productoActualizado))))
+              updateAuth.value = false
               break;
           }
         }
@@ -320,6 +324,7 @@ export const useProductoStore = defineStore("productoStore", () => {
     actualizarProducto,
     dataNoFiltradaProductos,
     productosOrdenados,
-    generarOrden
+    generarOrden,
+    updateAuth
   }
 })
