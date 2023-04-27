@@ -211,6 +211,7 @@ Puede tener otros símbolos.
     limpiarStorages,
     limpiarFiltros,
     validarCorreo,
+    validarContrasenia,
     calcularEdad,
     fechaActual,
     filtradaDisponibildad,
