@@ -217,7 +217,6 @@ Puede tener otros símbolos.
     filtradaDisponibildad,
     filtradaCategoria,
     filtradaBusqueda,
-    fechaEdadValida,
-    subirArchivo
+    fechaEdadValida
   }
 })
