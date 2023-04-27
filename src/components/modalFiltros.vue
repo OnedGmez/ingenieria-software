@@ -27,6 +27,7 @@
                                 id="existencia">
                             <label v-if="modulo === 'Inventario'" for="existencia">En existencia</label>
                             <label v-if="modulo === 'Proveedores'" for="existencia">Activo</label>
+                            <label v-if="modulo === 'Representantes'" for="existencia">Activo</label>
                         </div>
                         <div class="filtros-estatus" v-if="modulo === 'Ordenes'">
                             <div class="estatus">
@@ -203,6 +204,10 @@ const aplicarFiltros = () => {
             }
             break;
         case 'Proveedores':
+            emisiones('aplicarFiltros', available.value)
+            localStorage.setItem('filtro-activo', available.value)
+            break;
+        case 'Representantes':
             emisiones('aplicarFiltros', available.value)
             localStorage.setItem('filtro-activo', available.value)
             break;

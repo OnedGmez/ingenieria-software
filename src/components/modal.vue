@@ -9,9 +9,11 @@
                 <!--Condicionamos la fotogafía pensando en los otros módulos y que la ruta a las img será diferente-->
                 <img v-if="modulo === 'Inventario'" src="../assets/img/aceta.jpg" class="img-fluid" alt="...">
                 <img v-if="modulo === 'Proveedores'" src="../assets/img/aceta.jpg" class="img-fluid" alt="...">
+                <img v-if="modulo === 'Representantes'" src="../assets/img/prueba1.jpg" class="img-fluid" alt="...">
                 <div class="modal-body">
                     <dataModalProducto v-if="modulo === 'Inventario'" :dataProducto="data" />
                     <dataModalProveedor v-if="modulo === 'Proveedores'" :dataProveedor="data" />
+                    <dataModalRepresentante v-if="modulo === 'Representantes'" :dataRepresentante="data" />
                 </div>
                 <div class="modal-footer">
                     <div class="botones izquierda">
@@ -172,6 +174,8 @@ import modalCantidadesOrden from '@/components/minicomponents/cantidadesOrden.vu
 
 
 import dataModalProveedor from '@/components/minicomponents/dataModalProveedores.vue';
+import dataModalRepresentante from '@/components/minicomponents/dataModalRepresentantes.vue';
+
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal'])
 const mostrandoModalCRUD = ref(false)
@@ -256,4 +260,5 @@ const productoModal = defineProps([
     'data',
     'modulo'
 ])
+
 </script>

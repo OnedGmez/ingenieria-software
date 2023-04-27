@@ -115,6 +115,7 @@ export const useProveedorStore = defineStore("proveedorStore", () => {
                             break;
                         case 'UPDATE':
                             const proveedorTMP = dataNoFiltradaProveedores.value.filter(proveedor => proveedor.vendorcode == payload.old['vendorcode']);
+                            console.log(proveedorTMP);
                             const productoActualizado = {
                                 'available': proveedorTMP[0].available,
                                 'country': payload.new['country'],

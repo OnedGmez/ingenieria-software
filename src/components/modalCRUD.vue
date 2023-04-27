@@ -1,7 +1,7 @@
 <template>
     <div class="modal fade show" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true" style="display: block;">
-        <div class="modal-dialog-centered modal-sm modal-dialog">
+        <div class="modal-dialog-centered modal-dialog" :class="tamanioModal">
             <div class="modal-content">
                 <div class="modal-body">
                     <div v-if="modulo === 'Inventario'" class="formulario">
@@ -9,6 +9,9 @@
                     </div>
                     <div v-if="modulo === 'Proveedores'" class="formulario">
                         <formularioACProveedores ref="guardar" :data=data :accion=accion />
+                    </div>
+                    <div v-if="modulo === 'Representantes'" class="formulario">
+                        <formularioACRepresentantes ref="guardar" :data=data :accion=accion />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -75,17 +78,19 @@ import alerta from './minicomponents/alerta.vue';
 import { generalStore } from '@/store';
 import { useProveedorStore } from '@/store/proveedores';
 import { useProductoStore } from '@/store/productos';
-
+import { useRepresentanteStore } from '@/store/representantes';
 
 import formularioACProveedores from './minicomponents/formularioACProveedores.vue';
+import formularioACRepresentantes from './minicomponents/formularioACRepresentantes.vue';
 
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 //Definimos los emits necesarios con sus respectivas funciones
 const emisiones = defineEmits(['ocultarModal'])
 
 const store = generalStore()
 const storeProveedor = useProveedorStore()
 const storeProducto = useProductoStore()
+const storeRepresentante = useRepresentanteStore()
 
 const mostrandoAlerta = ref(false)
 const mensaje = ref('')
@@ -104,6 +109,14 @@ const modalProps = defineProps([
     'accion'
 ])
 
+const tamanioModal = computed(() => {
+    if (modalProps.modulo === 'Inventario' || modalProps.modulo === 'Proveedores') {
+        return 'modal-sm'
+    } else {
+        return 'modal-lg'
+    }
+})
+
 const confirmarAcción = async () => {
     if (guardar.value.unitsale === true) {
         guardar.value.unitsale = '1'
@@ -115,6 +128,7 @@ const confirmarAcción = async () => {
         case 'Inventario':
             if (modalProps.accion === "Crear") {
                 if (guardar.value.productcode !== '' && guardar.value.name !== '' && guardar.value.lotnumber !== '' && guardar.value.productdescription !== '' && guardar.value.categoryname !== '' && guardar.value.expirationdate !== '' && guardar.value.vendorcode !== '' && guardar.value.stock !== '' && guardar.value.units !== '' && guardar.value.purchaseprice) {
+                    // console.log(guardar.value);
                     respuesta.value = await storeProducto.agregarProducto(guardar.value)
                     cerrarModal()
                 } else {
@@ -159,6 +173,40 @@ const confirmarAcción = async () => {
                     }
                 }
             }
+            break;
+
+        case 'Representantes':
+            if (modalProps.accion == 'Crear') {
+                if (   guardar.value.pNombre !== ''  
+                    && guardar.value.urlimage !== ''
+                    && guardar.value.pApellido !== '' 
+                    && guardar.value.fechaNacimiento !== ''
+                    && guardar.value.genero !== ''
+                    && guardar.value.dni !== ''
+                    && guardar.value.telefono !== ''
+                    && guardar.value.correo !== ''
+                    && guardar.value.vendorcode !== '') {
+                    // console.log(guardar.value);
+                    respuesta.value = await storeRepresentante.agregarRepresentante(guardar.value)
+                    cerrarModal()
+                } else {
+                    mensaje.value = "Debes proporcionar la información solicitada"
+                    err.value = 'true'
+                    usarAlerta()
+                }
+            } 
+            // else {
+            //     if (modalProps.accion == 'Actualizar') {
+            //         if (guardar.value.country !== '' && guardar.value.urlimage !== '') {
+            //             respuesta.value = await storeProveedor.actualizarProveedor(guardar.value)
+            //             cerrarModal()
+            //         } else {
+            //             mensaje.value = "Debes proporcionar la información solicitada"
+            //             err.value = 'true'
+            //             usarAlerta()
+            //         }
+            //     }
+            // }
             break;
     }
 }

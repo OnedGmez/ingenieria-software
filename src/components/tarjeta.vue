@@ -9,8 +9,10 @@
                 <div class="card-title">
                     <span>{{ data['name'] }}</span>
                 </div>
+                {{ data.code }}
                 <miniItemsProducto v-if="modulo === 'Inventario'" :dataProducto="data" />
                 <miniItemsProveedor v-if="modulo === 'Proveedores'" :dataProveedor="data" />
+                <miniItemsRepresentante v-if="modulo === 'Representantes'" :dataRepresentante="data" />
             </div>
         </div>
     </div>
@@ -95,11 +97,14 @@ import { ref } from "vue";
 import modal from '@/components/modal.vue'
 import miniItemsProducto from '@/components/minicomponents/itemsCardProductos.vue'
 import miniItemsProveedor from '@/components/minicomponents/itemsCardProveedores.vue'
+import miniItemsRepresentante from '@/components/minicomponents/itemsCardRepresentantes.vue'
 
 const propsTarjeta = defineProps([
     'data',
     'modulo'
 ])
+
+// console.log(propsTarjeta.data);
 
 const mostrandoModal = ref(false)
 
