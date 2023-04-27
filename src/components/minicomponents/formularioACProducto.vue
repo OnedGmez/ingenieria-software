@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="textbox">
-                <label class="etiqueta" for="category-input">Categoria:</label>
+                <label class="etiqueta" for="category-input">Categoría:</label>
                 <div class="input-group">
                     <span class="input-group-text"></span>
                     <input id="category-input" type="text" disabled :value=data.categoryname class="form-control"
@@ -121,7 +121,7 @@
             </div>
             <selectBox @codigo="(codigo) => asignarProveedor(codigo)" :data="proveedores"
                 label="Nombre/Número de proveedor:" />
-            <selectBox @codigo="(codigo) => asignarCategoria(codigo)" :data="categorias" label="Categoria:" />
+            <selectBox @codigo="(codigo) => asignarCategoria(codigo)" :data="categorias" label="Categoría:" />
             <div class="mb-3 form-check">
                 <input v-model="unitsale" type="checkbox" class="form-check-input" id="ventaUnit">
                 <label class="form-check-label" for="exampleCheck1">Venta Unitaria</label>
